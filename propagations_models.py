@@ -17,25 +17,11 @@ def log_distance_model(d, gamma=3, d0=1, pr_d0=-60, pt=-17):
     :param gamma: Valor da constante de propagação que difere para cada tipo de ambiente.
     :return: Retorna um float representando a perda do sinal entre a distância d0 e d.
     """
-
-    # path_loss(d0) + 10 * gamma * log10(d / d0)
-    # HAVIAMOS CODIFICADO ASSIM PARA ECONOMIZAR 1 SUBTRACAO e 1 VAR
-    # return 17 - (60 + 10 * gamma * log10(d / d0))  # igual está na tabela
-
-    # REESCREVI FACILITAR A COMPREENSAO
-    # return   -( PL + 10 * gamma * log10(d / d0) )
-    # return 0 - (PL + 10 * gamma * log10(d / d0) )
-    # return   - (PL + 10 * gamma * log10(d / d0) )
-    # return   -PL   - 10 * gamma * log10(d / d0)
-    # return   -(Pt-Pr0)   - (10 * gamma * log10(d / d0))
-    # return   -Pt + Pr0   - (10 * gamma * log10(d / d0))
-    # return   Pr0  - 10 * gamma * log10(d / d0) - Pt
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 
 @jit
 def log_distance_v2_model(d, gamma=3, d0=10, pr_d0=-69, pt=-20):
-    # return   -( PL + 10 * gamma * log10(d / d0) )
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 

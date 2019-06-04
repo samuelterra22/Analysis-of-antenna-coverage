@@ -91,3 +91,28 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
     log_f = math.log10(f)
 
     return c0 + (cf * log_f) - (13.82 * math.log10(tx_h)) - c_h + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d) + c
+
+
+def ecc33_path_loss():
+    pass
+
+
+def egli_path_loss():
+    pass
+
+
+def ericsson_path_loss():
+    pass
+
+
+def fspl_path_loss():
+    # https://github.com/Cloud-RF/Signal-Server/blob/master/models/fspl.cc
+    pass
+
+
+def hata_path_loss():
+    pass
+
+
+def sui_path_loss():
+    pass

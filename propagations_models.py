@@ -38,24 +38,23 @@ def two_par_logistic_model(pt_dbm, x):
 
 @jit
 def four_par_log_model(pt_dbm, x):
+    # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 79.500
     b = -38
     c = -100.000
     d = 0.0
     e = 0.005
-
-    # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     return pt_dbm - (d + (a - d) / (pow((1 + pow((x / c), b)), e)))
 
 
 @jit
 def five_par_log_model(pt_dbm, x):
+    # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 84.0
     b = -48
     c = -121.0
     d = -5.0
     e = 0.005
-    # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     return pt_dbm - (d + (a - d) / (pow((1 + pow((x / c), b)), e)))
 
 
@@ -94,14 +93,18 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
 
 
 def ecc33_path_loss():
+    # https://pdfs.semanticscholar.org/766b/6c7317a191cb8d910adbd520e3615a6afc31.pdf
     pass
 
 
 def egli_path_loss():
+    # https://en.wikipedia.org/wiki/Egli_model
+    # https://www.commscope.com/calculators/qegli.aspx
     pass
 
 
 def ericsson_path_loss():
+    # https://thescipub.com/pdf/10.3844/ajeassp.2015.94.99
     pass
 
 
@@ -111,8 +114,10 @@ def fspl_path_loss():
 
 
 def hata_path_loss():
+    # https: // en.wikipedia.org / wiki / Hata_model
     pass
 
 
 def sui_path_loss():
+    # https://core.ac.uk/download/pdf/84396454.pdf
     pass

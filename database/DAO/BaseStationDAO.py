@@ -6,11 +6,11 @@ from Model.BaseStation import BaseStation
 
 class BaseStationDAO:
     def __init__(self):
-        self.database_url = './database/migrations/application.db'
+        self.database_url = '../database/migrations/application.db'
 
     def insert(self, base_station):
+        conn = sqlite3.connect(self.database_url)
         try:
-            conn = sqlite3.connect(self.database_url)
             c = conn.cursor()
             sql_query = """INSERT INTO 'base_station'
                                       ('status', 'entity', 'num_fistel', 'num_service', 'num_ato', 'num_station', 'address', 'uf', 
@@ -59,8 +59,8 @@ class BaseStationDAO:
                 conn.close()
 
     def delete(self, base_station_id):
+        conn = sqlite3.connect(self.database_url)
         try:
-            conn = sqlite3.connect(self.database_url)
             c = conn.cursor()
             sql_query = """DELETE FROM base_station WHERE id = ? ;"""
             c.execute(sql_query, (base_station_id,))
@@ -73,8 +73,8 @@ class BaseStationDAO:
                 conn.close()
 
     def delete_all(self):
+        conn = sqlite3.connect(self.database_url)
         try:
-            conn = sqlite3.connect(self.database_url)
             c = conn.cursor()
             sql_query = """DELETE FROM base_station;"""
             c.execute(sql_query)
@@ -87,8 +87,8 @@ class BaseStationDAO:
                 conn.close()
 
     def update(self, base_station_id, base_station):
+        conn = sqlite3.connect(self.database_url)
         try:
-            conn = sqlite3.connect(self.database_url)
             c = conn.cursor()
             sql_query = """UPDATE base_station set (status, entity, num_fistel, num_service, num_ato, num_station,
                 address, uf, cod_country, emission, initial_frequency, final_frequency, azimute, cod_station_type,
@@ -136,10 +136,10 @@ class BaseStationDAO:
                 conn.close()
 
     def get_all(self):
+        conn = sqlite3.connect(self.database_url)
         base_stations_list = []
 
         try:
-            conn = sqlite3.connect(self.database_url)
             c = conn.cursor()
             sql_query = """SELECT * FROM base_station"""
             c.execute(sql_query)

@@ -1,7 +1,7 @@
 import datetime
 import sqlite3
 
-from src.main.python.Model import BaseStation
+from src.main.python.models import base_station
 
 
 class BaseStationDAO:
@@ -178,7 +178,7 @@ class BaseStationDAO:
                     "created_at": row[27],
                     "updated_at": row[28]
                 }
-                base_stations_list.append(BaseStation(data))
+                base_stations_list.append(base_station(data))
             c.close()
         except sqlite3.Error as error:
             print("Error while working with SQLite", error)

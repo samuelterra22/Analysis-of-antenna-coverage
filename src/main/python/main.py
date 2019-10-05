@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, uic
 
 import sys
 
-qt_creator_file = "./GUI/main.ui"
+qt_creator_file = "./views/main_window.ui"
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qt_creator_file)
 
 

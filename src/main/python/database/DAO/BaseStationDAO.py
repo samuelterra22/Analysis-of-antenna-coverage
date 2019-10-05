@@ -1,7 +1,7 @@
 import datetime
 import sqlite3
 
-from Model.BaseStation import BaseStation
+from src.main.python.Model import BaseStation
 
 
 class BaseStationDAO:

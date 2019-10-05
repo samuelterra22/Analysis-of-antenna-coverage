@@ -68,7 +68,7 @@
             <enum>QTabWidget::West</enum>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_transmitter">
             <attribute name="title">
@@ -103,8 +103,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>157</width>
-                  <height>328</height>
+                  <width>209</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -779,7 +779,7 @@
            <widget class="QWebEngineView" name="web_engine_view_mos">
             <property name="url">
              <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,2976m/data=!3m1!1e3</string>
+              <string>https://www.google.com/maps/@-21.2347261,-44.97408,4555m/data=!3m1!1e3</string>
              </url>
             </property>
            </widget>

@@ -1,6 +1,6 @@
 import re
 
-from database.DAO.BaseStationDAO import BaseStationDAO
+from src.main.python.database import BaseStationDAO
 
 base_station = {
     'status': 'LIC-LIC-01',

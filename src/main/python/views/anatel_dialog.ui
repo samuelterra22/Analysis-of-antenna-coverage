@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>anatel_dialog</class>
+ <widget class="QDialog" name="anatel_dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>853</width>
+    <height>546</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ANATEL Data Base</string>
+  </property>
+  <property name="locale">
+   <locale language="Portuguese" country="Brazil"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QFrame" name="main_frame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTableWidget" name="anatel_table">
+        <property name="showGrid">
+         <bool>true</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>false</bool>
+        </property>
+        <property name="rowCount">
+         <number>2</number>
+        </property>
+        <property name="columnCount">
+         <number>27</number>
+        </property>
+        <attribute name="horizontalHeaderCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderCascadingSectionResizes">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderStretchLastSection">
+         <bool>false</bool>
+        </attribute>
+        <row/>
+        <row/>
+        <column>
+         <property name="text">
+          <string>ID</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>STATUS</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ENTIDADE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>FISPEL</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>NUM. SERVIÇO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ATO DE RF</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>NUM ESTAÇÃO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ENDEREÇO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>UF</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>MUNICIPIO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>EMISSÃO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>FREQ. INICIAL (MHz)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>FREQ. FINAL (MHz)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>AZIMUTE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>TIPO ESTAÇÃO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>TIPO ANTENA</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>HOMOLOGAÇÃO ANT.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>GANHO ANTENA</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>FRENTE COSTA</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ÂNGULO 1/2 POT.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ELEVAÇÃO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>POLARIZAÇÃO</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ALTURA ANTENA (m)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>HOMOLOGAÇÃO TRANSM. (W)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>LATITUDE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>LONGITUDE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>DATA PRIM. LICENC.</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="bottom_frame">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

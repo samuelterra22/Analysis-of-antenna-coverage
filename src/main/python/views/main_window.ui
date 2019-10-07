@@ -68,7 +68,7 @@
             <enum>QTabWidget::West</enum>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab_transmitter">
             <attribute name="title">
@@ -88,7 +88,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QTabWidget" name="tabWidget">
+              <widget class="QTabWidget" name="tab_widget_transmitter">
                <property name="currentIndex">
                 <number>0</number>
                </property>
@@ -98,11 +98,11 @@
                 </attribute>
                 <layout class="QVBoxLayout" name="verticalLayout_17">
                  <item>
-                  <widget class="QScrollArea" name="scrollArea">
+                  <widget class="QScrollArea" name="scroll_area_transmitter_anatel">
                    <property name="widgetResizable">
                     <bool>true</bool>
                    </property>
-                   <widget class="QWidget" name="scrollAreaWidgetContents">
+                   <widget class="QWidget" name="scroll_area_widget_contents_anatel">
                     <property name="geometry">
                      <rect>
                       <x>0</x>
@@ -125,7 +125,7 @@
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="QGroupBox" name="groupBox">
+                      <widget class="QGroupBox" name="group_box_anatel_transmitter_details">
                        <property name="title">
                         <string>Anatel Transmitter details</string>
                        </property>
@@ -1388,6 +1388,12 @@
    <addaction name="menu_about"/>
   </widget>
   <action name="menu_action_exit">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>

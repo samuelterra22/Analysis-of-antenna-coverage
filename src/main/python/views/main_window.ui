@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>main_window</class>
+ <widget class="QMainWindow" name="main_window">
   <property name="windowModality">
    <enum>Qt::NonModal</enum>
   </property>
@@ -28,12 +28,12 @@
   <widget class="QWidget" name="central_widget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="main_horizontal_layout">
       <item>
-       <widget class="QFrame" name="frame">
+       <widget class="QFrame" name="frame_tab_menus">
         <property name="minimumSize">
          <size>
-          <width>270</width>
+          <width>280</width>
           <height>0</height>
          </size>
         </property>
@@ -51,10 +51,10 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <widget class="QTabWidget" name="tabWidget">
+          <widget class="QTabWidget" name="tab_widget_menus">
            <property name="minimumSize">
             <size>
-             <width>250</width>
+             <width>260</width>
              <height>0</height>
             </size>
            </property>
@@ -68,7 +68,7 @@
             <enum>QTabWidget::West</enum>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab_transmitter">
             <attribute name="title">
@@ -88,7 +88,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QScrollArea" name="scrollArea">
+              <widget class="QScrollArea" name="scroll_area_tab_transmitter">
                <property name="verticalScrollBarPolicy">
                 <enum>Qt::ScrollBarAsNeeded</enum>
                </property>
@@ -98,12 +98,12 @@
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_7">
+               <widget class="QWidget" name="scroll_area_widget_contents_transmitter">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>209</width>
+                  <width>219</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -124,26 +124,26 @@
                   <number>2</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_2">
+                  <widget class="QGroupBox" name="group_box_transmitter_details">
                    <property name="title">
                     <string>Transmitter details</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout">
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label">
+                     <widget class="QLabel" name="label_tx_frequency">
                       <property name="text">
                        <string>Frequency</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit"/>
+                     <widget class="QLineEdit" name="input_tx_frequency"/>
                     </item>
                     <item row="3" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_3"/>
+                     <widget class="QLineEdit" name="input_tx_rf_power"/>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_3">
+                     <widget class="QLabel" name="label_tx_rf_power">
                       <property name="text">
                        <string>RF power</string>
                       </property>
@@ -156,40 +156,20 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QGroupBox" name="groupBox">
+                  <widget class="QGroupBox" name="group_box_transmitter_location">
                    <property name="title">
                     <string>Transmitter location</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_2">
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_2">
-                      <property name="text">
-                       <string>Latitude</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="0">
-                     <widget class="QLabel" name="label_4">
-                      <property name="text">
-                       <string>Height AGL</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="5" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_4"/>
-                    </item>
-                    <item row="3" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_2"/>
-                    </item>
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_25">
+                     <widget class="QLabel" name="label_tx_coordinates">
                       <property name="text">
                        <string>Coordinates</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QComboBox" name="comboBox">
+                     <widget class="QComboBox" name="combo_box_tx_coordinates">
                       <item>
                        <property name="text">
                         <string>DD</string>
@@ -206,6 +186,36 @@
                        </property>
                       </item>
                      </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="label_tx_latitude">
+                      <property name="text">
+                       <string>Latitude</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0" colspan="2">
+                     <widget class="QLineEdit" name="input_tx_latitude"/>
+                    </item>
+                    <item row="6" column="0">
+                     <widget class="QLabel" name="label_tx_height">
+                      <property name="text">
+                       <string>Height AGL</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="7" column="0" colspan="2">
+                     <widget class="QLineEdit" name="input_tx_height"/>
+                    </item>
+                    <item row="4" column="0">
+                     <widget class="QLabel" name="label_tx_longitude">
+                      <property name="text">
+                       <string>Longitude</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="5" column="0" colspan="2">
+                     <widget class="QLineEdit" name="input_tx_longitude"/>
                     </item>
                    </layout>
                   </widget>
@@ -234,7 +244,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QScrollArea" name="scrollArea_2">
+              <widget class="QScrollArea" name="scroll_area_tab_antenna">
                <property name="verticalScrollBarPolicy">
                 <enum>Qt::ScrollBarAsNeeded</enum>
                </property>
@@ -244,12 +254,12 @@
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_8">
+               <widget class="QWidget" name="scroll_area_widget_contents_antenna">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>209</width>
+                  <width>219</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -270,62 +280,108 @@
                   <number>2</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_3">
+                  <widget class="QGroupBox" name="group_box_antenna_details">
                    <property name="title">
-                    <string>GroupBox</string>
+                    <string>Antenna details</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_4">
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_7">
+                     <widget class="QLabel" name="label_antenna_polarization">
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string>Polarisation</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_7"/>
+                     <widget class="QComboBox" name="combo_box_antenna_antenna_polarisation">
+                      <item>
+                       <property name="text">
+                        <string>Vertical</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Horizontal</string>
+                       </property>
+                      </item>
+                     </widget>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_8">
+                     <widget class="QLabel" name="label_antenna_azimuth">
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string>Azimuth (°)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QLineEdit" name="input_antenna_azimuth">
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="0">
+                     <widget class="QLabel" name="label_antenna_down_tilt">
+                      <property name="text">
+                       <string>Down-tilt (°)</string>
                       </property>
                       <property name="margin">
                        <number>0</number>
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_8"/>
+                    <item row="4" column="1">
+                     <widget class="QLineEdit" name="input_antenna_down_tilt"/>
                     </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_4">
-                   <property name="title">
-                    <string>GroupBox</string>
-                   </property>
-                   <layout class="QFormLayout" name="formLayout_5">
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_9">
+                    <item row="6" column="0">
+                     <widget class="QLabel" name="label_antenna_horizontal_beamwidth">
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string>Horizontal beamwidth (°)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_10">
+                    <item row="6" column="1">
+                     <widget class="QLineEdit" name="input_antenna_horizontal_beamwidth"/>
+                    </item>
+                    <item row="7" column="0">
+                     <widget class="QLabel" name="label_antenna_vertical_beamwidth">
                       <property name="text">
-                       <string>TextLabel</string>
+                       <string>Vertical beamwidth (°)</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_9"/>
+                    <item row="7" column="1">
+                     <widget class="QLineEdit" name="input_antenna_vertical_beamwidth"/>
                     </item>
-                    <item row="1" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_10"/>
+                    <item row="8" column="0">
+                     <widget class="QLabel" name="label_antenna_gain">
+                      <property name="text">
+                       <string>Antenna Gain (dBi)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="8" column="1">
+                     <widget class="QLineEdit" name="input_antenna_gain"/>
+                    </item>
+                    <item row="9" column="0">
+                     <widget class="QLabel" name="label_antenna_front_back_ratio">
+                      <property name="text">
+                       <string>Front to back ratio (dB)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="9" column="1">
+                     <widget class="QLineEdit" name="input_antenna_front_back_ratio"/>
+                    </item>
+                    <item row="10" column="0">
+                     <widget class="QLabel" name="label_antenna_feeder_line_loss">
+                      <property name="text">
+                       <string>Feeder line loss (dB)</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="10" column="1">
+                     <widget class="QLineEdit" name="input_antenna_feeder_line_loss"/>
                     </item>
                    </layout>
                   </widget>
@@ -354,16 +410,16 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QScrollArea" name="scrollArea_3">
+              <widget class="QScrollArea" name="scroll_area_tab_receiver">
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_12">
+               <widget class="QWidget" name="scroll_area_widget_contents_receiver">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>209</width>
+                  <width>219</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -384,50 +440,50 @@
                   <number>2</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_9">
+                  <widget class="QGroupBox" name="group_box_receive_details">
                    <property name="title">
                     <string>Receive details</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_12">
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_5">
+                     <widget class="QLabel" name="label_rx_height">
                       <property name="text">
-                       <string>Height(s) AGL</string>
+                       <string>Height AGL</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QLineEdit" name="lineEdit_5"/>
+                     <widget class="QLineEdit" name="input_rx_height"/>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_26">
+                     <widget class="QLabel" name="label_rx_gain">
                       <property name="text">
                        <string>Gain</string>
                       </property>
                      </widget>
                     </item>
                     <item row="3" column="0">
-                     <widget class="QLineEdit" name="lineEdit_25"/>
+                     <widget class="QLineEdit" name="input_rx_gain"/>
                     </item>
                     <item row="3" column="1">
-                     <widget class="QLabel" name="label_27">
+                     <widget class="QLabel" name="label_rx_gain_dbi">
                       <property name="text">
                        <string>dBi</string>
                       </property>
                      </widget>
                     </item>
                     <item row="4" column="0">
-                     <widget class="QLabel" name="label_28">
+                     <widget class="QLabel" name="label_rx_sensitivity">
                       <property name="text">
                        <string>Sensitivity</string>
                       </property>
                      </widget>
                     </item>
                     <item row="5" column="0">
-                     <widget class="QLineEdit" name="lineEdit_26"/>
+                     <widget class="QLineEdit" name="input_rx_sensitivity"/>
                     </item>
                     <item row="5" column="1">
-                     <widget class="QLabel" name="label_29">
+                     <widget class="QLabel" name="label_rx_sensitivity_dbm">
                       <property name="text">
                        <string>dBm</string>
                       </property>
@@ -460,11 +516,11 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QScrollArea" name="scrollArea_4">
+              <widget class="QScrollArea" name="scroll_area_tab_model">
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_13">
+               <widget class="QWidget" name="scroll_area_widget_contents_model">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
@@ -487,20 +543,20 @@
                   <number>2</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_10">
+                  <widget class="QGroupBox" name="group_box_propagation_model_details">
                    <property name="title">
                     <string>Propagation details</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_13">
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_6">
+                     <widget class="QLabel" name="label_propagation_model">
                       <property name="text">
                        <string>Propagation model</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QComboBox" name="comboBox_2">
+                     <widget class="QComboBox" name="combo_box_propagation_model">
                       <item>
                        <property name="text">
                         <string>COST231-Hata</string>
@@ -529,14 +585,14 @@
                      </widget>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_23">
+                     <widget class="QLabel" name="label_enviroment">
                       <property name="text">
                        <string>Environment</string>
                       </property>
                      </widget>
                     </item>
                     <item row="3" column="0" colspan="2">
-                     <widget class="QComboBox" name="comboBox_3">
+                     <widget class="QComboBox" name="combo_box_enviroment">
                       <item>
                        <property name="text">
                         <string>Conservative/City</string>
@@ -555,7 +611,7 @@
                      </widget>
                     </item>
                     <item row="4" column="0">
-                     <widget class="QCheckBox" name="checkBox">
+                     <widget class="QCheckBox" name="check_box_knife_edge_diffraction">
                       <property name="text">
                        <string>Knife edge diffraction</string>
                       </property>
@@ -588,16 +644,16 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QScrollArea" name="scrollArea_5">
+              <widget class="QScrollArea" name="scroll_area_tab_output">
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="scrollAreaWidgetContents_14">
+               <widget class="QWidget" name="scroll_area_widget_contents_output">
                 <property name="geometry">
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>209</width>
+                  <width>219</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -615,20 +671,20 @@
                   <number>2</number>
                  </property>
                  <item>
-                  <widget class="QGroupBox" name="groupBox_12">
+                  <widget class="QGroupBox" name="group_box_output_settings">
                    <property name="title">
                     <string>Output settings</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_15">
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_24">
+                     <widget class="QLabel" name="label_output_colour_scheme">
                       <property name="text">
                        <string>Colour scheme</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
-                     <widget class="QComboBox" name="comboBox_4">
+                     <widget class="QComboBox" name="combo_box_output_colour_scheme">
                       <item>
                        <property name="text">
                         <string>Rainbow</string>
@@ -642,26 +698,33 @@
                      </widget>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_30">
+                     <widget class="QLabel" name="label_output_radius">
                       <property name="text">
                        <string>Radius</string>
                       </property>
                      </widget>
                     </item>
                     <item row="3" column="0">
-                     <widget class="QLineEdit" name="lineEdit_6"/>
+                     <widget class="QLineEdit" name="input_output_radius"/>
                     </item>
                     <item row="3" column="1">
-                     <widget class="QLabel" name="label_31">
+                     <widget class="QLabel" name="label_output_radius_meters">
                       <property name="text">
                        <string>m</string>
                       </property>
                      </widget>
                     </item>
                     <item row="4" column="0">
-                     <widget class="QLabel" name="label_32">
+                     <widget class="QLabel" name="label_actual_resolution">
                       <property name="text">
-                       <string>Actual resolution: 60m</string>
+                       <string>Actual resolution: </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="1">
+                     <widget class="QLabel" name="label_actual_resolution_value">
+                      <property name="text">
+                       <string>60m</string>
                       </property>
                      </widget>
                     </item>
@@ -677,7 +740,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QFrame" name="frame_2">
+          <widget class="QFrame" name="frame_calculate">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -719,7 +782,7 @@
              <number>0</number>
             </property>
             <item row="0" column="1">
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="button_calculate">
               <property name="maximumSize">
                <size>
                 <width>150</width>
@@ -801,21 +864,21 @@
      <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuMenu">
+   <widget class="QMenu" name="menu_menu">
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionSair"/>
+    <addaction name="menu_action_exit"/>
    </widget>
-   <widget class="QMenu" name="menuSobre">
+   <widget class="QMenu" name="menu_about">
     <property name="title">
      <string>About</string>
     </property>
    </widget>
-   <addaction name="menuMenu"/>
-   <addaction name="menuSobre"/>
+   <addaction name="menu_menu"/>
+   <addaction name="menu_about"/>
   </widget>
-  <action name="actionSair">
+  <action name="menu_action_exit">
    <property name="text">
     <string>Exit</string>
    </property>

@@ -107,9 +107,15 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>193</width>
+                      <width>191</width>
                       <height>888</height>
                      </rect>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>191</width>
+                      <height>16777215</height>
+                     </size>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_7">
                      <property name="leftMargin">
@@ -145,6 +151,14 @@
                             <height>16777215</height>
                            </size>
                           </property>
+                          <property name="currentText">
+                           <string>TELEFÔNICA BRASIL S.A. - RUA DESEMBARGADOR SABINO LUSTOSA,S/N,CENTRO	</string>
+                          </property>
+                          <item>
+                           <property name="text">
+                            <string>Select</string>
+                           </property>
+                          </item>
                           <item>
                            <property name="text">
                             <string>TELEFÔNICA BRASIL S.A. - RUA DESEMBARGADOR SABINO LUSTOSA,S/N,CENTRO	</string>
@@ -160,21 +174,21 @@
                         <item row="2" column="0">
                          <widget class="QLabel" name="label_anatel_entity">
                           <property name="text">
-                           <string>Entidade</string>
+                           <string>Entity</string>
                           </property>
                          </widget>
                         </item>
                         <item row="4" column="0">
                          <widget class="QLabel" name="label_anatel_station_number">
                           <property name="text">
-                           <string>Número da estação</string>
+                           <string>Station Number</string>
                           </property>
                          </widget>
                         </item>
                         <item row="10" column="0">
                          <widget class="QLabel" name="label_anatel_address">
                           <property name="text">
-                           <string>Endereço</string>
+                           <string>Address</string>
                           </property>
                          </widget>
                         </item>
@@ -220,21 +234,21 @@
                         <item row="8" column="0">
                          <widget class="QLabel" name="label_anatel_contry">
                           <property name="text">
-                           <string>Município</string>
+                           <string>Contry</string>
                           </property>
                          </widget>
                         </item>
                         <item row="12" column="0">
                          <widget class="QLabel" name="label_anatel_initial_frenquency">
                           <property name="text">
-                           <string>Freq. Final (MHz)</string>
+                           <string>Final Freq. (MHz)</string>
                           </property>
                          </widget>
                         </item>
                         <item row="14" column="0">
                          <widget class="QLabel" name="label_anatel_final_frenquency">
                           <property name="text">
-                           <string>Freq. Inicial (MHz)</string>
+                           <string>Initial Freq. (MHz)</string>
                           </property>
                          </widget>
                         </item>
@@ -248,49 +262,49 @@
                         <item row="18" column="0">
                          <widget class="QLabel" name="label_anatel_gain_antenna">
                           <property name="text">
-                           <string>Ganho Ant.</string>
+                           <string>Gain antenna</string>
                           </property>
                          </widget>
                         </item>
                         <item row="20" column="0">
                          <widget class="QLabel" name="label_anatel_front_back">
                           <property name="text">
-                           <string>Frente Costa</string>
+                           <string>Front-back gain</string>
                           </property>
                          </widget>
                         </item>
                         <item row="22" column="0">
                          <widget class="QLabel" name="label_anatel_angulo_half_pot">
                           <property name="text">
-                           <string>Ângulo 1/2 Pot.</string>
+                           <string>Angle 1/2 Pot.</string>
                           </property>
                          </widget>
                         </item>
                         <item row="24" column="0">
                          <widget class="QLabel" name="label_anatel_elevation">
                           <property name="text">
-                           <string>Elevação</string>
+                           <string>Elevation</string>
                           </property>
                          </widget>
                         </item>
                         <item row="26" column="0">
                          <widget class="QLabel" name="label_anatel_polarization">
                           <property name="text">
-                           <string>Polarização</string>
+                           <string>Polarization</string>
                           </property>
                          </widget>
                         </item>
                         <item row="28" column="0">
                          <widget class="QLabel" name="label_anatel_height_antenna">
                           <property name="text">
-                           <string>Altura Antena (m)</string>
+                           <string>Height antenna (m)</string>
                           </property>
                          </widget>
                         </item>
                         <item row="30" column="0">
                          <widget class="QLabel" name="label_anatel_power_trasmission">
                           <property name="text">
-                           <string>Potência Transm. (W)</string>
+                           <string>Transmission power (W)</string>
                           </property>
                          </widget>
                         </item>
@@ -311,7 +325,7 @@
                         <item row="36" column="0">
                          <widget class="QLabel" name="label_anatel_first_licensing">
                           <property name="text">
-                           <string>Data primeiro lic.</string>
+                           <string>First licensing date</string>
                           </property>
                          </widget>
                         </item>
@@ -645,6 +659,11 @@
                          <widget class="QComboBox" name="combo_box_tx_coordinates">
                           <item>
                            <property name="text">
+                            <string>Select</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
                             <string>DD</string>
                            </property>
                           </item>
@@ -768,9 +787,21 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
+                  <width>227</width>
                   <height>613</height>
                  </rect>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>227</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>227</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_4">
                  <property name="spacing">
@@ -803,6 +834,11 @@
                     </item>
                     <item row="1" column="0" colspan="2">
                      <widget class="QComboBox" name="combo_box_antenna_antenna_polarisation">
+                      <item>
+                       <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </item>
                       <item>
                        <property name="text">
                         <string>Vertical</string>
@@ -1068,6 +1104,11 @@
                      <widget class="QComboBox" name="combo_box_propagation_model">
                       <item>
                        <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
                         <string>COST231-Hata</string>
                        </property>
                       </item>
@@ -1102,6 +1143,11 @@
                     </item>
                     <item row="3" column="0" colspan="2">
                      <widget class="QComboBox" name="combo_box_enviroment">
+                      <item>
+                       <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </item>
                       <item>
                        <property name="text">
                         <string>Conservative/City</string>
@@ -1196,12 +1242,32 @@
                      <widget class="QComboBox" name="combo_box_output_colour_scheme">
                       <item>
                        <property name="text">
+                        <string>Select</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
                         <string>Rainbow</string>
                        </property>
                       </item>
                       <item>
                        <property name="text">
                         <string>Microwave</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Green</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Blue</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
+                        <string>Red</string>
                        </property>
                       </item>
                      </widget>
@@ -1384,8 +1450,14 @@
      <string>About</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>help</string>
+    </property>
+   </widget>
    <addaction name="menu_menu"/>
    <addaction name="menu_about"/>
+   <addaction name="menu_help"/>
   </widget>
   <action name="menu_action_exit">
    <property name="checkable">

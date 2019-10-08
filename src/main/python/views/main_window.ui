@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Principal</string>
+   <string>Analysis of antenna coverage</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
@@ -152,7 +152,7 @@
                            </size>
                           </property>
                           <property name="currentText">
-                           <string>TELEFÔNICA BRASIL S.A. - RUA DESEMBARGADOR SABINO LUSTOSA,S/N,CENTRO	</string>
+                           <string>Select</string>
                           </property>
                           <item>
                            <property name="text">
@@ -1390,7 +1390,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_coverage">
          <attribute name="title">
@@ -1401,7 +1401,7 @@
            <widget class="QWebEngineView" name="web_engine_view_coverage">
             <property name="url">
              <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,2976m/data=!3m1!1e3</string>
+              <string>https://www.google.com/maps/@-21.2347261,-44.97408,4555m/data=!3m1!1e3</string>
              </url>
             </property>
            </widget>
@@ -1417,7 +1417,7 @@
            <widget class="QWebEngineView" name="web_engine_view_mos">
             <property name="url">
              <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,4555m/data=!3m1!1e3</string>
+              <string>https://www.google.com/maps/@-21.2347261,-44.97408,2883145m/data=!3m1!1e3</string>
              </url>
             </property>
            </widget>
@@ -1439,24 +1439,22 @@
      <height>20</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_menu">
+   <widget class="QMenu" name="menu_file">
     <property name="title">
-     <string>Menu</string>
+     <string>File</string>
     </property>
+    <addaction name="menu_action_anatel_base"/>
+    <addaction name="separator"/>
     <addaction name="menu_action_exit"/>
-   </widget>
-   <widget class="QMenu" name="menu_about">
-    <property name="title">
-     <string>About</string>
-    </property>
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
-     <string>help</string>
+     <string>Help</string>
     </property>
+    <addaction name="menu_action_help"/>
+    <addaction name="menu_action_about"/>
    </widget>
-   <addaction name="menu_menu"/>
-   <addaction name="menu_about"/>
+   <addaction name="menu_file"/>
    <addaction name="menu_help"/>
   </widget>
   <action name="menu_action_exit">
@@ -1468,6 +1466,21 @@
    </property>
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="menu_action_anatel_base">
+   <property name="text">
+    <string>Anatel base</string>
+   </property>
+  </action>
+  <action name="menu_action_help">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="menu_action_about">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

@@ -2,11 +2,14 @@
 <ui version="4.0">
  <class>anatel_dialog</class>
  <widget class="QDialog" name="anatel_dialog">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>853</width>
+    <width>965</width>
     <height>546</height>
    </rect>
   </property>
@@ -15,6 +18,12 @@
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -35,7 +44,7 @@
          <bool>false</bool>
         </property>
         <property name="rowCount">
-         <number>2</number>
+         <number>1</number>
         </property>
         <property name="columnCount">
          <number>27</number>
@@ -58,7 +67,6 @@
         <attribute name="verticalHeaderStretchLastSection">
          <bool>false</bool>
         </attribute>
-        <row/>
         <row/>
         <column>
          <property name="text">
@@ -205,12 +213,44 @@
           <height>100</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>100</height>
+         </size>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="1" column="3">
+          <widget class="QProgressBar" name="progress_bar_anatel">
+           <property name="value">
+            <number>100</number>
+           </property>
+           <property name="format">
+            <string>%p% completed</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Database updated on 20/10/2019</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Update database</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

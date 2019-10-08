@@ -1390,7 +1390,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_coverage">
          <attribute name="title">
@@ -1470,7 +1470,7 @@
   </action>
   <action name="menu_action_anatel_base">
    <property name="text">
-    <string>Anatel base</string>
+    <string>Anatel database</string>
    </property>
   </action>
   <action name="menu_action_help">

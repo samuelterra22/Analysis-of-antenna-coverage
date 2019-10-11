@@ -229,7 +229,7 @@
          <item row="1" column="3">
           <widget class="QProgressBar" name="progress_bar_anatel">
            <property name="value">
-            <number>100</number>
+            <number>0</number>
            </property>
            <property name="format">
             <string>%p% completed</string>

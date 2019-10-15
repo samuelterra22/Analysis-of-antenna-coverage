@@ -9,4 +9,4 @@ macholib==1.11
 pefile==2019.4.18
 pip==19.2.3
 setuptools==41.2.0
-sip==4.19.8
+sip==5.0.0

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from src.main.python.repositories.contracts.base_station_repository_interface import BaseStationRepositoryInterface
 
 

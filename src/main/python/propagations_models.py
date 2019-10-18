@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import math
 from math import log10
 from numba import jit

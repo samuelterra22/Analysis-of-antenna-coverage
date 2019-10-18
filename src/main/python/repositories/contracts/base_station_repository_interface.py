@@ -1,5 +1,7 @@
-from src.main.python.repositories.contracts.base_repository import BaseRepository
+#!/usr/bin/env python
+
 from abc import ABC
+from src.main.python.repositories.contracts.base_repository import BaseRepository
 
 
 class BaseStationRepositoryInterface(ABC, BaseRepository):

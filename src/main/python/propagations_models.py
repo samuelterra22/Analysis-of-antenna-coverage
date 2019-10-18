@@ -5,40 +5,40 @@ from math import log10
 from numba import jit
 
 
-@jit
+@jit(nopython=True)
 def log_distance_model(d, gamma=3, d0=1, pr_d0=-60, pt=-17):
     """
     Modelo logaritmo de perda baseado em resultados experimentais. Independe da frequência do sinal transmitido
     e do ganho das antenas transmissora e receptora.
     Livro Comunicações em Fio - Pricipios e Práticas - Rappaport (páginas 91-92).
 
-    :param pr_d0:
-    :param pt: Potência transmitida
-    :param d0: Distância do ponto de referência d0.
-    :param d: Distância que desejo calcular a perda do sinal.
-    :param gamma: Valor da constante de propagação que difere para cada tipo de ambiente.
-    :return: Retorna um float representando a perda do sinal entre a distância d0 e d.
+    :param pr_d0:   Potência recebida na distância de referencia d0.
+    :param pt:      Potência transmitida.
+    :param d0:      Distância do ponto de referência d0.
+    :param d:       Distância que desejo calcular a perda do sinal.
+    :param gamma:   Valor da constante de propagação que difere para cada tipo de ambiente.
+    :return:        Retorna um float representando a perda do sinal entre a distância d0 e d.
     """
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 
-@jit
+@jit(nopython=True)
 def log_distance_v2_model(d, gamma=3, d0=10, pr_d0=-69, pt=-20):
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 
-@jit
+@jit(nopython=True)
 def tree_par_log_model(x):
     return -17.74321 - 15.11596 * math.log(x + 2.1642)
 
 
-@jit
+@jit(nopython=True)
 def two_par_logistic_model(pt_dbm, x):
     # https://en.wikipedia.org/wiki/Logistic_distribution#Related_distributions
     return pt_dbm - (-15.11596 * math.log10(x * 2.1642))
 
 
-@jit
+@jit(nopython=True)
 def four_par_log_model(pt_dbm, x):
     # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 79.500
@@ -49,7 +49,7 @@ def four_par_log_model(pt_dbm, x):
     return pt_dbm - (d + (a - d) / (pow((1 + pow((x / c), b)), e)))
 
 
-@jit
+@jit(nopython=True)
 def five_par_log_model(pt_dbm, x):
     # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 84.0
@@ -60,6 +60,7 @@ def five_par_log_model(pt_dbm, x):
     return pt_dbm - (d + (a - d) / (pow((1 + pow((x / c), b)), e)))
 
 
+@jit(nopython=True)
 def cost231_path_loss(f, tx_h, rx_h, d, mode):
     """
     COST231 extension to HATA model
@@ -94,32 +95,38 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
     return c0 + (cf * log_f) - (13.82 * math.log10(tx_h)) - c_h + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d) + c
 
 
+@jit(nopython=True)
 def ecc33_path_loss():
     # https://pdfs.semanticscholar.org/766b/6c7317a191cb8d910adbd520e3615a6afc31.pdf
     pass
 
 
+@jit(nopython=True)
 def egli_path_loss():
     # https://en.wikipedia.org/wiki/Egli_model
     # https://www.commscope.com/calculators/qegli.aspx
     pass
 
 
+@jit(nopython=True)
 def ericsson_path_loss():
     # https://thescipub.com/pdf/10.3844/ajeassp.2015.94.99
     pass
 
 
+@jit(nopython=True)
 def fspl_path_loss():
     # https://github.com/Cloud-RF/Signal-Server/blob/master/models/fspl.cc
     pass
 
 
+@jit(nopython=True)
 def hata_path_loss():
     # https: // en.wikipedia.org / wiki / Hata_model
     pass
 
 
+@jit(nopython=True)
 def sui_path_loss():
     # https://core.ac.uk/download/pdf/84396454.pdf
     pass

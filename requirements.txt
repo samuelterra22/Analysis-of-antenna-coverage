@@ -4,7 +4,7 @@ PyQt5-sip==12.7.0
 PyQtWebEngine==5.13.2
 PyInstaller==3.5
 altgraph==0.16.1
-future==0.18.1
+future==0.18.2
 macholib==1.11
 numba==0.46.0
 pefile==2019.4.18

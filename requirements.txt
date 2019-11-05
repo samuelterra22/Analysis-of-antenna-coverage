@@ -1,7 +1,7 @@
 fbs==0.8.4
 PyQt5==5.13.1
 PyQt5-sip==12.7.0
-PyQtWebEngine==5.13.1
+PyQtWebEngine==5.13.2
 PyInstaller==3.5
 altgraph==0.16.1
 future==0.18.1

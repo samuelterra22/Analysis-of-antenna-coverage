@@ -26,7 +26,8 @@ if len(response_json) == 1:
         r = requests.get(url_base + redirect_url, allow_redirects=True)
         open(file_name, 'wb').write(r.content)
         print("Download realizado com sucesso!")
-    except:
+    except requests.exceptions.RequestException as e:
+        print(e)
         print("Ocorreu um erro ao realizar o download...")
 
 else:

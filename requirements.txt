@@ -7,7 +7,7 @@ idna==2.8
 llvmlite==0.31.0
 macholib==1.14
 numba==0.47.0
-numpy==1.17.3
+numpy==1.18.1
 packaging==20.1
 pefile==2019.4.18
 PyInstaller==3.6

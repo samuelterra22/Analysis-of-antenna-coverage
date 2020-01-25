@@ -2,12 +2,9 @@
 
 import sys
 
-from PyQt5 import uic
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
 from src.main.python.windows.main_window import MainWindow
-
-Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 
 
 def main_window():

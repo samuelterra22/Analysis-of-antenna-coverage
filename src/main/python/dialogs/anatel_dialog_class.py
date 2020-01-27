@@ -3,7 +3,7 @@
 import time
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QDialog, QProgressBar
 
 import threading
 
@@ -24,6 +24,8 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         x.start()
 
     def fill_progress_bar(self):
+        self.progress_bar_anatel: QProgressBar
+
         for i in range(101):
             self.progress_bar_anatel.setValue(i)
             time.sleep(0.1)

@@ -8,7 +8,7 @@ from src.main.python.models import base_station
 
 class BaseStationDAO:
     def __init__(self):
-        self.database_url = '../database/migrations/application.db'
+        self.database_url = "../database/migrations/application.db"
 
     def insert(self, base_station):
         conn = sqlite3.connect(self.database_url)
@@ -23,34 +23,36 @@ class BaseStationDAO:
                                       'first_license_date', 'created_at', 'updated_at') 
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                                        ?, ?, ?);"""
-            data_tuple = (base_station["status"],
-                          base_station["entity"],
-                          base_station["num_fistel"],
-                          base_station["num_service"],
-                          base_station["num_ato"],
-                          base_station["num_station"],
-                          base_station["address"],
-                          base_station["uf"],
-                          base_station["cod_country"],
-                          base_station["emission"],
-                          base_station["initial_frequency"],
-                          base_station["final_frequency"],
-                          base_station["azimute"],
-                          base_station["cod_station_type"],
-                          base_station["cod_antenna_type"],
-                          base_station["cod_equipment_antenna"],
-                          base_station["gain_antenna"],
-                          base_station["gain_coast_front_antenna"],
-                          base_station["lifting_angle_antenna"],
-                          base_station["polarization"],
-                          base_station["height"],
-                          base_station["cod_equipment_transmitter"],
-                          base_station["transmission_power"],
-                          base_station["latitude"],
-                          base_station["longitude"],
-                          self.__to_datetime(base_station["first_license_date"]),
-                          datetime.datetime.now(),
-                          datetime.datetime.now())
+            data_tuple = (
+                base_station["status"],
+                base_station["entity"],
+                base_station["num_fistel"],
+                base_station["num_service"],
+                base_station["num_ato"],
+                base_station["num_station"],
+                base_station["address"],
+                base_station["uf"],
+                base_station["cod_country"],
+                base_station["emission"],
+                base_station["initial_frequency"],
+                base_station["final_frequency"],
+                base_station["azimute"],
+                base_station["cod_station_type"],
+                base_station["cod_antenna_type"],
+                base_station["cod_equipment_antenna"],
+                base_station["gain_antenna"],
+                base_station["gain_coast_front_antenna"],
+                base_station["lifting_angle_antenna"],
+                base_station["polarization"],
+                base_station["height"],
+                base_station["cod_equipment_transmitter"],
+                base_station["transmission_power"],
+                base_station["latitude"],
+                base_station["longitude"],
+                self.__to_datetime(base_station["first_license_date"]),
+                datetime.datetime.now(),
+                datetime.datetime.now(),
+            )
             c.execute(sql_query, data_tuple)
             conn.commit()
             c.close()
@@ -99,35 +101,37 @@ class BaseStationDAO:
                 first_license_date, created_at, updated_at)=(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                 ?, ?, ?, ?, ?, ?, ?, ?)
                 WHERE id = ?;"""
-            data_tuple = (base_station["status"],
-                          base_station["entity"],
-                          base_station["num_fistel"],
-                          base_station["num_service"],
-                          base_station["num_ato"],
-                          base_station["num_station"],
-                          base_station["address"],
-                          base_station["uf"],
-                          base_station["cod_country"],
-                          base_station["emission"],
-                          base_station["initial_frequency"],
-                          base_station["final_frequency"],
-                          base_station["azimute"],
-                          base_station["cod_station_type"],
-                          base_station["cod_antenna_type"],
-                          base_station["cod_equipment_antenna"],
-                          base_station["gain_antenna"],
-                          base_station["gain_coast_front_antenna"],
-                          base_station["lifting_angle_antenna"],
-                          base_station["polarization"],
-                          base_station["height"],
-                          base_station["cod_equipment_transmitter"],
-                          base_station["transmission_power"],
-                          base_station["latitude"],
-                          base_station["longitude"],
-                          base_station["first_license_date"],
-                          base_station["created_at"],
-                          datetime.datetime.now(),
-                          base_station_id)
+            data_tuple = (
+                base_station["status"],
+                base_station["entity"],
+                base_station["num_fistel"],
+                base_station["num_service"],
+                base_station["num_ato"],
+                base_station["num_station"],
+                base_station["address"],
+                base_station["uf"],
+                base_station["cod_country"],
+                base_station["emission"],
+                base_station["initial_frequency"],
+                base_station["final_frequency"],
+                base_station["azimute"],
+                base_station["cod_station_type"],
+                base_station["cod_antenna_type"],
+                base_station["cod_equipment_antenna"],
+                base_station["gain_antenna"],
+                base_station["gain_coast_front_antenna"],
+                base_station["lifting_angle_antenna"],
+                base_station["polarization"],
+                base_station["height"],
+                base_station["cod_equipment_transmitter"],
+                base_station["transmission_power"],
+                base_station["latitude"],
+                base_station["longitude"],
+                base_station["first_license_date"],
+                base_station["created_at"],
+                datetime.datetime.now(),
+                base_station_id,
+            )
             c.execute(sql_query, data_tuple)
             conn.commit()
             c.close()
@@ -178,7 +182,7 @@ class BaseStationDAO:
                     "longitude": row[25],
                     "first_license_date": row[26],
                     "created_at": row[27],
-                    "updated_at": row[28]
+                    "updated_at": row[28],
                 }
                 base_stations_list.append(base_station(data))
             c.close()
@@ -191,4 +195,4 @@ class BaseStationDAO:
 
     @staticmethod
     def __to_datetime(date_str):
-        return datetime.datetime.strptime(date_str, '%d/%m/%Y')
+        return datetime.datetime.strptime(date_str, "%d/%m/%Y")

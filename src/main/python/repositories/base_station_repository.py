@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-from src.main.python.repositories.contracts.base_station_repository_interface import BaseStationRepositoryInterface
+from src.main.python.repositories.contracts.base_station_repository_interface import (
+    BaseStationRepositoryInterface,
+)
 
 
 class BaseStationRepository(BaseStationRepositoryInterface):
-
     def get_all(self):
         # Implementation here
         pass

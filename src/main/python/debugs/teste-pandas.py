@@ -6,7 +6,7 @@ import pandas as pd
 # Control delimiters, rows, column names with read_csv (see later)
 from src.main.python.database import BaseStationDAO
 
-data = pd.read_csv("csv_licenciamento_ecb6f784.csv", encoding='ISO-8859-1')
+data = pd.read_csv("csv_licenciamento_ecb6f784.csv", encoding="ISO-8859-1")
 # Preview the first 5 lines of the loaded data
 
 rows = data.get_values()
@@ -31,7 +31,7 @@ for row in rows:
         "emission": row[9],
         "initial_frequency": row[10],
         "final_frequency": row[11],
-        "azimute": 'nan',
+        "azimute": "nan",
         "cod_station_type": row[13],
         "cod_antenna_type": row[14],
         "cod_equipment_antenna": row[15],
@@ -45,10 +45,10 @@ for row in rows:
         "transmission_power": row[23],
         "latitude": row[24],
         "longitude": row[25],
-        "first_license_date": row[26]
+        "first_license_date": row[26],
     }
 
     base_station_dao.insert(data)
-    print(round(((i / total) * 100), 2), '%')
+    print(round(((i / total) * 100), 2), "%")
     i += 1
     # break

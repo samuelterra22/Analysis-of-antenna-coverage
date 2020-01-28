@@ -11,25 +11,27 @@ face_response = requests.post(
         # "rpp": 250,
         "fc_7": "MG",
         # "fc_8": 3138203
-    }
+    },
 )
 
 response_json = face_response.json()
 
 if len(response_json) == 1:
 
-    redirect_url = face_response.json()['redirectUrl']
-    file_name = redirect_url.split('=')[1] + ".zip"
+    redirect_url = face_response.json()["redirectUrl"]
+    file_name = redirect_url.split("=")[1] + ".zip"
 
     try:
-        print("Por favor aguarde, realizando download do arquivo '" + file_name + "'...")
+        print(
+            "Por favor aguarde, realizando download do arquivo '" + file_name + "'..."
+        )
         r = requests.get(url_base + redirect_url, allow_redirects=True)
-        open(file_name, 'wb').write(r.content)
+        open(file_name, "wb").write(r.content)
         print("Download realizado com sucesso!")
     except requests.exceptions.RequestException as e:
         print(e)
         print("Ocorreu um erro ao realizar o download...")
 
 else:
-    print(response_json['title'])
-    print(response_json['message'])
+    print(response_json["title"])
+    print(response_json["message"])

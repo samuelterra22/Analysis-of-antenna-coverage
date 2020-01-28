@@ -3,7 +3,6 @@ from src.main.python.repositories.base_station_repository import BaseStationRepo
 
 
 class BaseStationService:
-
     def __init__(self):
         self.__repository = BaseStationRepository()
 

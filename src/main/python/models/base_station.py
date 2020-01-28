@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 class BaseStation:
     def __init__(self, data):
         self.status = data["status"]

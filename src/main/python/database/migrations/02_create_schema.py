@@ -3,13 +3,14 @@
 import sqlite3
 
 # connecting...
-conn = sqlite3.connect('application.db')
+conn = sqlite3.connect("application.db")
 
 # define a cursor
 cursor = conn.cursor()
 
 # creating a table (schema)
-cursor.execute("""
+cursor.execute(
+    """
 CREATE TABLE base_station (
         id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         status TEXT DEFAULT '-' NOT NULL,
@@ -42,9 +43,10 @@ CREATE TABLE base_station (
         created_at TIMESTAMP NOT NULL,
         updated_at TIMESTAMP NOT NULL
 );
-""")
+"""
+)
 
-print('Tables created successful!')
+print("Tables created successful!")
 
 # close connection...
 conn.close()

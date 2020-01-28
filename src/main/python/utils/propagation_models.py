@@ -92,7 +92,14 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
 
     log_f = math.log10(f)
 
-    return c0 + (cf * log_f) - (13.82 * math.log10(tx_h)) - c_h + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d) + c
+    return (
+        c0
+        + (cf * log_f)
+        - (13.82 * math.log10(tx_h))
+        - c_h
+        + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d)
+        + c
+    )
 
 
 @jit(nopython=True)

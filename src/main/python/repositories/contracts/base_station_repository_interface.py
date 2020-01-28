@@ -5,7 +5,6 @@ from src.main.python.repositories.contracts.base_repository import BaseRepositor
 
 
 class BaseStationRepositoryInterface(ABC, BaseRepository):
-
     def get_all(self):
         pass
 

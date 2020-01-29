@@ -13,26 +13,31 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
-        self.fill_combo_box_regiao_estado()
+        self.fill_combo_box_country_state()
 
-        self.combo_box_regiao_estado.currentTextChanged.connect(self.on_combo_box_regiao_estado_changed)
+        self.combo_box_country_state.currentTextChanged.connect(self.on_combo_box_country_state_changed)
 
-        # combo_box_regiao_municipio
+        self.combo_box_country_county.currentTextChanged.connect(self.on_combo_box_country_county_changed)
 
-    def on_combo_box_regiao_estado_changed(self, value):
+    def on_combo_box_country_state_changed(self, value):
+        self.combo_box_country_county.clear()
         if value is not "Select":
-            self.fill_combo_box_regiao_municipio(value)
+            self.fill_combo_box_country_county(value)
 
-    def fill_combo_box_regiao_municipio(self, uf):
-        self.combo_box_regiao_municipio: QComboBox
+    def on_combo_box_country_county_changed(self, value):
+        # Do something
+        pass
+
+    def fill_combo_box_country_county(self, uf):
+        self.combo_box_country_county: QComboBox
         counties = get_counties(uf)
         for county in counties:
-            self.combo_box_regiao_municipio.addItem(county[0])
+            self.combo_box_country_county.addItem(county[0])
 
-    def fill_combo_box_regiao_estado(self):
-        self.combo_box_regiao_estado: QComboBox
+    def fill_combo_box_country_state(self):
+        self.combo_box_country_state: QComboBox
         ufs = get_ufs_initials()
-        self.combo_box_regiao_estado.addItem("Select", -1)
+        self.combo_box_country_state.addItem("Select", -1)
 
         for uf in ufs:
-            self.combo_box_regiao_estado.addItem(uf)
+            self.combo_box_country_state.addItem(uf)

@@ -584,8 +584,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>06/11/2002
-</string>
+                           <string>06/11/2002</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>

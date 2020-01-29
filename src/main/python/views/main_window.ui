@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Analysis of antenna coverage</string>
+   <string>Analysis of Antenna Coverage</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>

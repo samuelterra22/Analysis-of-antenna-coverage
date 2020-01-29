@@ -1,29 +1,24 @@
 import xlsxwriter
 
-# Create a workbook and add a worksheet.
-workbook = xlsxwriter.Workbook("Expenses01.xlsx")
-worksheet = workbook.add_worksheet()
 
-# Some data we want to write to the worksheet.
-expenses = (
-    ["Rent", 1000],
-    ["Gas", 100],
-    ["Food", 300],
-    ["Gym", 50],
-)
+def to_excel(filename, title, data):
+    # Create a workbook and add a worksheet.
+    workbook = xlsxwriter.Workbook(filename)
+    worksheet = workbook.add_worksheet("data")
 
-# Start from the first cell. Rows and columns are zero indexed.
-row = 0
-col = 0
+    # Start from the first cell. Rows and columns are zero indexed.
+    row = col = 0
+    worksheet.write(row, col, title)
 
-# Iterate over the data and write it out row by row.
-for item, cost in expenses:
-    worksheet.write(row, col, item)
-    worksheet.write(row, col + 1, cost)
-    row += 1
+    row = 2
 
-# Write a total using a formula.
-worksheet.write(row, 0, "Total")
-worksheet.write(row, 1, "=SUM(B1:B4)")
+    # Iterate over the data and write it out row by row.
+    for line in range(len(data)):
+        col = 0
+        for item in range(len(data[0])):
+            worksheet.write(row, col, data[line][item])
+            col += 1
+        row += 1
 
-workbook.close()
+    # Close file
+    workbook.close()

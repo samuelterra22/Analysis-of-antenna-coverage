@@ -90,7 +90,7 @@
              <item>
               <widget class="QTabWidget" name="tab_widget_transmitter">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="tab_transmitter_anatel">
                 <attribute name="title">
@@ -106,7 +106,7 @@
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>0</y>
+                      <y>-17</y>
                       <width>191</width>
                       <height>888</height>
                      </rect>
@@ -788,7 +788,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>599</height>
+                  <height>613</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -1401,7 +1401,7 @@
            <widget class="QWebEngineView" name="web_engine_view_coverage">
             <property name="url">
              <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,4555m/data=!3m1!1e3</string>
+              <string>https://www.google.com/maps/@-21.2347261,-44.97408,5631m/data=!3m1!1e3</string>
              </url>
             </property>
            </widget>
@@ -1444,6 +1444,7 @@
      <string>File</string>
     </property>
     <addaction name="menu_action_anatel_base"/>
+    <addaction name="menu_action_settings"/>
     <addaction name="separator"/>
     <addaction name="menu_action_exit"/>
    </widget>
@@ -1451,7 +1452,6 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="menu_action_settings"/>
     <addaction name="menu_action_help"/>
     <addaction name="menu_action_about"/>
    </widget>

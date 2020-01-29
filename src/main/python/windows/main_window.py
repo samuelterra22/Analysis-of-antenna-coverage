@@ -36,13 +36,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_button_calculate_clicked(self):
         print("Calculate button!")
 
-    @pyqtSlot(name="on_menu_action_anatel_base_triggered")
+    @pyqtSlot(name="on_menu_anatel_base_triggered")
     def on_menu_anatel_base_triggered(self):
         anatel_dialog = AnatelDialogClass(self)
         anatel_dialog.setModal(True)
         anatel_dialog.show()
 
-    @pyqtSlot(name="on_menu_action_settings_triggered")
+    @pyqtSlot(name="on_menu_settings_triggered")
     def on_menu_settings_triggered(self):
         settings_dialog = SettingsDialogClass(self)
         settings_dialog.setModal(True)

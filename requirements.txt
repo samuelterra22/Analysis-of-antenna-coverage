@@ -25,7 +25,7 @@ pre-commit==2.0.1
 PyInstaller==3.6
 pyparsing==2.4.6
 PyQt5==5.14.1
-PyQt5-sip==12.7.0
+PyQt5-sip==12.7.1
 PyQtWebEngine==5.14.0
 PyYAML==5.3
 regex==2020.1.8

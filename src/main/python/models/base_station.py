@@ -1,35 +1,43 @@
 #!/usr/bin/env python
+import datetime
+
+from src.main.python.models.base_model import BaseModel
+from peewee import *
+
+"""
+Link to peewee documentation
+http://docs.peewee-orm.com/en/latest/peewee/models.html
+"""
 
 
-class BaseStation:
-    def __init__(self, data):
-        self.status = data["status"]
-        self.entity = data["entity"]
-        self.num_fistel = data["num_fistel"]
-        self.num_service = data["num_service"]
-        self.num_ato = data["num_ato"]
-        self.num_station = data["num_station"]
-        self.address = data["address"]
-        self.uf = data["uf"]
-        self.cod_country = data["cod_country"]
-        self.emission = data["emission"]
-        self.initial_frequency = data["initial_frequency"]
-        self.final_frequency = data["final_frequency"]
-        self.azimute = data["azimute"]
-        self.cod_station_type = data["cod_station_type"]
-        self.cod_antenna_type = data["cod_antenna_type"]
-        self.cod_equipment_antenna = data["cod_equipment_antenna"]
-        self.gain_antenna = data["gain_antenna"]
-        self.gain_coast_front_antenna = data["gain_coast_front_antenna"]
-        self.lifting_angle_antenna = data["lifting_angle_antenna"]
-        self.half_power_angle = data["half_power_angle"]
-        self.polarization = data["polarization"]
-        self.height = data["height"]
-        self.cod_equipment_transmitter = data["cod_equipment_transmitter"]
-        self.transmission_power = data["transmission_power"]
-        self.latitude = data["latitude"]
-        self.longitude = data["longitude"]
-        self.first_license_date = data["first_license_date"]
+class BaseStation(BaseModel):
+    status = CharField()
+    entity = CharField()
+    num_fistel = CharField()
+    num_service = CharField()
+    num_ato = CharField()
+    num_station = CharField()
+    address = CharField()
+    uf = CharField()
+    cod_country = CharField()
+    emission = CharField()
+    initial_frequency = CharField()
+    final_frequency = CharField()
+    azimute = CharField()
+    cod_station_type = CharField()
+    cod_antenna_type = CharField()
+    cod_equipment_antenna = CharField()
+    gain_antenna = CharField()
+    gain_coast_front_antenna = CharField()
+    lifting_angle_antenna = CharField()
+    half_power_angle = CharField()
+    polarization = CharField()
+    height = CharField()
+    cod_equipment_transmitter = CharField()
+    transmission_power = CharField()
+    latitude = CharField()
+    longitude = CharField()
+    first_license_date = CharField()
 
-    def __repr__(self):
-        return str(self.__dict__)
+    created_at = DateTimeField(default=datetime.datetime.now)
+    updated_at = DateTimeField()

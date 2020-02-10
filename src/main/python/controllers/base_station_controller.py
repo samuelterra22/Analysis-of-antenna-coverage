@@ -9,14 +9,14 @@ class BaseStationController(BaseController):
     def add(self):
         pass
 
-    def show(self):
+    def show(self, id):
         pass
 
-    def edit(self):
+    def edit(self, id):
         pass
 
-    def update(self):
+    def update(self, data, id):
         pass
 
-    def destroy(self):
+    def destroy(self, id):
         pass

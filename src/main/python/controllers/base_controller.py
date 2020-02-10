@@ -17,28 +17,28 @@ class BaseController(ABC):
         pass
 
     @abstractmethod
-    def show(self):
+    def show(self, id):
         """
         Show controller method
         """
         pass
 
     @abstractmethod
-    def edit(self):
+    def edit(self, id):
         """
         Edit controller method
         """
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self, data, id):
         """
         Update controller method
         """
         pass
 
     @abstractmethod
-    def destroy(self):
+    def destroy(self, id):
         """
         Destroy controller method
         """

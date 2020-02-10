@@ -1,7 +1,7 @@
 from peewee import *
 from datetime import date
 
-from src.main.python.Exceptions.ApplicationException import ApplicationException
+from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.models.base_station import BaseStation
 
 db = SqliteDatabase('people.db')

@@ -1,13 +1,17 @@
 #!/usr/bin/env python
-from src.main.python.Exceptions.ApplicationException import ApplicationException
+import datetime
+
+from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.repositories.contracts.base_station_repository_interface import (
     BaseStationRepositoryInterface,
 )
 from src.main.python.models.base_station import BaseStation
+from src.main.python.utils.logs import to_log_error
 
 
 class BaseStationRepository(BaseStationRepositoryInterface):
-    def get_all(self):
+    @staticmethod
+    def get_all():
         """
         Return all BaseState elements
         :return:
@@ -16,10 +20,12 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             return BaseStation.get()
         except BaseException:
             e = ApplicationException()
+            to_log_error(e)
             print(e)
             return []
 
-    def find_one_by_id(self, id):
+    @staticmethod
+    def find_one_by_id(id):
         """
         This function return a base station row filtered by id.
         :param id: Id of base station in database
@@ -27,14 +33,18 @@ class BaseStationRepository(BaseStationRepositoryInterface):
         """
         try:
             return BaseStation.get_by_id(id)
-        except:
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e)
+            print(e)
             return None
 
     def find_one_by(self, criteria):
         # Implementation here
         pass
 
-    def store(self, data):
+    @staticmethod
+    def store(data):
         bs = BaseStation(
             status=data['status'],
             entity=data['entity'],
@@ -63,10 +73,18 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             latitude=data['latitude'],
             longitude=data['longitude'],
             first_license_date=data['first_license_date'],
+            created_at=datetime.datetime.now()
         )
-        return bs.save()
+        try:
+            return bs.save()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e)
+            print(e)
+            return None
 
-    def update(self, data, id):
+    @staticmethod
+    def update(data, id):
         bs = BaseStation.get_by_id(id)
         bs.status = data['status']
         bs.entity = data['entity']
@@ -95,9 +113,22 @@ class BaseStationRepository(BaseStationRepositoryInterface):
         bs.latitude = data['latitude']
         bs.longitude = data['longitude']
         bs.first_license_date = data['first_license_date']
+        bs.updated_at = datetime.datetime.now()
 
-        return bs.save()
+        try:
+            return bs.save()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e)
+            print(e)
+            return None
 
-    def delete(self, id):
-        # Implementation here
-        pass
+    @staticmethod
+    def delete(id):
+        try:
+            return BaseStation.delete_by_id(id)
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e)
+            print(e)
+            return None

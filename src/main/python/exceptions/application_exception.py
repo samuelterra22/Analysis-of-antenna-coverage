@@ -54,4 +54,5 @@ class ApplicationException(Exception):
         r = 'TYPE:\n' + str(self.__type) + '\n\n'
         r += 'MESSAGE:\n' + str(self.__message) + '\n\n'
         r += 'STACK TRACE:\n' + str(self.__stack_trace)
+        r += '\n-------------------------------------------------------------------------------\n'
         return r

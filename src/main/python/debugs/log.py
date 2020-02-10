@@ -1,5 +1,6 @@
 import logging
 
+from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.utils.logs import to_log_error, to_log_debug, to_log_fatal, to_log_warning, to_log_info
 from src.main.python.utils.path import get_project_root
 
@@ -14,8 +15,13 @@ from src.main.python.utils.path import get_project_root
 
 # logger.info('File successfully uploaded to ')
 
-to_log_error('vaca')
-to_log_debug('vaca')
-to_log_fatal('vaca')
-to_log_warning('vaca')
-to_log_info('vaca')
+# to_log_error('vaca')
+# to_log_debug('vaca')
+# to_log_fatal('vaca')
+# to_log_warning('vaca')
+# to_log_info('vaca')
+
+try:
+    c = 1/0
+except BaseException:
+    to_log_error(ApplicationException())

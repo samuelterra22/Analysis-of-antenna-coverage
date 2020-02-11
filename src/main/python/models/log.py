@@ -12,4 +12,4 @@ class Log(BaseModel):
     stack_trace = TextField()
 
     created_at = DateTimeField(default=datetime.datetime.now)
-    updated_at = DateTimeField()
+    updated_at = DateTimeField(null=True)

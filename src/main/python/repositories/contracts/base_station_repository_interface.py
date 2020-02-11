@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from src.main.python.repositories.contracts.base_repository import BaseRepository
 
 
-class BaseStationRepositoryInterface(ABC, BaseRepository):
+class BaseStationRepositoryInterface(BaseRepository):
     """
     This class contains the contract to implementation for
     BaseStationRepository

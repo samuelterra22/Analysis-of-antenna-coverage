@@ -40,4 +40,4 @@ class BaseStation(BaseModel):
     first_license_date = CharField()
 
     created_at = DateTimeField(default=datetime.datetime.now)
-    updated_at = DateTimeField()
+    updated_at = DateTimeField(null=True)

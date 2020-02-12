@@ -24,4 +24,4 @@ from src.main.python.utils.path import get_project_root
 try:
     c = 1/0
 except BaseException:
-    to_log_error(ApplicationException())
+    to_log_error(ApplicationException().get_message())

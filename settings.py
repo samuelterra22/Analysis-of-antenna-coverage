@@ -6,6 +6,8 @@ ENV_FILE = os.path.join(BASE_DIR, ".env")
 load_dotenv(dotenv_path=ENV_FILE)
 
 DATABASE_NAME = os.getenv("DATABASE_NAME")
+SAVE_LOGS_IN_DATABASE = os.getenv("SAVE_LOGS_IN_DATABASE")
+ENVIRONMENT = os.getenv("ENVIRONMENT")
 
 
 def get_env_keys():

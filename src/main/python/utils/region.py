@@ -2,6 +2,8 @@ import requests
 from requests import RequestException
 
 import src.main.python.utils.constants as constants
+from src.main.python.exceptions.application_exception import ApplicationException
+from src.main.python.utils.logs import to_log_error
 
 uf_list = {
     "RO": 11,
@@ -35,14 +37,28 @@ uf_list = {
 
 
 def get_ufs_initials():
+    """
+    This method return the ufs initials ordered
+    :return: list The of ufs ordered
+    """
     return sorted(uf_list.keys())
 
 
 def get_uf_code(uf):
+    """
+    This method return the uf code from ufs list
+    :param uf: string The uf name
+    :return: int Return the uf code
+    """
     return uf_list.get(uf)
 
 
 def get_counties(uf):
+    """
+    This method get all counties from an uf related
+    :param uf: int The uf code
+    :return:
+    """
     url_base = (
         "http://sistemas.anatel.gov.br/se/eApp/forms/b/jf_getMunicipios.php?CodUF="
     )
@@ -52,7 +68,9 @@ def get_counties(uf):
         url = url_base + str(uf_code)
         try:
             return requests.get(url=url).json()
-        except RequestException as e:
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
             return constants.REQUEST_ERROR
     else:
         return constants.INVALID_UF

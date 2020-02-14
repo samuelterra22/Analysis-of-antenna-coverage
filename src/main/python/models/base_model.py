@@ -1,16 +1,22 @@
 from peewee import *
 
-
-# Create a database instance that will manage the connection and
-# execute queries
 from src.main.python.utils.database import get_database_url
 
 database = SqliteDatabase(get_database_url())
 
+"""
+Link to peewee models documentation
+http://docs.peewee-orm.com/en/latest/peewee/models.html
+"""
 
-# Create a base-class all our models will inherit, which defines
-# the database we'll be using.
+
 class BaseModel(Model):
+    """
+    This class is the base model for all models of application
+    """
 
     class Meta:
+        """
+        This method is used for Peewee model
+        """
         database = database

@@ -4,11 +4,6 @@ import datetime
 from src.main.python.models.base_model import BaseModel
 from peewee import *
 
-"""
-Link to peewee documentation
-http://docs.peewee-orm.com/en/latest/peewee/models.html
-"""
-
 
 class SimulationHistory(BaseModel):
     """

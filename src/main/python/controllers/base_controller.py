@@ -2,17 +2,32 @@ from abc import ABC, abstractmethod
 
 
 class BaseController(ABC):
+    """
+    This class represents the base controller interface to
+    use in application models
+    """
+
     @abstractmethod
     def index(self):
         """
         Index controller method
+        :return:
         """
         pass
 
     @abstractmethod
-    def add(self):
+    def create(self):
         """
-        Add controller method
+        Create controller method
+        :return:
+        """
+        pass
+
+    @abstractmethod
+    def store(self):
+        """
+        Store controller method
+        :return:
         """
         pass
 
@@ -20,6 +35,8 @@ class BaseController(ABC):
     def show(self, id):
         """
         Show controller method
+        :param id:
+        :return:
         """
         pass
 
@@ -27,6 +44,8 @@ class BaseController(ABC):
     def edit(self, id):
         """
         Edit controller method
+        :param id:
+        :return:
         """
         pass
 
@@ -34,6 +53,9 @@ class BaseController(ABC):
     def update(self, data, id):
         """
         Update controller method
+        :param data:
+        :param id:
+        :return:
         """
         pass
 
@@ -41,5 +63,7 @@ class BaseController(ABC):
     def destroy(self, id):
         """
         Destroy controller method
+        :param id:
+        :return:
         """
         pass

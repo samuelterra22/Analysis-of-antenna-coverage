@@ -8,6 +8,9 @@ class ApplicationException(Exception):
     """
 
     def __init__(self):
+        """
+        The application exception constructor
+        """
         # Get current system exception
         ex_type, ex_value, ex_traceback = sys.exc_info()
 
@@ -17,6 +20,7 @@ class ApplicationException(Exception):
         # Format stacktrace
         stack_trace = list()
 
+        # For all trace
         for trace in trace_back:
             stack_trace.append(
                 "File : %s , Line : %d, Func.Name : %s, Message : %s" % (trace[0], trace[1], trace[2], trace[3]))

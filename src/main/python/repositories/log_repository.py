@@ -8,17 +8,20 @@ from src.main.python.utils.logs import to_log_error
 
 
 class LogRepository(LogRepositoryInterface):
+    """
+    This class implement the log repository
+    """
     @staticmethod
     def get_all():
         """
-        Return all BaseState elements
+        Return all Log elements
         :return:
         """
         try:
             return Log.get()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return []
 
@@ -33,16 +36,26 @@ class LogRepository(LogRepositoryInterface):
             return Log.get_by_id(id)
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     def find_one_by(self, criteria):
+        """
+        This method find a log in database by criteria
+        :param criteria:
+        :return:
+        """
         # Implementation here
         pass
 
     @staticmethod
     def store(data):
+        """
+        This method store a log in database
+        :param data:
+        :return:
+        """
         log = Log(
             level=data['level'],
             type=data['type'],
@@ -53,12 +66,18 @@ class LogRepository(LogRepositoryInterface):
             return log.save()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     @staticmethod
     def update(data, id):
+        """
+        This method update a log in database
+        :param data:
+        :param id:
+        :return:
+        """
         log = Log.get_by_id(id)
 
         log.level = data['level'],
@@ -70,16 +89,21 @@ class LogRepository(LogRepositoryInterface):
             return log.save()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     @staticmethod
     def delete(id):
+        """
+        This method delete a log in database
+        :param id:
+        :return:
+        """
         try:
             return Log.delete_by_id(id)
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None

@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 
 
 class BaseRepository(ABC):
+    """
+    This class implements the base repository interface
+    """
     @abstractmethod
     def get_all(self):
         """

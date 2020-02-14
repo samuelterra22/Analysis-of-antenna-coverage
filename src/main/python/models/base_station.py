@@ -4,13 +4,11 @@ import datetime
 from src.main.python.models.base_model import BaseModel
 from peewee import *
 
-"""
-Link to peewee documentation
-http://docs.peewee-orm.com/en/latest/peewee/models.html
-"""
-
 
 class BaseStation(BaseModel):
+    """
+    This class is the base station model for storage data in database
+    """
     status = CharField()
     entity = CharField()
     num_fistel = CharField()

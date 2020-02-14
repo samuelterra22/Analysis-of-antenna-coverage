@@ -10,6 +10,9 @@ from src.main.python.utils.logs import to_log_error
 
 
 class BaseStationRepository(BaseStationRepositoryInterface):
+    """
+    This class implement the base station repository
+    """
     @staticmethod
     def get_all():
         """
@@ -20,7 +23,7 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             return BaseStation.get()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return []
 
@@ -35,16 +38,26 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             return BaseStation.get_by_id(id)
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     def find_one_by(self, criteria):
+        """
+        This method find a base station in database by criteria
+        :param criteria:
+        :return:
+        """
         # Implementation here
         pass
 
     @staticmethod
     def store(data):
+        """
+        This method store a base station in database
+        :param data:
+        :return:
+        """
         bs = BaseStation(
             status=data['status'],
             entity=data['entity'],
@@ -79,12 +92,18 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             return bs.save()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     @staticmethod
     def update(data, id):
+        """
+        This method update a base station in database
+        :param data:
+        :param id:
+        :return:
+        """
         bs = BaseStation.get_by_id(id)
         bs.status = data['status']
         bs.entity = data['entity']
@@ -119,16 +138,21 @@ class BaseStationRepository(BaseStationRepositoryInterface):
             return bs.save()
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None
 
     @staticmethod
     def delete(id):
+        """
+        This method delete a base station in database
+        :param id:
+        :return:
+        """
         try:
             return BaseStation.delete_by_id(id)
         except BaseException:
             e = ApplicationException()
-            to_log_error(e)
+            to_log_error(e.get_message())
             print(e)
             return None

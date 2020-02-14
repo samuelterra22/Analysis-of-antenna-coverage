@@ -24,22 +24,48 @@ def log_distance_model(d, gamma=3, d0=1, pr_d0=-60, pt=-17):
 
 @jit(nopython=True)
 def log_distance_v2_model(d, gamma=3, d0=10, pr_d0=-69, pt=-20):
+    """
+
+    :param d:
+    :param gamma:
+    :param d0:
+    :param pr_d0:
+    :param pt:
+    :return:
+    """
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 
 @jit(nopython=True)
 def tree_par_log_model(x):
+    """
+
+    :param x:
+    :return:
+    """
     return -17.74321 - 15.11596 * math.log(x + 2.1642)
 
 
 @jit(nopython=True)
 def two_par_logistic_model(pt_dbm, x):
+    """
+
+    :param pt_dbm:
+    :param x:
+    :return:
+    """
     # https://en.wikipedia.org/wiki/Logistic_distribution#Related_distributions
     return pt_dbm - (-15.11596 * math.log10(x * 2.1642))
 
 
 @jit(nopython=True)
 def four_par_log_model(pt_dbm, x):
+    """
+
+    :param pt_dbm:
+    :param x:
+    :return:
+    """
     # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 79.500
     b = -38
@@ -51,6 +77,12 @@ def four_par_log_model(pt_dbm, x):
 
 @jit(nopython=True)
 def five_par_log_model(pt_dbm, x):
+    """
+
+    :param pt_dbm:
+    :param x:
+    :return:
+    """
     # https://en.wikipedia.org/wiki/Shifted_log-logistic_distribution
     a = 84.0
     b = -48
@@ -104,12 +136,20 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
 
 @jit(nopython=True)
 def ecc33_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https://pdfs.semanticscholar.org/766b/6c7317a191cb8d910adbd520e3615a6afc31.pdf
     pass
 
 
 @jit(nopython=True)
 def egli_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https://en.wikipedia.org/wiki/Egli_model
     # https://www.commscope.com/calculators/qegli.aspx
     pass
@@ -117,23 +157,39 @@ def egli_path_loss():
 
 @jit(nopython=True)
 def ericsson_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https://thescipub.com/pdf/10.3844/ajeassp.2015.94.99
     pass
 
 
 @jit(nopython=True)
 def fspl_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https://github.com/Cloud-RF/Signal-Server/blob/master/models/fspl.cc
     pass
 
 
 @jit(nopython=True)
 def hata_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https: // en.wikipedia.org / wiki / Hata_model
     pass
 
 
 @jit(nopython=True)
 def sui_path_loss():
+    """
+    Todo
+    :return:
+    """
     # https://core.ac.uk/download/pdf/84396454.pdf
     pass

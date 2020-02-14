@@ -9,6 +9,10 @@ from src.main.python.windows.main_window import MainWindow
 
 
 def main_window():
+    """
+    This method load main window and load application context
+    :return: None
+    """
     ctx = ApplicationContext()
     window = MainWindow()
     window.show()
@@ -16,5 +20,9 @@ def main_window():
 
 
 if __name__ == "__main__":
+    """
+    Main method, the application start in this code point.
+    This method creates all database tables and open main window
+    """
     create_tables()
     main_window()

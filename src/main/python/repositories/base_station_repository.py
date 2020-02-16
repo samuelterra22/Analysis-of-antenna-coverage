@@ -6,7 +6,7 @@ from src.main.python.repositories.contracts.base_station_repository_interface im
     BaseStationRepositoryInterface,
 )
 from src.main.python.models.base_station import BaseStation
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class BaseStationRepository(BaseStationRepositoryInterface):

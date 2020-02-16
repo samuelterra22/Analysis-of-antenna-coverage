@@ -1,9 +1,9 @@
 import requests
 from requests import RequestException
 
-import src.main.python.utils.constants as constants
+import src.main.python.support.constants as constants
 from src.main.python.exceptions.application_exception import ApplicationException
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 uf_list = {
     "RO": 11,

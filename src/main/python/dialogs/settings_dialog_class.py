@@ -3,7 +3,7 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog, QComboBox
 
-from src.main.python.utils.region import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
+from src.main.python.support.region import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
 
 SettingsQDialog = uic.loadUiType("./views/settings_dialog.ui")[0]
 

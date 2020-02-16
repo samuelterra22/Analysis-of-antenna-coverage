@@ -4,7 +4,7 @@ from src.main.python.repositories.contracts.state_repository_interface import (
     StateRepositoryInterface,
 )
 from src.main.python.models.state import State
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class StateRepository(StateRepositoryInterface):

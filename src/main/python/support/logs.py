@@ -1,7 +1,7 @@
 import logging
 
 from src.main.python.models.log import Log
-from src.main.python.utils.path import get_project_root
+from src.main.python.support.path import get_project_root
 
 root = get_project_root()
 

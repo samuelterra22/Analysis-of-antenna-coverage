@@ -4,7 +4,7 @@ from src.main.python.repositories.contracts.log_repository_interface import (
     LogRepositoryInterface,
 )
 from src.main.python.models.log import Log
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class LogRepository(LogRepositoryInterface):

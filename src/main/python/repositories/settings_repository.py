@@ -4,7 +4,7 @@ from src.main.python.repositories.contracts.settings_repository_interface import
     SettingsRepositoryInterface,
 )
 from src.main.python.models.settings import Settings
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class SettingsRepository(SettingsRepositoryInterface):

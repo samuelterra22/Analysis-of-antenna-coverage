@@ -1,7 +1,7 @@
 from peewee import SqliteDatabase
 
 from settings import DATABASE_NAME
-from src.main.python.utils.path import get_project_root
+from src.main.python.support.path import get_project_root
 
 
 def get_database_url():

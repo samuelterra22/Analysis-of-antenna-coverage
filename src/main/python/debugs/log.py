@@ -1,8 +1,8 @@
 import logging
 
 from src.main.python.exceptions.application_exception import ApplicationException
-from src.main.python.utils.logs import to_log_error, to_log_debug, to_log_fatal, to_log_warning, to_log_info
-from src.main.python.utils.path import get_project_root
+from src.main.python.support.logs import to_log_error, to_log_debug, to_log_fatal, to_log_warning, to_log_info
+from src.main.python.support.path import get_project_root
 
 # root = get_project_root()
 

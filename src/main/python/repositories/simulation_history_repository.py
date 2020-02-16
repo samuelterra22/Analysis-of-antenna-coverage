@@ -4,7 +4,7 @@ from src.main.python.repositories.contracts.simulation_history_repository_interf
     SimulationHistoryRepositoryInterface,
 )
 from src.main.python.models.simulation_history import SimulationHistory
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class SimulationHistoryRepository(SimulationHistoryRepositoryInterface):

@@ -4,7 +4,7 @@ from src.main.python.repositories.contracts.city_repository_interface import (
     CityRepositoryInterface,
 )
 from src.main.python.models.city import City
-from src.main.python.utils.logs import to_log_error
+from src.main.python.support.logs import to_log_error
 
 
 class CityRepository(CityRepositoryInterface):

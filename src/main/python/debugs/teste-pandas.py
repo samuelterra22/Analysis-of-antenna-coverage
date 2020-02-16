@@ -4,7 +4,7 @@ import pandas as pd
 # Read data from file 'filename.csv'
 # (in the same directory that your python process is based)
 # Control delimiters, rows, column names with read_csv (see later)
-from src.main.python.utils.database import BaseStationDAO
+from src.main.python.support.database import BaseStationDAO
 
 data = pd.read_csv("csv_licenciamento_ecb6f784.csv", encoding="ISO-8859-1")
 # Preview the first 5 lines of the loaded data

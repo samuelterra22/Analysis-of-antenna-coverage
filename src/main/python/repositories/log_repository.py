@@ -40,14 +40,14 @@ class LogRepository(LogRepositoryInterface):
             print(e)
             return None
 
-    def find_one_by(self, criteria):
+    @staticmethod
+    def find_one_by(criteria):
         """
         This method find a log in database by criteria
         :param criteria:
         :return:
         """
-        # Implementation here
-        pass
+        return criteria
 
     @staticmethod
     def store(data):

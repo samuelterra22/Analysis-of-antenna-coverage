@@ -58,8 +58,8 @@ class SettingsRepository(SettingsRepositoryInterface):
         :return:
         """
         settings = Settings(
-            cod_uf=data['cod_uf'],
-            sigla_uf=data['sigla_uf'],
+            option=data['option'],
+            value=data['value'],
         )
         try:
             return settings.save()
@@ -79,8 +79,8 @@ class SettingsRepository(SettingsRepositoryInterface):
         """
         settings = Settings.get_by_id(id)
 
-        settings.cod_uf = data['cod_uf'],
-        settings.sigla_uf = data['sigla_uf'],
+        settings.option = data['option'],
+        settings.value = data['value'],
 
         try:
             return settings.save()

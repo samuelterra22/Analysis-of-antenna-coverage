@@ -32,7 +32,7 @@ class BaseController(ABC):
         pass
 
     @abstractmethod
-    def show(self, id):
+    def get(self, id):
         """
         Show controller method
         :param id:

@@ -6,7 +6,7 @@ from src.main.python.services.base_station_service import BaseStationService
 
 class BaseStationController(BaseController):
     """
-    This class implemente the base station controller
+    This class implement the base station controller
     """
 
     def __init__(self):
@@ -37,14 +37,13 @@ class BaseStationController(BaseController):
         """
         pass
 
-    def show(self, id):
+    def get(self, id):
         """
         This method show details for a specific base station
         :param id:
         :return:
         """
-        bs = self.__repository.find_one_by_id(id)
-        # Return bs to view/dialog
+        return self.__repository.find_one_by_id(id)
 
     def edit(self, id):
         """

@@ -3,6 +3,8 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog, QComboBox
 
+from src.main.python.controllers.settings_controller import SettingsController
+from src.main.python.support.constants import CURRENT_UF_ID
 from src.main.python.support.region import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
 
 SettingsQDialog = uic.loadUiType("./views/settings_dialog.ui")[0]
@@ -21,6 +23,8 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
+        self.__controller = SettingsController()
+
         self.fill_combo_box_country_state()
 
         self.combo_box_country_state.currentIndexChanged.connect(self.on_combo_box_country_state_changed)
@@ -34,6 +38,9 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         :return: None
         """
         self.combo_box_country_county.clear()
+
+        print('asd: ' + str(self.__controller.get(CURRENT_UF_ID)))
+
         if index is not 0:
             uf_id = self.combo_box_country_state.itemData(index)
             uf_initial = get_uf_by_id(uf_id)

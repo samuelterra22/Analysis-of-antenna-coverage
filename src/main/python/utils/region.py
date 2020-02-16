@@ -53,6 +53,17 @@ def get_uf_code(uf):
     return uf_list.get(uf)
 
 
+def get_uf_by_id(uf_id):
+    """
+    This method return the uf code from ufs list
+    :param uf_id: int The uf id
+    :return: string Return the uf initials
+    """
+    for uf, uf_code in uf_list.items():
+        if uf_code == uf_id:
+            return uf
+
+
 def get_counties(uf):
     """
     This method get all counties from an uf related

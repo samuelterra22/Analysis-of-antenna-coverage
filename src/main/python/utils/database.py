@@ -33,10 +33,11 @@ def create_tables():
     from src.main.python.models.city import City
     from src.main.python.models.log import Log
     from src.main.python.models.simulation_history import SimulationHistory
+    from src.main.python.models.settings import Settings
     from src.main.python.models.state import State
 
     database = get_sqlite_database_instance()
     with database:
         database.create_tables([
-            BaseStation, City, Log, SimulationHistory, State
+            BaseStation, City, Log, SimulationHistory, Settings, State
         ])

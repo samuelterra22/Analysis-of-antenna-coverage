@@ -30,8 +30,8 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
     def on_combo_box_country_state_changed(self, index):
         """
         This method is fired when combo box country state is changed
-        :param value:
-        :return:
+        :param int index: Index of state in combo_box_country_state component
+        :return: None
         """
         self.combo_box_country_county.clear()
         if index is not 0:

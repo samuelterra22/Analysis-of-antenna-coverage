@@ -8,43 +8,19 @@ class BaseController(ABC):
     """
 
     @abstractmethod
-    def index(self):
-        """
-        Index controller method
-        :return:
-        """
-        pass
-
-    @abstractmethod
-    def create(self):
-        """
-        Create controller method
-        :return:
-        """
-        pass
-
-    @abstractmethod
-    def store(self):
+    def store(self, data):
         """
         Store controller method
+        :param data:
         :return:
         """
         pass
 
     @abstractmethod
-    def get(self, id):
+    def get(self, data):
         """
         Show controller method
-        :param id:
-        :return:
-        """
-        pass
-
-    @abstractmethod
-    def edit(self, id):
-        """
-        Edit controller method
-        :param id:
+        :param data:
         :return:
         """
         pass

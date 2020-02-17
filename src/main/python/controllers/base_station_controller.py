@@ -16,20 +16,6 @@ class BaseStationController(BaseController):
         self.__service = BaseStationService()
         self.__repository = BaseStationRepository()
 
-    def index(self):
-        """
-        This method return for view, all base stations in the database
-        :return:
-        """
-        pass
-
-    def create(self):
-        """
-        This method return the view to add a new base station
-        :return:
-        """
-        pass
-
     def store(self):
         """
         This method store a base station using the service
@@ -37,21 +23,13 @@ class BaseStationController(BaseController):
         """
         pass
 
-    def get(self, id):
+    def get(self, data):
         """
         This method show details for a specific base station
-        :param id:
+        :param data:
         :return:
         """
         return self.__repository.find_one_by_id(id)
-
-    def edit(self, id):
-        """
-        This method return the view to edit a base station
-        :param id:
-        :return:
-        """
-        pass
 
     def update(self, data, id):
         """

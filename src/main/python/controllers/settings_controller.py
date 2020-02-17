@@ -19,38 +19,25 @@ class SettingsController(BaseController):
         self.__service = SettingsService()
         self.__repository = SettingsRepository()
 
-    def index(self):
-        """
-        This method return for view, all settings in the database
-        :return:
-        """
-        pass
-
-    def create(self):
-        """
-        This method return the view to add a new setting
-        :return:
-        """
-        pass
-
-    def store(self):
+    def store(self, data):
         """
         This method store a setting using the service
+        :param data:
         :return:
         """
-        pass
+        self.__service.store(data)
 
-    def get(self, id):
+    def get(self, data):
         """
         This method show details for a specific setting
-        :param id:
+        :param data:
         :return:
         """
         try:
             model = self.__repository.find_one_by(
                 Settings
                     .select()
-                    .where(Settings.option == id)
+                    .where(Settings.option == data['option'])
             )
 
             return model.get()
@@ -60,26 +47,18 @@ class SettingsController(BaseController):
             print(e)
             return None
 
-    def edit(self, id):
-        """
-        This method return the view to edit a setting
-        :param id:
-        :return:
-        """
-        pass
-
-    def update(self, setting_name, id):
+    def update(self, data, id):
         """
         This method update a setting using a service
-        :param setting_name:
+        :param data:
         :param id:
         :return:
         """
         model = self.__repository.find_one_by(
-            Settings.select().where(Settings.option == setting_name)
+            Settings.select().where(Settings.option == data['option'])
         )
 
-        return self.__repository.update(setting_name, model.id)
+        return self.__repository.update(data, model.id)
 
     def destroy(self, id):
         """

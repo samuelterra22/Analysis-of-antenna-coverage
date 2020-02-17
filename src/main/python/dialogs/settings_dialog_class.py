@@ -39,12 +39,26 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         """
         self.combo_box_country_county.clear()
 
-        print('asd: ' + str(self.__controller.get(CURRENT_UF_ID)))
-
         if index is not 0:
             uf_id = self.combo_box_country_state.itemData(index)
+            self.__create_or_update_uf(uf_id)
             uf_initial = get_uf_by_id(uf_id)
             self.fill_combo_box_country_county(uf_initial)
+
+    def __create_or_update_uf(self, uf_id):
+        data = {
+            'option': CURRENT_UF_ID,
+            'value': uf_id
+        }
+
+        # The setting no exists, then store
+        if not self.__controller.get(CURRENT_UF_ID):
+            result = self.__controller.store(data)
+            print('Result from store: ' + str(result))
+        else:
+            # The setting exists, then update
+            result = self.__controller.update(data, None)
+            print('Result from update: ' + str(result))
 
     def on_combo_box_country_county_changed(self, index):
         """

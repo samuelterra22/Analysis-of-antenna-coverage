@@ -48,4 +48,4 @@ typed-ast==1.4.1
 urllib3==1.25.8
 virtualenv==20.0.4
 XlsxWriter==1.2.7
-zipp==2.2.0
+zipp==3.0.0

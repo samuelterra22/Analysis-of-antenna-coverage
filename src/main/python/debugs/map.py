@@ -16,9 +16,9 @@ class MapWindow(QWidget):
 
         # Working with the maps with pyqtlet
         self.map = L.map(self.mapWidget)
-        self.map.setView([12.97, 77.59], 10)
+        self.map.setView([-21.2284575, -44.9753476], 16)
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.map)
-        self.marker = L.marker([12.934056, 77.610029])
+        self.marker = L.marker([-21.2284575, -44.9753476])
         self.marker.bindPopup('Maps are a treasure.')
         self.map.addLayer(self.marker)
         self.show()

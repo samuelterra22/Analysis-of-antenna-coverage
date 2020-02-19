@@ -26,10 +26,10 @@
    <locale language="Portuguese" country="Brazil"/>
   </property>
   <widget class="QWidget" name="central_widget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
+     <layout class="QHBoxLayout" name="main_horizontal_layout">
+      <item>
        <widget class="QFrame" name="frame_tab_menus">
         <property name="minimumSize">
          <size>
@@ -787,7 +787,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>599</height>
+                  <height>613</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -1380,7 +1380,7 @@
         </layout>
        </widget>
       </item>
-      <item row="0" column="1">
+      <item>
        <widget class="QTabWidget" name="tab_widget_maps">
         <property name="minimumSize">
          <size>
@@ -1397,13 +1397,7 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
-           <widget class="QWebEngineView" name="web_engine_view_coverage">
-            <property name="url">
-             <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,5631m/data=!3m1!1e3</string>
-             </url>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="vertical_layout_coverage_map"/>
           </item>
          </layout>
         </widget>
@@ -1413,13 +1407,7 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_10">
           <item>
-           <widget class="QWebEngineView" name="web_engine_view_mos">
-            <property name="url">
-             <url>
-              <string>https://www.google.com/maps/@-21.2347261,-44.97408,2883145m/data=!3m1!1e3</string>
-             </url>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="vertical_layout_mos_map"/>
           </item>
          </layout>
         </widget>
@@ -1489,13 +1477,6 @@
    </property>
   </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

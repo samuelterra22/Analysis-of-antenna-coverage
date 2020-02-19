@@ -5,12 +5,15 @@
 ###### Linux dependencies
 ```shell script
 sudo apt update
-sudo apt install -y build-essential \
+sudo apt install -y \
                  software-properties-common \
-                 python3-pip \
-                 libpython3-dev \
+                 libpcre3 libpcre3-dev \
                  libpython3-all-dev \
-                 python3-distutils
+                 python3-distutils \
+                 build-essential \
+                 libpython3-dev \
+                 python3-pip \
+                 g++ 
 ```
 
 ###### pcre dependency
@@ -35,16 +38,43 @@ ln -sfv ../../lib/$(readlink /usr/lib/libpcre.so) /usr/lib/libpcre.so
 
 ###### swig dependency
 ```shell script
+# Download and extract files
 wget https://ufpr.dl.sourceforge.net/project/swig/swig/swig-4.0.1/swig-4.0.1.tar.gz
+chmod 777 swig-4.0.1.tar.gz
 tar -xvf swig-4.0.1.tar.gz
+
+# Configure lib folder and install
 cd swig-4.0.1
-./autogen.sh
-./configure
+./configure --prefix=/home/$USER/library/swigtool
 make
 make install
 
+# Configure swig path
+sudo nano /etc/profile
+export SWIG_PATH=/home/$USER/library/swigtool/bin
+export PATH=$SWIG_PATH:$PATH
+
+# Load changes
+source /etc/profile
+
+# Check swig version
+swig -version
+
 # To check the build, run the tests:
 make check-python-examples
+```
+
+### [dev] How to compile c code to python library using swing
+
+```shell script
+# 'Compile' interface file
+swig -python example.i
+
+# Complile code
+gcc -c -fPIC example.c example_wrap.c -I/usr/include/python3.6/
+
+# Link files to create .py
+ld -shared example.o example_wrap.o -o _example.so
 ```
 
 ### Create environment and install python dependencies

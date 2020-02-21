@@ -38,7 +38,7 @@ python-dotenv==0.11.0
 python-editor==1.0.4
 PyYAML==5.3
 regex==2020.2.20
-requests==2.22.0
+requests==2.23.0
 scipy==1.4.1
 sip==5.1.1
 six==1.14.0

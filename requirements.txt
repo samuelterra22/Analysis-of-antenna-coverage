@@ -8,7 +8,7 @@ cfgv==3.0.0
 chardet==3.0.4
 Click==7.0
 distlib==0.3.0
-fbs==0.8.5
+fbs==0.8.6
 filelock==3.0.12
 future==0.18.2
 identify==1.4.11

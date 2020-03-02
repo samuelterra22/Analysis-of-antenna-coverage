@@ -34,7 +34,7 @@ PyQt5-sip==12.7.1
 pyqtlet==0.3.3
 PyQtWebEngine==5.14.0
 python-dateutil==2.8.1
-python-dotenv==0.11.0
+python-dotenv==0.12.0
 python-editor==1.0.4
 PyYAML==5.3
 regex==2020.2.20

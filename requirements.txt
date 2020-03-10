@@ -6,7 +6,7 @@ black==19.10b0
 certifi==2019.11.28
 cfgv==3.1.0
 chardet==3.0.4
-Click==7.0
+Click==7.1.1
 distlib==0.3.0
 fbs==0.8.6
 filelock==3.0.12

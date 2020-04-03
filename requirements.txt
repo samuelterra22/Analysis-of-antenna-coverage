@@ -30,7 +30,7 @@ pre-commit==2.2.0
 PyInstaller==3.6
 pyparsing==2.4.6
 PyQt5==5.14.2
-PyQt5-sip==12.7.1
+PyQt5-sip==12.7.2
 pyqtlet==0.3.3
 PyQtWebEngine==5.14.0
 python-dateutil==2.8.1

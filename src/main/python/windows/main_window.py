@@ -30,7 +30,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         self.init_coverage_map()
-        self.init_mos_map()
+        # self.init_mos_map()
 
         # Calculate button
         self.button_calculate.clicked.connect(self.on_button_calculate_clicked)
@@ -52,21 +52,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.coverage_map = L.map(self.coverage_map_widget)
         self.coverage_map.setView([-21.2284575, -44.9753476], 16)
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.coverage_map)
+
         self.coverage_marker = L.marker([-21.2284575, -44.9753476])
         self.coverage_marker.bindPopup('Maps are a treasure.')
         self.coverage_map.addLayer(self.coverage_marker)
 
-    def init_mos_map(self):
-        self.mos_map_widget = MapWidget()
-        self.vertical_layout_mos_map.addWidget(self.mos_map_widget)
-
-        # Working with the maps with pyqtlet
-        self.mos_map = L.map(self.mos_map_widget)
-        self.mos_map.setView([-21.2284575, -44.9753476], 16)
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.mos_map)
-        self.mos_marker = L.marker([-21.2284575, -44.9753476])
-        self.mos_marker.bindPopup('Maps are a treasure.')
-        self.mos_map.addLayer(self.mos_marker)
+        self.coverage_marker = L.circleMarker([-21.227026, -44.9778903], {
+            'color': '#a31286',
+            'fillOpacity': 0.3,
+            'stroke': 0,
+            'weight': 3
+        })
+        self.coverage_map.addLayer(self.coverage_marker)
 
     @pyqtSlot(name="on_button_calculate_clicked")
     def on_button_calculate_clicked(self):

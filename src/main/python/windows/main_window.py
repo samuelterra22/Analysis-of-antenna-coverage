@@ -4,14 +4,19 @@ import sys
 import random
 
 from PyQt5 import uic
+import folium
 from pyqtlet import L, MapWidget
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow
+from folium.plugins import HeatMap
+import io
+from random import randrange
 
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
 from src.main.python.dialogs.help_dialog_class import HelpDialogClass
+from support.propagation_models import log_distance_model
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 
@@ -49,15 +54,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def generate_random_data(self, lat, lon):
         dec_lat = (random.random() / 100) * random.choice([-1, 1])
         dec_lon = (random.random() / 100) * random.choice([-1, 1])
-        return [round(lat + dec_lat, 15), round(lon + dec_lon, 15)]
+
+        return [round(lat + dec_lat, 15), round(lon + dec_lon, 15), randrange(16)]
 
     def set_zoom_warning(self, zoom):
         if zoom < 6:
-            print('Woah buddy. You\'re flying \
-                pretty high. Hope you don\'t have vertigo..')
+            print('Woah buddy. You\'re flying pretty high. Hope you don\'t have vertigo..')
         else:
-            print('Yup, no worries. A fall from \
-                here shoudn\'t hurt... too much.')
+            print('Yup, no worries. A fall from here shoudn\'t hurt... too much.')
 
     def set_warnings(self):
         self.map.getZoom(self.set_zoom_warning)
@@ -74,7 +78,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_map_zoomed(self, event):
         print(event)
 
-    def _init_map(self):
+    def _init_map_leaf(self):
         self.map_widget = MapWidget()
         self.vertical_layout_coverage_map.addWidget(self.map_widget)
 
@@ -97,6 +101,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # L.tileLayer('http://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(self.map)
         # L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {'noWrap': 'true'}).addTo(self.map)
+        # L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png').addTo(self.map)
+
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.map)
 
         for _ in range(50):
@@ -125,6 +131,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.map.clicked.connect(lambda x: print(x))
 
         self.map.addLayer(self.marker)
+
+    def _init_map(self):
+        ERB_LOCATION = [-21.226244, -44.978407]
+        m = folium.Map(
+            location=ERB_LOCATION,
+            zoom_start=16,
+            control_scale=True
+        )
+
+        data_points = []
+        for _ in range(500):
+            log_distance_model(1)
+            data_points.append(self.generate_random_data(ERB_LOCATION[0], ERB_LOCATION[1]))
+
+        folium.Marker(
+            location=ERB_LOCATION,
+            popup='Estação Rádio Base Vivo',
+            draggable=False,
+            icon=folium.Icon(prefix='glyphicon', icon='tower')
+        ).add_to(m)
+
+        HeatMap(data_points, radius=15).add_to(m)
+
+        data = io.BytesIO()
+        m.save(data, close_file=False)
+
+        self.web_view.setHtml(data.getvalue().decode())
 
     @pyqtSlot(name="on_button_calculate_clicked")
     def on_button_calculate_clicked(self):

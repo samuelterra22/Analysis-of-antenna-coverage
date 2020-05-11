@@ -14,6 +14,9 @@ def get_color_gradient(steps=250):
     return cores
 
 
+COLORS = get_color_gradient(16)  # 64, 32, 24, 16, 8
+
+
 def get_color_of_interval(x, max_value=-30, min_value=-100):
     """
     Este método retorna uma cor de acordo com o valor que está entre o intervalo min-max. Em outras palavras,
@@ -24,8 +27,8 @@ def get_color_of_interval(x, max_value=-30, min_value=-100):
     :return: Retorna uma tupla representando um cor no formato RGB.
     """
 
-    if PAINT_BLACK_BELOW_SENSITIVITY and x < SENSITIVITY:
-        return BLACK
+    # if PAINT_BLACK_BELOW_SENSITIVITY and x < SENSITIVITY:
+    #     return BLACK
 
     percentage = get_percentage_of_range(min_value, max_value, x)
     color = get_value_in_list(percentage, COLORS)
@@ -45,11 +48,12 @@ def get_percentage_of_range(min_value, max_value, x):
     return ((x - min_value) / (max_value - min_value)) * 100
 
 
-def get_value_in_list(percent, list_numbers):
+def get_value_in_list(percent, list_numbers, to_hex=True):
     """
     Método retorna o valor de uma posição de uma lista. A posição é calculada de acordo a porcentagem.
     :param percent: Valor float representando a porcentagem.
     :param list_numbers: Lista com n números.
+    :param to_hex: Boolean to inform the return type
     :return: Retorna a cor da posição calculada.
     """
     position = (percent / 100) * len(list_numbers)
@@ -57,7 +61,7 @@ def get_value_in_list(percent, list_numbers):
         position = 1
     elif position >= len(list_numbers):
         position = len(list_numbers)
-    return hex_to_rgb(list_numbers[int(position - 1)])
+    return list_numbers[int(position - 1)] if to_hex else hex_to_rgb(list_numbers[int(position - 1)])
 
 
 def hex_to_rgb(hex_value):

@@ -108,7 +108,7 @@
                       <x>0</x>
                       <y>0</y>
                       <width>191</width>
-                      <height>874</height>
+                      <height>958</height>
                      </rect>
                     </property>
                     <property name="maximumSize">
@@ -621,8 +621,8 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>207</width>
-                      <height>566</height>
+                      <width>205</width>
+                      <height>562</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -787,7 +787,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>613</height>
+                  <height>611</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -963,8 +963,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>227</width>
+                  <height>611</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1069,8 +1069,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>245</width>
+                  <height>597</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1207,8 +1207,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>227</width>
+                  <height>611</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -1397,7 +1397,17 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
-           <layout class="QVBoxLayout" name="vertical_layout_coverage_map"/>
+           <layout class="QVBoxLayout" name="vertical_layout_coverage_map">
+            <item>
+             <widget class="QWebEngineView" name="web_view">
+              <property name="url">
+               <url>
+                <string>about:blank</string>
+               </url>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -1423,7 +1433,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -1477,6 +1487,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

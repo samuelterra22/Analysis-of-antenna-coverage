@@ -145,33 +145,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             control_scale=True
         )
 
-        data_points = []
-        for _ in range(50):
+        data = []
+
+        for _ in range(1800):
             random_location = self.generate_random_data(ERB_LOCATION[0], ERB_LOCATION[1])
             distance = self.calc_distance(tuple(ERB_LOCATION), tuple(random_location))
 
-            pr = cost231_path_loss(1500, 30, 1, distance, 2)
-            print(pr)
+            pr = cost231_path_loss(1820, 30, 1, distance, 2)
 
-            # folium.Marker(
-            #     location=random_location,
-            #     popup='Distance %.2f ' % distance,
-            #     draggable=False,
-            #     icon=folium.Icon(prefix='glyphicon', icon='tower')
-            # ).add_to(m)
-            color = get_color_of_interval(pr, min_value=0, max_value=500)
+            random_location.append(18820 - pr)
+            data.append(random_location)
 
-            # vai ter que loopar de novo pra pintar essas bolinha
+        max_v = max([value[2] for value in data])
+        min_v = min([value[2] for value in data])
+
+        for d in data:
+            color = get_color_of_interval(d[2], min_value=min_v, max_value=max_v)
+
+            coordinate = [d[0], d[1]]
 
             folium.Circle(
-                location=tuple(random_location),
-                radius=20,
-                popup=('Distance %.2f, PR =>  ' % distance),
+                location=tuple(coordinate),
+                radius=10,
+                # popup=('PR => %.4f ' % (d[2])),
+                # tooltip=('PR => %.4f ' % (d[2])),
                 fill=True,
                 color=str(color)
             ).add_to(m)
-
-            # data_points.append([random_location[0], random_location[1], pr])
 
         folium.Marker(
             location=ERB_LOCATION,
@@ -180,7 +180,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             icon=folium.Icon(prefix='glyphicon', icon='tower')
         ).add_to(m)
 
-        # HeatMap(data_points, radius=15).add_to(m)
+        # HeatMap(
+        #     data=data_color,
+        #     name='heatmap',
+        #     min_opacity=0.5,
+        #     max_zoom=18,
+        #     min_val=min_v,
+        #     max_val=max_v,
+        #     radius=15,
+        #     blur=15,
+        #     gradient={0.4: 'blue', 0.65: 'lime', 1: 'red'},
+        #     overlay=True,
+        #     control=True,
+        #     show=True
+        # ).add_to(m)
 
         data = io.BytesIO()
         m.save(data, close_file=False)

@@ -53,7 +53,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_action_about.triggered.connect(self.on_menu_about_triggered)
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
-    def generate_random_data(self, lat, lon):
+    def generate_random_position(self, lat, lon):
         dec_lat = (random.random() / 100) * random.choice([-1, 1])
         dec_lon = (random.random() / 100) * random.choice([-1, 1])
 
@@ -108,7 +108,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.map)
 
         for _ in range(50):
-            coo = self.generate_random_data(-21.227026, -44.9778903)
+            coo = self.generate_random_position(-21.227026, -44.9778903)
             self.marker = L.circleMarker(coo, {
                 'color': "red",
                 'opacity': 0.5,
@@ -147,8 +147,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         data = []
 
-        for _ in range(1800):
-            random_location = self.generate_random_data(ERB_LOCATION[0], ERB_LOCATION[1])
+        for _ in range(600):
+            random_location = self.generate_random_position(ERB_LOCATION[0], ERB_LOCATION[1])
             distance = self.calc_distance(tuple(ERB_LOCATION), tuple(random_location))
 
             pr = cost231_path_loss(1820, 30, 1, distance, 2)
@@ -167,8 +167,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             folium.Circle(
                 location=tuple(coordinate),
                 radius=10,
-                # popup=('PR => %.4f ' % (d[2])),
-                # tooltip=('PR => %.4f ' % (d[2])),
+                popup=('PR => %.4f ' % (d[2])),
+                tooltip=('PR => %.4f ' % (d[2])),
                 fill=True,
                 color=str(color)
             ).add_to(m)

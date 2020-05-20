@@ -54,8 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
     def generate_random_position(self, lat, lon):
-        dec_lat = (random.random() / 100) * random.choice([-1, 1])
-        dec_lon = (random.random() / 100) * random.choice([-1, 1])
+        dec_lat = (random.random() / 80) * random.choice([-1, 1])
+        dec_lon = (random.random() / 80) * random.choice([-1, 1])
 
         return [round(lat + dec_lat, 15), round(lon + dec_lon, 15)]
 
@@ -147,17 +147,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         data = []
 
-        for _ in range(600):
+        P_TX = 74.471580313
+        SENSITIVITY = -134
+
+        for _ in range(800):
             random_location = self.generate_random_position(ERB_LOCATION[0], ERB_LOCATION[1])
             distance = self.calc_distance(tuple(ERB_LOCATION), tuple(random_location))
 
-            pr = cost231_path_loss(1820, 30, 1, distance, 2)
+            pr = cost231_path_loss(P_TX, 30, 1, distance, 2)
 
-            random_location.append(18820 - pr)
-            data.append(random_location)
+            value = P_TX - pr
 
-        max_v = max([value[2] for value in data])
+            if value >= SENSITIVITY:
+                random_location.append(value)
+                data.append(random_location)
+
         min_v = min([value[2] for value in data])
+        max_v = max([value[2] for value in data])
 
         for d in data:
             color = get_color_of_interval(d[2], min_value=min_v, max_value=max_v)
@@ -167,8 +173,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             folium.Circle(
                 location=tuple(coordinate),
                 radius=10,
-                popup=('PR => %.4f ' % (d[2])),
-                tooltip=('PR => %.4f ' % (d[2])),
+                # popup=('PR = %.4f ' % (d[2])),
+                tooltip=('PR = %.4f ' % (d[2])),
                 fill=True,
                 color=str(color)
             ).add_to(m)

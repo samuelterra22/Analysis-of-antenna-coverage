@@ -4,20 +4,19 @@ import io
 import sys
 import random
 import folium
+import numpy as np
+import matplotlib
 
 from PyQt5 import uic
 from pyqtlet import L, MapWidget
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow
-from folium.plugins import HeatMap
-from random import randrange
 from haversine import haversine, Unit
 
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
 from src.main.python.dialogs.help_dialog_class import HelpDialogClass
-from support.color import get_color_of_interval
 from support.propagation_models import cost231_path_loss
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
@@ -138,46 +137,68 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return haversine(point_1, point_2, unit=unit)
 
     def _init_map(self):
-        ERB_LOCATION = [-21.226244, -44.978407]
+
+        ERB_LOCATION = (-21.226244, -44.978407)
+
+        transmitted_power = 74.471580313
+        SENSITIVITY = -134
+
+        n = 0.00
+
+        n_lats, n_lons = (1000, 1000)
+        lat_bounds = (-21.211645 - n, -21.246091 + n)
+        long_bounds = (-44.995876 - n, -44.954157 + n)
+
+        lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
+        lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
+
+        lats_in_rad = np.deg2rad(lats_deg)
+        longs_in_rad = np.deg2rad(lons_deg)
+
+        lons_mesh, lats_mesh = np.meshgrid(longs_in_rad, lats_in_rad)
+
+        lats_mesh_deg = np.rad2deg(lats_mesh)
+        lons_mesh_deg = np.rad2deg(lons_mesh)
+
+        propagation_matrix = np.empty([n_lats, n_lons])
+        for i, point_long in enumerate(lons_deg):
+            for j, point_lat in enumerate(lats_deg):
+                point = (point_lat, point_long)
+                distance = self.calc_distance(ERB_LOCATION, point)
+
+                path_loss = cost231_path_loss(transmitted_power, 30, 1, distance, 2)
+                received_power = transmitted_power - path_loss
+
+                propagation_matrix[i][j] = received_power
+
+                # if received_power >= SENSITIVITY:
+                #     propagation_matrix[i][j] = received_power
+                # else:
+                #     propagation_matrix[i][j] = 0
+
+        print(propagation_matrix.shape)
+
+        color_map = matplotlib.cm.get_cmap('BuPu')
+
+        normed_data = (propagation_matrix - propagation_matrix.min()) / (
+                propagation_matrix.max() - propagation_matrix.min())
+        colored_data = color_map(normed_data)
+
         m = folium.Map(
             location=ERB_LOCATION,
             zoom_start=16,
             control_scale=True
         )
 
-        data = []
+        folium.raster_layers.ImageOverlay(
+            image=colored_data,
+            bounds=[[lats_mesh_deg.min(), lons_mesh_deg.min()], [lats_mesh_deg.max(), lons_mesh_deg.max()]],
+            mercator_project=True,
 
-        P_TX = 74.471580313
-        SENSITIVITY = -134
-
-        for _ in range(800):
-            random_location = self.generate_random_position(ERB_LOCATION[0], ERB_LOCATION[1])
-            distance = self.calc_distance(tuple(ERB_LOCATION), tuple(random_location))
-
-            pr = cost231_path_loss(P_TX, 30, 1, distance, 2)
-
-            value = P_TX - pr
-
-            if value >= SENSITIVITY:
-                random_location.append(value)
-                data.append(random_location)
-
-        min_v = min([value[2] for value in data])
-        max_v = max([value[2] for value in data])
-
-        for d in data:
-            color = get_color_of_interval(d[2], min_value=min_v, max_value=max_v)
-
-            coordinate = [d[0], d[1]]
-
-            folium.Circle(
-                location=tuple(coordinate),
-                radius=10,
-                # popup=('PR = %.4f ' % (d[2])),
-                tooltip=('PR = %.4f ' % (d[2])),
-                fill=True,
-                color=str(color)
-            ).add_to(m)
+            opacity=0.5,
+            interactive=True,
+            cross_origin=False,
+        ).add_to(m)
 
         folium.Marker(
             location=ERB_LOCATION,
@@ -185,21 +206,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             draggable=False,
             icon=folium.Icon(prefix='glyphicon', icon='tower')
         ).add_to(m)
-
-        # HeatMap(
-        #     data=data_color,
-        #     name='heatmap',
-        #     min_opacity=0.5,
-        #     max_zoom=18,
-        #     min_val=min_v,
-        #     max_val=max_v,
-        #     radius=15,
-        #     blur=15,
-        #     gradient={0.4: 'blue', 0.65: 'lime', 1: 'red'},
-        #     overlay=True,
-        #     control=True,
-        #     show=True
-        # ).add_to(m)
 
         data = io.BytesIO()
         m.save(data, close_file=False)

@@ -178,7 +178,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         print(propagation_matrix.shape)
 
-        color_map = matplotlib.cm.get_cmap('BuPu')
+        color_map = matplotlib.cm.get_cmap('YlOrRd')
 
         normed_data = (propagation_matrix - propagation_matrix.min()) / (
                 propagation_matrix.max() - propagation_matrix.min())

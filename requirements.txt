@@ -37,7 +37,7 @@ pyparsing==3.0.0a1
 PyQt5==5.15.0
 PyQt5-sip==12.7.2
 pyqtlet==0.3.3
-PyQtWebEngine==5.14.0
+PyQtWebEngine==5.15.0
 python-dateutil==2.8.1
 python-dotenv==0.13.0
 python-editor==1.0.4

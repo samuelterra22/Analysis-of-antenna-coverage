@@ -145,9 +145,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         n = 0.00
 
-        n_lats, n_lons = (1000, 1000)
-        lat_bounds = (-21.211645 - n, -21.246091 + n)
-        long_bounds = (-44.995876 - n, -44.954157 + n)
+        n_lats, n_lons = (4, 4)
+        lat_bounds = (-21.211645, -21.246091)
+        long_bounds = (-44.995876, -44.954157)
 
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
@@ -170,7 +170,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 received_power = transmitted_power - path_loss
 
                 propagation_matrix[i][j] = received_power
-
                 # if received_power >= SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
@@ -178,7 +177,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         print(propagation_matrix.shape)
 
-        color_map = matplotlib.cm.get_cmap('YlOrRd')
+        # color_map = matplotlib.cm.get_cmap('YlOrRd')
+        # color_map = matplotlib.cm.get_cmap('plasma')
+        # color_map = matplotlib.cm.get_cmap('spring')
+        # color_map = matplotlib.cm.get_cmap('summer')
+        color_map = matplotlib.cm.get_cmap('gist_ncar')
+        # color_map = matplotlib.cm.get_cmap('nipy_spectral')
+        # color_map = matplotlib.cm.get_cmap('jet')
+        # color_map = matplotlib.cm.get_cmap('Wistia')
+        # color_map = matplotlib.cm.get_cmap('copper')
+        # color_map = matplotlib.cm.get_cmap('Oranges')
 
         normed_data = (propagation_matrix - propagation_matrix.min()) / (
                 propagation_matrix.max() - propagation_matrix.min())
@@ -195,7 +203,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             bounds=[[lats_mesh_deg.min(), lons_mesh_deg.min()], [lats_mesh_deg.max(), lons_mesh_deg.max()]],
             mercator_project=True,
 
-            opacity=0.5,
+            opacity=0.4,
             interactive=True,
             cross_origin=False,
         ).add_to(m)

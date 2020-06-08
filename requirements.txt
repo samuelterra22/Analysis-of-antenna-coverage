@@ -54,7 +54,7 @@ python-dotenv==0.13.0
 python-editor==1.0.4
 pytz==2020.1
 PyYAML==5.3.1
-regex==2020.5.14
+regex==2020.6.8
 requests==2.23.0
 scipy==1.5.0rc1
 sip==5.3.0

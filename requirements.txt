@@ -31,7 +31,7 @@ llvmlite==0.33.0rc1
 macholib==1.14
 Mako==1.1.3
 MarkupSafe==2.0.0a1
-matplotlib==3.2.1
+matplotlib==3.2.2
 nodeenv==1.4.0
 numba==0.50.0rc1
 numpy==1.19.0

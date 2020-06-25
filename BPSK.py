@@ -3,7 +3,9 @@ from numpy.random import rand, randn
 import matplotlib.pyplot as plt
 
 # https://scipy.github.io/old-wiki/pages/Cookbook/CommTheory.html
+# http://www.raymaps.com/index.php/bpsk-bit-error-rate-calculation-using-python/
 # http://www.eletrica.ufpr.br/evelio/TE111/Eb_N0.pdf
+# https://dspillustrations.com/pages/posts/misc/python-ofdm-example.html
 
 N = 5000000
 EbNodB_range = range(0, 11)

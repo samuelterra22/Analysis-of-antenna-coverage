@@ -2,6 +2,7 @@ from numpy import sqrt
 from numpy.random import rand, randn
 import matplotlib.pyplot as plt
 
+# https://scipy.github.io/old-wiki/pages/Cookbook/CommTheory.html
 # http://www.eletrica.ufpr.br/evelio/TE111/Eb_N0.pdf
 
 N = 5000000

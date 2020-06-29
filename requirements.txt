@@ -11,7 +11,7 @@ chardet==3.0.4
 click==7.1.2
 colour==0.1.5
 cycler==0.10.0
-distlib==0.3.0
+distlib==0.3.1
 fbs==0.8.6
 filelock==3.0.12
 folium==0.11.0

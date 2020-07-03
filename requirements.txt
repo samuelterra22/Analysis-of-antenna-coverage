@@ -19,7 +19,7 @@ future==0.18.2
 geojson==2.5.0
 geojsoncontour==0.4.0
 haversine==2.2.0
-identify==1.4.20
+identify==1.4.21
 idna==2.10
 importlib-metadata==1.7.0
 importlib-resources==3.0.0

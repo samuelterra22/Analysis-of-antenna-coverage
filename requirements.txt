@@ -45,7 +45,7 @@ pre-commit==2.7.1
 PyInstaller==4.0
 pyparsing==3.0.0a2
 pyproj==2.6.1.post1
-PyQt5==5.15.0
+PyQt5==5.15.1
 PyQt5-sip==12.8.1
 pyqtlet==0.3.3
 PyQtWebEngine==5.15.0

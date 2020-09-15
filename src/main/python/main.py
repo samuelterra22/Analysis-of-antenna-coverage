@@ -4,8 +4,8 @@ import sys
 
 from fbs_runtime.application_context.PyQt5 import ApplicationContext
 
-from src.main.python.support.database import create_tables
-from src.main.python.windows.main_window import MainWindow
+from support.database import create_tables
+from windows.main_window import MainWindow
 
 
 def main_window():

@@ -6,6 +6,7 @@ import random
 import folium
 import numpy as np
 import matplotlib
+import matplotlib.cm
 
 from PyQt5 import uic
 from pyqtlet import L, MapWidget

@@ -1,6 +1,6 @@
 import requests
 
-# site: http://sistemas.anatel.gov.br/se/public/view/b/licenciamento.php
+# site: https://sistemas.anatel.gov.br/se/public/view/b/licenciamento.php
 
 url_base = "http://sistemas.anatel.gov.br"
 request_url = url_base + "/se/public/view/b/export_licenciamento.php"

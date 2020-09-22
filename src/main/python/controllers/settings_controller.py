@@ -2,8 +2,6 @@
 from src.main.python.controllers.base_controller import BaseController
 from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.models.settings import Settings
-from src.main.python.repositories.settings_repository import SettingsRepository
-from src.main.python.services.settings_service import SettingsService
 from src.main.python.support.logs import to_log_error
 
 
@@ -16,8 +14,7 @@ class SettingsController(BaseController):
         """
         Settings controller constructor using service and repository
         """
-        self.__service = SettingsService()
-        self.__repository = SettingsRepository()
+        pass
 
     def store(self, data):
         """
@@ -25,7 +22,18 @@ class SettingsController(BaseController):
         :param data:
         :return:
         """
-        self.__service.store(data)
+        try:
+            settings = Settings(
+                option=data['option'],
+                value=data['value'],
+            )
+            return settings.save()
+
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None
 
     def get(self, data):
         """
@@ -34,13 +42,7 @@ class SettingsController(BaseController):
         :return:
         """
         try:
-            model = self.__repository.find_one_by(
-                Settings
-                    .select()
-                    .where(Settings.option == data['option'])
-            )
-
-            return model.get()
+            return Settings.select().where(Settings.option == data['option']).get()
         except BaseException:
             e = ApplicationException()
             to_log_error(e.get_message())
@@ -54,11 +56,20 @@ class SettingsController(BaseController):
         :param id:
         :return:
         """
-        model = self.__repository.find_one_by(
-            Settings.select().where(Settings.option == data['option'])
-        )
+        model = Settings.select().where(Settings.option == data['option'])
 
-        return self.__repository.update(data, model.id)
+        settings = Settings.get_by_id(model.id)
+
+        settings.option = data['option'],
+        settings.value = data['value'],
+
+        try:
+            return settings.save()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None
 
     def destroy(self, id):
         """
@@ -66,4 +77,9 @@ class SettingsController(BaseController):
         :param id:
         :return:
         """
-        pass
+        try:
+            model = Settings.get_by_id(id)
+
+            return Settings.delete_by_id(model.id)
+        except Exception as e:
+            print(e)

@@ -361,18 +361,8 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="1" column="3">
-          <widget class="QProgressBar" name="progress_bar_anatel">
-           <property name="value">
-            <number>0</number>
-           </property>
-           <property name="format">
-            <string>%p% completed</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="label_last_update">
            <property name="text">
             <string>Database updated on 20/10/2019</string>
            </property>
@@ -383,6 +373,68 @@
            <property name="text">
             <string>Update database</string>
            </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="combo_box_state">
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Select a state</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Minas Gerais</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Rio de Janeiro</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2" colspan="2">
+          <widget class="QProgressBar" name="progress_bar_anatel">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="format">
+            <string>%p% completed</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QComboBox" name="combo_box_contry">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Select a country</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Lavras</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Varginha</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Formiga</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

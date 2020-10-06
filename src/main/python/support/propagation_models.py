@@ -3,10 +3,11 @@
 import math
 from math import log10
 from numba import jit
+from scipy.constants import speed_of_light
 
 
 @jit(nopython=True)
-def log_distance_model(d, gamma=3, d0=1, pr_d0=-60, pt=-17):
+def log_distance_model(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
     """
     Modelo logaritmo de perda baseado em resultados experimentais. Independe da frequência do sinal transmitido
     e do ganho das antenas transmissora e receptora.
@@ -125,12 +126,12 @@ def cost231_path_loss(f, tx_h, rx_h, d, mode):
     log_f = math.log10(f)
 
     return (
-        c0
-        + (cf * log_f)
-        - (13.82 * math.log10(tx_h))
-        - c_h
-        + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d)
-        + c
+            c0
+            + (cf * log_f)
+            - (13.82 * math.log10(tx_h))
+            - c_h
+            + (44.9 - 6.55 * math.log10(tx_h)) * math.log10(d)
+            + c
     )
 
 
@@ -166,13 +167,22 @@ def ericsson_path_loss():
 
 
 @jit(nopython=True)
-def fspl_path_loss():
+def fspl_path_loss(d, fc):
     """
-    Todo
-    :return:
+    Recommendation ITU-R P.525-4 - Calculation of free-space attenuation
+
+    Calculate the free space path loss
+    :type d: float
+    :type fc: float
+    :param d: Distance
+    :param fc: Frequency
+    :return: Free-space basic transmission loss (dB)
     """
     # https://github.com/Cloud-RF/Signal-Server/blob/master/models/fspl.cc
-    pass
+    # https://www.itu.int/dms_pubrec/itu-r/rec/p/R-REC-P.525-4-201908-I!!PDF-E.pdf
+
+    lamb = speed_of_light / fc
+    return 20 * log10((4 * math.pi * d) / lamb)
 
 
 @jit(nopython=True)
@@ -181,7 +191,7 @@ def hata_path_loss():
     Todo
     :return:
     """
-    # https: // en.wikipedia.org / wiki / Hata_model
+    # https://en.wikipedia.org/wiki/Hata_model
     pass
 
 

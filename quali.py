@@ -1,4 +1,4 @@
-from support.propagation_models import cost231_path_loss
+from support.propagation_models import cost231_path_loss, fspl_path_loss, log_distance_model
 import io
 import sys
 import random
@@ -18,14 +18,14 @@ def calc_distance(point_1, point_2, unit=Unit.METERS):
 def print_map():
     ERB_LOCATION = (-21.226244, -44.978407)
 
-    transmitted_power = 74.471580313
+    transmitted_frequency = 1872.500
     SENSITIVITY = -134
 
     n = 0.00
 
-    n_lats, n_lons = (100, 100)
-    lat_bounds = (-21.211645, -21.246091)
-    long_bounds = (-44.995876, -44.954157)
+    n_lats, n_lons = (1000, 1000)
+    lat_bounds = (-21.211645, -21.246091)  # lat_bounds[1]
+    long_bounds = (-44.995876, -44.954157)  # long_bounds[0]
 
     lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
     lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
@@ -44,17 +44,23 @@ def print_map():
             point = (point_lat, point_long)
             distance = calc_distance(ERB_LOCATION, point)
 
-            path_loss = cost231_path_loss(transmitted_power, 30, 1, distance, 2)
-            received_power = transmitted_power - path_loss
+            tx_h = 56  # Base station height 30 to 200m
+            rx_h = 1  # Mobile station height 1 to 10m
+            mode = 2  # 1 = URBAN, 2 = SUBURBAN, 3 = OPEN
 
-            propagation_matrix[i][j] = received_power
+            path_loss = cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode)
+            # received_power = transmitted_frequency - path_loss
+
+            propagation_matrix[i][j] = path_loss
             # if received_power >= SENSITIVITY:
             #     propagation_matrix[i][j] = received_power
             # else:
             #     propagation_matrix[i][j] = 0
 
-    print(propagation_matrix.shape)
-
+    distance_y = calc_distance((lat_bounds[0], long_bounds[0]), (lat_bounds[1], long_bounds[0]))  # |
+    distance_x = calc_distance((lat_bounds[0], long_bounds[0]), (lat_bounds[0], long_bounds[1]))  # --
+    print("Tamanho matrix de dados calculado: ", propagation_matrix.shape)
+    print("Área: ", distance_y, "x", distance_x, "=", round(distance_y * distance_x, 2), "km2")
     # ------------------------------------------------------------------------------------------------------------------
     # get colormap
     ncolors = 512
@@ -75,20 +81,20 @@ def print_map():
     plt.colorbar(mappable=h)
     # ------------------------------------------------------------------------------------------------------------------
 
-
     # color_map = matplotlib.cm.get_cmap('YlOrRd')
     # color_map = matplotlib.cm.get_cmap('plasma')
     # color_map = matplotlib.cm.get_cmap('spring')
     # color_map = matplotlib.cm.get_cmap('summer')
-    color_map = matplotlib.cm.get_cmap('rainbow_alpha')
+    # color_map = matplotlib.cm.get_cmap('rainbow_alpha') # custom
     # color_map = matplotlib.cm.get_cmap('gist_ncar')
     # color_map = matplotlib.cm.get_cmap('nipy_spectral')
-    # color_map = matplotlib.cm.get_cmap('jet')
+    color_map = matplotlib.cm.get_cmap('jet')
     # color_map = matplotlib.cm.get_cmap('Wistia')
     # color_map = matplotlib.cm.get_cmap('copper')
     # color_map = matplotlib.cm.get_cmap('Oranges')
 
-    normed_data = (propagation_matrix - propagation_matrix.min()) / ( propagation_matrix.max() - propagation_matrix.min())
+    normed_data = (propagation_matrix - propagation_matrix.min()) / \
+                  (propagation_matrix.max() - propagation_matrix.min())
     colored_data = color_map(normed_data)
 
     m = folium.Map(
@@ -118,7 +124,36 @@ def print_map():
     # m.save(data, close_file=False)
     # self.web_view.setHtml(data.getvalue().decode())
     m.save("quali.html")
-    print("batata")
+
+
+def table():
+    distances = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    transmitted_frequency = 1872.500
+
+    tx_h = 56  # Base station height 30 to 200m
+    rx_h = 1  # Mobile station height 1 to 10m
+    mode = 2  # 1 = URBAN, 2 = SUBURBAN, 3 = OPEN
+
+    path_loss_cost231 = []
+    path_loss_fspl = []
+    path_loss_log_distance = []
+
+    for distance in distances:
+        # path_loss_cost231.append(cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode))
+        # path_loss_fspl.append(fspl_path_loss(distance, transmitted_frequency))
+        path_loss_log_distance.append(log_distance_model(distance, transmitted_frequency))
+
+    fig, ax = plt.subplots()
+    ax.plot(distances, path_loss_cost231)
+    # ax.plot(distances, path_loss_fspl)
+
+    ax.set(xlabel='Distancia (km)', ylabel='Path Loss (dB)',
+           # title='Atenuação do Sinal - cost231'
+           )
+    ax.grid()
+    plt.show()
+
 
 if __name__ == '__main__':
     print_map()
+    table()

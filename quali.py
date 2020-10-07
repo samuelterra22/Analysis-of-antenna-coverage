@@ -1,4 +1,4 @@
-from support.propagation_models import cost231_path_loss, fspl_path_loss, log_distance_model
+from support.propagation_models import cost231_path_loss, fspl_path_loss, log_distance_model, hata_path_loss
 import io
 import sys
 import random
@@ -9,6 +9,8 @@ import matplotlib.cm
 from haversine import haversine, Unit
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
+from scipy.constants import pi, speed_of_light
+from math import log10
 
 
 def calc_distance(point_1, point_2, unit=Unit.METERS):
@@ -128,24 +130,41 @@ def print_map():
 
 def table():
     distances = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    transmitted_frequency = 1872.500
+    transmitted_frequency = 869.000  # 1872.500
 
     tx_h = 56  # Base station height 30 to 200m
     rx_h = 1  # Mobile station height 1 to 10m
     mode = 2  # 1 = URBAN, 2 = SUBURBAN, 3 = OPEN
 
+    txPower = 75.185  # 14  # transmission power in dB
+    antennaeGain = 15.9  # Total antennae gains(transmitter + receiver) in dB
+    refDist = 1  # reference distance from the transceiver in meters
+    refLoss = 20 * log10(
+        (4 * pi * refDist * transmitted_frequency / speed_of_light))  # free space path loss at the reference distance
+    ERP = txPower + antennaeGain - refLoss  # kind of the an equivalent radiation power
+
     path_loss_cost231 = []
     path_loss_fspl = []
-    path_loss_log_distance = []
+    log_distance = []
+    path_loss_hata = []
 
     for distance in distances:
-        # path_loss_cost231.append(cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode))
-        # path_loss_fspl.append(fspl_path_loss(distance, transmitted_frequency))
-        path_loss_log_distance.append(log_distance_model(distance, transmitted_frequency))
+        path_loss_cost231.append(cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode))
+
+    for distance in distances:
+        path_loss_fspl.append(fspl_path_loss(distance, transmitted_frequency))
+
+    for distance in distances:
+        log_distance.append(log_distance_model(distance, gamma=2, d0=1, pr_d0=ERP, pt=txPower))
+
+    for distance in distances:
+        path_loss_hata.append(hata_path_loss(f=transmitted_frequency, h_B=tx_h, h_M=rx_h, d=distance, mode=2))
 
     fig, ax = plt.subplots()
-    ax.plot(distances, path_loss_cost231)
+    # ax.plot(distances, path_loss_cost231)
     # ax.plot(distances, path_loss_fspl)
+    # ax.plot(distances, log_distance)
+    ax.plot(distances, path_loss_hata)
 
     ax.set(xlabel='Distancia (km)', ylabel='Path Loss (dB)',
            # title='Atenuação do Sinal - cost231'
@@ -155,5 +174,5 @@ def table():
 
 
 if __name__ == '__main__':
-    print_map()
+    # print_map()
     table()

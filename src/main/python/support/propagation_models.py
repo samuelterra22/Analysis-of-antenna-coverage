@@ -186,13 +186,42 @@ def fspl_path_loss(d, fc):
 
 
 @jit(nopython=True)
-def hata_path_loss():
+def hata_path_loss(f, h_B, h_M, d, mode=None):
     """
-    Todo
-    :return:
+    HATA URBAN model for cellular planning. The Hata model is a radio propagation model for predicting the path loss of
+    cellular transmissions in exterior environments, valid for microwave frequencies from 150 to 1500 MHz
+
+    :param f:   Frequency (MHz) 150 to 1500MHz
+    :param h_B: Base station height 30-200m
+    :param h_M: Mobile station height 1-10m
+    :param d:   Distance 1-20km
+    :param mode: mode 1 = URBAN; mode 2 = SUBURBAN; mode 3 = OPEN
+    :return: Path loss of cellular transmissions
     """
     # https://en.wikipedia.org/wiki/Hata_model
-    pass
+    # https://github.com/Cloud-RF/Signal-Server/blob/master/models/hata.cc
+    logf = log10(f)
+
+    if (f < 200):
+        lh_M = log10(1.54 * h_M)
+        C_H = 8.29 * (lh_M * lh_M) - 1.1
+    else:
+        lh_M = log10(11.75 * h_M)
+        C_H = 3.2 * (lh_M * lh_M) - 4.97
+
+    L_u = 69.55 + 26.16 * logf - 13.82 * log10(h_B) - C_H + (44.9 - 6.55 * log10(h_B)) * log10(d)
+
+    if mode is None or mode == 1:
+        return L_u  # URBAN
+
+    if mode == 2:  # SUBURBAN
+        logf_28 = log10(f / 28)
+        return L_u - 2 * logf_28 * logf_28 - 5.4
+
+    if mode == 3:  # OPEN
+        return L_u - 4.78 * logf * logf + 18.33 * logf - 40.94
+
+    return 0
 
 
 @jit(nopython=True)

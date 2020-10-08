@@ -1,4 +1,4 @@
-from support.propagation_models import cost231_path_loss, fspl_path_loss, log_distance_model, hata_path_loss
+from support.propagation_models import cost231_path_loss, fspl_path_loss, log_distance_path_loss, hata_path_loss
 import io
 import sys
 import random
@@ -155,15 +155,15 @@ def table():
         path_loss_fspl.append(fspl_path_loss(distance, transmitted_frequency))
 
     for distance in distances:
-        log_distance.append(log_distance_model(distance, gamma=2, d0=1, pr_d0=ERP, pt=txPower))
+        log_distance.append(log_distance_path_loss(distance * 1000, gamma=3, d0=1, pr_d0=ERP, pt=txPower))
 
     for distance in distances:
         path_loss_hata.append(hata_path_loss(f=transmitted_frequency, h_B=tx_h, h_M=rx_h, d=distance, mode=2))
 
     fig, ax = plt.subplots()
-    # ax.plot(distances, path_loss_cost231)
-    # ax.plot(distances, path_loss_fspl)
-    # ax.plot(distances, log_distance)
+    ax.plot(distances, path_loss_cost231)
+    ax.plot(distances, path_loss_fspl)
+    ax.plot(distances, log_distance)
     ax.plot(distances, path_loss_hata)
 
     ax.set(xlabel='Distancia (km)', ylabel='Path Loss (dB)',

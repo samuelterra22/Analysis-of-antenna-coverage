@@ -7,7 +7,7 @@ from scipy.constants import speed_of_light
 
 
 @jit(nopython=True)
-def log_distance_model(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
+def log_distance_path_loss(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
     """
     Modelo logaritmo de perda baseado em resultados experimentais. Independe da frequência do sinal transmitido
     e do ganho das antenas transmissora e receptora.
@@ -16,7 +16,7 @@ def log_distance_model(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
     :param pr_d0:   Potência recebida na distância de referencia d0.
     :param pt:      Potência transmitida.
     :param d0:      Distância do ponto de referência d0.
-    :param d:       Distância que desejo calcular a perda do sinal.
+    :param d:       Distância em metros que desejo calcular a perda do sinal.
     :param gamma:   Valor da constante de propagação que difere para cada tipo de ambiente.
     :return:        Retorna um float representando a perda do sinal entre a distância d0 e d.
     """
@@ -174,7 +174,7 @@ def fspl_path_loss(d, fc):
     Calculate the free space path loss
     :type d: float
     :type fc: float
-    :param d: Distance
+    :param d: Distance in meters
     :param fc: Frequency
     :return: Free-space basic transmission loss (dB)
     """

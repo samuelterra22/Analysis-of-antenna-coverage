@@ -8,24 +8,22 @@ import matplotlib
 import matplotlib.cm
 from haversine import haversine, Unit
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import LinearSegmentedColormap, ListedColormap
 from scipy.constants import pi, speed_of_light
 from math import log10
 
 
-def calc_distance(point_1, point_2, unit=Unit.METERS):
+def calc_distance(point_1, point_2, unit=Unit.KILOMETERS):
     return haversine(point_1, point_2, unit=unit)
 
 
-def print_map():
+def print_map(plot=False):
     ERB_LOCATION = (-21.226244, -44.978407)
 
     transmitted_frequency = 1872.500
     SENSITIVITY = -134
 
-    n = 0.00
-
-    n_lats, n_lons = (1000, 1000)
+    n_lats, n_lons = (40, 40)
     lat_bounds = (-21.211645, -21.246091)  # lat_bounds[1]
     long_bounds = (-44.995876, -44.954157)  # long_bounds[0]
 
@@ -40,6 +38,9 @@ def print_map():
     lats_mesh_deg = np.rad2deg(lats_mesh)
     lons_mesh_deg = np.rad2deg(lons_mesh)
 
+    distances = []
+    distances_pl = []
+
     propagation_matrix = np.empty([n_lats, n_lons])
     for i, point_long in enumerate(lons_deg):
         for j, point_lat in enumerate(lats_deg):
@@ -53,6 +54,9 @@ def print_map():
             path_loss = cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode)
             # received_power = transmitted_frequency - path_loss
 
+            distances.append(distance)
+            distances_pl.append(path_loss)
+
             propagation_matrix[i][j] = path_loss
             # if received_power >= SENSITIVITY:
             #     propagation_matrix[i][j] = received_power
@@ -64,9 +68,18 @@ def print_map():
     print("Tamanho matrix de dados calculado: ", propagation_matrix.shape)
     print("Área: ", distance_y, "x", distance_x, "=", round(distance_y * distance_x, 2), "km2")
     # ------------------------------------------------------------------------------------------------------------------
+    # N = 256
+    # vals = np.ones((N, 4))
+    # vals[:, 0] = np.linspace(90 / 256, 1, N)
+    # vals[:, 1] = np.linspace(40 / 256, 1, N)
+    # vals[:, 2] = np.linspace(40 / 256, 1, N)
+    # newcmp = ListedColormap(vals)
+
+
+
     # get colormap
     ncolors = 512
-    color_array = plt.get_cmap('gist_ncar')(range(ncolors))
+    color_array = plt.get_cmap('YlOrRd')(range(ncolors))
 
     # change alpha values
     color_array[:, -1] = np.linspace(0.0, 1.0, ncolors)
@@ -87,10 +100,10 @@ def print_map():
     # color_map = matplotlib.cm.get_cmap('plasma')
     # color_map = matplotlib.cm.get_cmap('spring')
     # color_map = matplotlib.cm.get_cmap('summer')
-    # color_map = matplotlib.cm.get_cmap('rainbow_alpha') # custom
+    color_map = matplotlib.cm.get_cmap('rainbow_alpha') # custom
     # color_map = matplotlib.cm.get_cmap('gist_ncar')
     # color_map = matplotlib.cm.get_cmap('nipy_spectral')
-    color_map = matplotlib.cm.get_cmap('jet')
+    # color_map = matplotlib.cm.get_cmap('jet')
     # color_map = matplotlib.cm.get_cmap('Wistia')
     # color_map = matplotlib.cm.get_cmap('copper')
     # color_map = matplotlib.cm.get_cmap('Oranges')
@@ -126,6 +139,16 @@ def print_map():
     # m.save(data, close_file=False)
     # self.web_view.setHtml(data.getvalue().decode())
     m.save("quali.html")
+
+    if plot:
+        print("Num de itens: ", len(distances))
+        fig, ax = plt.subplots()
+        ax.plot(distances, distances_pl)
+
+        ax.set(xlabel='Distancia (km)', ylabel='Path Loss (dB)', title='Atenuação do Sinal')
+        ax.grid()
+        plt.savefig("quali.png")
+        plt.show()
 
 
 def table():
@@ -174,5 +197,5 @@ def table():
 
 
 if __name__ == '__main__':
-    # print_map()
-    table()
+    print_map(True)
+    # table()

@@ -146,7 +146,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         n = 0.00
 
-        n_lats, n_lons = (4, 4)
+        n_lats, n_lons = (500, 500)
         lat_bounds = (-21.211645, -21.246091)
         long_bounds = (-44.995876, -44.954157)
 
@@ -182,12 +182,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # color_map = matplotlib.cm.get_cmap('plasma')
         # color_map = matplotlib.cm.get_cmap('spring')
         # color_map = matplotlib.cm.get_cmap('summer')
-        color_map = matplotlib.cm.get_cmap('gist_ncar')
+        # color_map = matplotlib.cm.get_cmap('gist_ncar') # <
         # color_map = matplotlib.cm.get_cmap('nipy_spectral')
         # color_map = matplotlib.cm.get_cmap('jet')
         # color_map = matplotlib.cm.get_cmap('Wistia')
         # color_map = matplotlib.cm.get_cmap('copper')
-        # color_map = matplotlib.cm.get_cmap('Oranges')
+        color_map = matplotlib.cm.get_cmap('Oranges')
 
         normed_data = (propagation_matrix - propagation_matrix.min()) / (
                 propagation_matrix.max() - propagation_matrix.min())

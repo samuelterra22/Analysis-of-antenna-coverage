@@ -3,7 +3,7 @@
 import time
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem
+from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget
 
 import threading
 
@@ -50,9 +50,13 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         This method add anatel antenna info rows in the table
         :return:
         """
+
+        self.anatel_table: QTableWidget
+
         # Remove first row (is empty)
         self.anatel_table.removeRow(0)
         row_position = self.anatel_table.rowCount()
+        qtd_columns = self.anatel_table.columnCount()
 
         for i in range(16):
             row = row_position+i

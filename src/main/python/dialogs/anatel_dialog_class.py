@@ -3,7 +3,7 @@
 import time
 
 from PyQt5 import uic
-from PyQt5.QtWidgets import QDialog, QProgressBar
+from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem
 
 import threading
 
@@ -52,6 +52,19 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         """
         # Remove first row (is empty)
         self.anatel_table.removeRow(0)
-        # row_position = self.anatel_table.rowCount()
-        # self.anatel_table.insertRow(row_position)
-        # self.anatel_table.setItem(row_position, 0, QTableWidgetItem("vaca"))
+        row_position = self.anatel_table.rowCount()
+
+        for i in range(16):
+            row = row_position+i
+            self.anatel_table.insertRow(row)
+
+            self.anatel_table.setItem(row, 0, QTableWidgetItem(str(i)))
+            self.anatel_table.setItem(row, 1, QTableWidgetItem("LIC-LIC-01"))
+            self.anatel_table.setItem(row, 2, QTableWidgetItem("TELEFÔNICA BRASIL S.A."))
+            self.anatel_table.setItem(row, 3, QTableWidgetItem("50409146285"))
+            self.anatel_table.setItem(row, 4, QTableWidgetItem("010"))
+            self.anatel_table.setItem(row, 5, QTableWidgetItem("59072012"))
+            self.anatel_table.setItem(row, 6, QTableWidgetItem("687462363"))
+            self.anatel_table.setItem(row, 7, QTableWidgetItem("UFLA - PRÓXIMO AO PRÉDIO DE CIENCIAS DA SOLO,S/N,CAMPUS UFLA"))
+            self.anatel_table.setItem(row, 8, QTableWidgetItem("MG"))
+            self.anatel_table.setItem(row, 9, QTableWidgetItem("Lavras"))

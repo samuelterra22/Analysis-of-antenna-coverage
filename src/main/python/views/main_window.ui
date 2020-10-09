@@ -108,7 +108,7 @@
                       <x>0</x>
                       <y>0</y>
                       <width>191</width>
-                      <height>958</height>
+                      <height>888</height>
                      </rect>
                     </property>
                     <property name="maximumSize">
@@ -201,7 +201,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>OI MÓVEL S.A.</string>
+                           <string>TELEFÔNICA BRASIL</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -370,7 +370,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>1805.000</string>
+                           <string>869.000</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -386,7 +386,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>1820.000</string>
+                           <string>880.000</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -472,7 +472,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>R DESEMBARGADOR SABINO LUSTOSA,120,JOSE VILELA</string>
+                           <string>UFLA - PRÓXIMO AO PRÉDIO DE CIENCIAS DA SOLO,S/N,CAMPUS UFLA	</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -621,8 +621,8 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>205</width>
-                      <height>562</height>
+                      <width>207</width>
+                      <height>566</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -787,7 +787,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>611</height>
+                  <height>599</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -963,8 +963,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>227</width>
-                  <height>611</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1069,8 +1069,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>245</width>
-                  <height>597</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1207,8 +1207,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>227</width>
-                  <height>611</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -1399,8 +1399,8 @@
           <item>
            <layout class="QVBoxLayout" name="vertical_layout_coverage_map">
             <item>
-             <widget class="QWebEngineView" name="web_view">
-              <property name="url">
+             <widget class="QWebEngineView" name="web_view" native="true">
+              <property name="url" stdset="0">
                <url>
                 <string>about:blank</string>
                </url>
@@ -1433,7 +1433,7 @@
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">
@@ -1489,9 +1489,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>qwebengineview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

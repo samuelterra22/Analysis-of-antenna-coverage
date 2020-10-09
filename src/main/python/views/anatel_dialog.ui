@@ -364,7 +364,7 @@
          <item row="1" column="1">
           <widget class="QLabel" name="label_last_update">
            <property name="text">
-            <string>Database updated on 20/10/2019</string>
+            <string>Database updated on 10/10/2020</string>
            </property>
           </widget>
          </item>

@@ -21,6 +21,7 @@ def print_map(plot=False):
     ERB_LOCATION = (-21.226244, -44.978407)
 
     transmitted_frequency = 1872.500
+    transmitted_power = 40.000 # W
     SENSITIVITY = -134
 
     n_lats, n_lons = (40, 40)
@@ -52,7 +53,7 @@ def print_map(plot=False):
             mode = 2  # 1 = URBAN, 2 = SUBURBAN, 3 = OPEN
 
             path_loss = cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode)
-            # received_power = transmitted_frequency - path_loss
+            received_power = transmitted_frequency - path_loss
 
             distances.append(distance)
             distances_pl.append(path_loss)
@@ -139,6 +140,8 @@ def print_map(plot=False):
     # m.save(data, close_file=False)
     # self.web_view.setHtml(data.getvalue().decode())
     m.save("quali.html")
+
+    print(distances_pl)
 
     if plot:
         print("Num de itens: ", len(distances))

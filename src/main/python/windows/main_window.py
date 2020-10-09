@@ -141,12 +141,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         ERB_LOCATION = (-21.226244, -44.978407)
 
-        transmitted_power = 74.471580313
+        transmitted_power = 1872.500 # 74.471580313
         SENSITIVITY = -134
 
         n = 0.00
 
-        n_lats, n_lons = (500, 500)
+        n_lats, n_lons = (4, 4)
         lat_bounds = (-21.211645, -21.246091)
         long_bounds = (-44.995876, -44.954157)
 
@@ -167,7 +167,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 point = (point_lat, point_long)
                 distance = self.calc_distance(ERB_LOCATION, point)
 
-                path_loss = cost231_path_loss(transmitted_power, 30, 1, distance, 2)
+                path_loss = cost231_path_loss(transmitted_power, 56, 1, distance, 2)
                 received_power = transmitted_power - path_loss
 
                 propagation_matrix[i][j] = received_power
@@ -187,7 +187,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # color_map = matplotlib.cm.get_cmap('jet')
         # color_map = matplotlib.cm.get_cmap('Wistia')
         # color_map = matplotlib.cm.get_cmap('copper')
-        color_map = matplotlib.cm.get_cmap('Oranges')
+        # color_map = matplotlib.cm.get_cmap('Oranges')
+        # color_map = matplotlib.cm.get_cmap('hot')
+        # color_map = matplotlib.cm.get_cmap('RdPu')
+        # color_map = matplotlib.cm.get_cmap('Blues')
+        # color_map = matplotlib.cm.get_cmap('BuPu')
+        color_map = matplotlib.cm.get_cmap('OrRd')
 
         normed_data = (propagation_matrix - propagation_matrix.min()) / (
                 propagation_matrix.max() - propagation_matrix.min())
@@ -204,7 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             bounds=[[lats_mesh_deg.min(), lons_mesh_deg.min()], [lats_mesh_deg.max(), lons_mesh_deg.max()]],
             mercator_project=True,
 
-            opacity=0.4,
+            opacity=0.6,
             interactive=True,
             cross_origin=False,
         ).add_to(m)

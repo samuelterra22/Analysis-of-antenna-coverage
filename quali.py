@@ -17,11 +17,19 @@ def calc_distance(point_1, point_2, unit=Unit.KILOMETERS):
     return haversine(point_1, point_2, unit=unit)
 
 
+def mw_to_dbm(mw):
+    """
+    Método que converte a potência recebida dada em mW para dBm
+    :param mw: Valor em miliwatts.
+    :return: Valor de miliwatts convertido para decibéis.
+    """
+    return 10. * log10(mw)
+
 def print_map(plot=False):
     ERB_LOCATION = (-21.226244, -44.978407)
 
     transmitted_frequency = 1872.500
-    transmitted_power = 40.000 # W
+    transmitted_power = 40 # 46.02 # 40W -> 46.02
     SENSITIVITY = -134
 
     n_lats, n_lons = (40, 40)
@@ -53,12 +61,12 @@ def print_map(plot=False):
             mode = 2  # 1 = URBAN, 2 = SUBURBAN, 3 = OPEN
 
             path_loss = cost231_path_loss(transmitted_frequency, tx_h, rx_h, distance, mode)
-            received_power = transmitted_frequency - path_loss
+            received_power = (mw_to_dbm(transmitted_power * 1000)) - path_loss
 
             distances.append(distance)
-            distances_pl.append(path_loss)
+            distances_pl.append(received_power)
 
-            propagation_matrix[i][j] = path_loss
+            propagation_matrix[i][j] = received_power
             # if received_power >= SENSITIVITY:
             #     propagation_matrix[i][j] = received_power
             # else:
@@ -148,9 +156,9 @@ def print_map(plot=False):
         fig, ax = plt.subplots()
         ax.plot(distances, distances_pl)
 
-        ax.set(xlabel='Distancia (km)', ylabel='Path Loss (dB)', title='Atenuação do Sinal')
+        ax.set(xlabel='Distancia (km)', ylabel='Potência recebida (dBw)', title='Potência do Sinal Recebido')
         ax.grid()
-        plt.savefig("quali.png")
+        plt.savefig("quali_dbw.png")
         plt.show()
 
 

@@ -42,7 +42,7 @@ pathspec==0.8.0
 pd==0.0.1
 peewee==3.13.3
 pefile==2019.4.18
-Pillow==7.2.0
+Pillow==8.0.1
 pre-commit==2.7.1
 pyinstaller==4.0
 pyinstaller-hooks-contrib==2020.9

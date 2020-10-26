@@ -93,7 +93,7 @@ toml==0.10.1
 typed-ast==1.4.1
 typing-extensions==3.7.4.3
 ujson==3.2.0
-urllib3==1.25.10
+urllib3==1.25.11
 virtualenv==20.0.35
 wrapt==1.12.1
 xarray==0.16.1

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # f = 1 * itur.u.GHz  # Link Frequency (GHz) 22.5
-el = 60  # Elevation angle constan 60 degrees
+el = 60  # Elevation angle constant 60 degrees
 rr = 30  # Rain rate (mm/h)
 tau = 45  # Polarization tilt angle relative to the horizontal (degrees). Tau = 45 deg for circular polarization)
 

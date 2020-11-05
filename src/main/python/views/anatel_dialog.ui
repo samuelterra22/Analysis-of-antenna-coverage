@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>965</width>
+    <width>1176</width>
     <height>546</height>
    </rect>
   </property>
@@ -369,7 +369,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="update_database_button">
            <property name="text">
             <string>Update database</string>
            </property>
@@ -381,21 +381,11 @@
             <bool>false</bool>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <item>
             <property name="text">
              <string>Select a state</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Minas Gerais</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Rio de Janeiro</string>
             </property>
            </item>
           </widget>
@@ -413,26 +403,11 @@
          <item row="0" column="3">
           <widget class="QComboBox" name="combo_box_contry">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <item>
             <property name="text">
              <string>Select a country</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Lavras</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Varginha</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Formiga</string>
             </property>
            </item>
           </widget>

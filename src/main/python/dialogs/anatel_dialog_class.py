@@ -3,6 +3,7 @@
 import time
 
 from PyQt5 import uic
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget
 
 import threading
@@ -14,6 +15,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
     """
     This class load the anatel dialog pyqt component
     """
+
     def __init__(self, parent=None):
         """
         Anatel dialog class constructor
@@ -22,15 +24,52 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
-        self.trigger_fill_progress_bar_thread()
+        self.combo_box_state.addItems(["Java", "C#", "Python"])
+        self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
 
-        self.add_rows()
+        self.combo_box_contry.addItems(["Java", "C#", "Python"])
+        self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
 
-    def trigger_fill_progress_bar_thread(self):
+        self.fill_anatel_table_rows()
+
+        self.update_database_button.clicked.disconnect()
+        self.update_database_button.clicked.connect(self.on_update_database_button_clicked)
+
+    @pyqtSlot(name="on_combo_box_state_changed")
+    def on_combo_box_state_changed(self, i):
+        print("Items in the list 'combo_box_state' are :")
+
+        for count in range(self.combo_box_state.count()):
+            print(self.combo_box_state.itemText(count))
+        print("Current index", i, "selection changed ", self.combo_box_state.currentText())
+
+    @pyqtSlot(name="on_combo_box_contry_changed")
+    def on_combo_box_contry_changed(self, i):
+        print("Items in the list 'combo_box_contry' are :")
+
+        for count in range(self.combo_box_contry.count()):
+            print(self.combo_box_contry.itemText(count))
+        print("Current index", i, "selection changed ", self.combo_box_contry.currentText())
+
+    def disable_ui_components(self):
+        self.anatel_table.setDisabled(True)
+        self.update_database_button.setDisabled(True)
+        self.combo_box_state.setDisabled(True)
+        self.combo_box_contry.setDisabled(True)
+
+    def enable_ui_components(self):
+        self.anatel_table.setDisabled(False)
+        self.update_database_button.setDisabled(False)
+        self.combo_box_state.setDisabled(False)
+        self.combo_box_contry.setDisabled(False)
+
+    @pyqtSlot(name="on_update_database_button_clicked")
+    def on_update_database_button_clicked(self):
         """
-        This method run the thread to fill progressbar
-        :return:
+        This method is called when calculate menu button is clicked
+        :return: None
         """
+
         x = threading.Thread(target=self.fill_progress_bar)
         x.start()
 
@@ -41,34 +80,69 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         """
         self.progress_bar_anatel: QProgressBar
 
+        self.disable_ui_components()
+
+        # delete all register from table
+        self.anatel_table.setRowCount(0)
+
         for i in range(101):
             self.progress_bar_anatel.setValue(i)
-            time.sleep(0.1)
+            time.sleep(0.07)
 
-    def add_rows(self):
+        self.anatel_table.setDisabled(False)
+        self.update_database_button.setDisabled(False)
+
+        self.fill_anatel_table_rows()
+
+    def fill_anatel_table_rows(self):
         """
-        This method add anatel antenna info rows in the table
+        This method add Anatel antenna info rows in the table
         :return:
         """
 
         self.anatel_table: QTableWidget
+        # self.anatel_table.removeRow()
 
         # Remove first row (is empty)
         self.anatel_table.removeRow(0)
         row_position = self.anatel_table.rowCount()
         qtd_columns = self.anatel_table.columnCount()
 
-        for i in range(16):
-            row = row_position+i
+        configs = [
+            (
+                "123",
+                "STATUS",
+                "ENTIDADE",
+                "FISTEL",
+                "NUM SERVICO",
+                "ATO DE RF",
+                "NUM ESTACAO",
+                "ENDERECO",
+                "UF",
+                "MUNICIPIO",
+                "EMISSAO",
+                "FREQ INICIAL",
+                "FREQ FINAL",
+                "AZIMUTE",
+                "TIPO ESTACAO",
+                "TIPO ANTENA",
+                "HOMOLOGACAO ANTENA",
+                "GANHO ANTENA",
+                "FRENTE COSTA",
+                "ANGULO 1/2 POT",
+                "ELEVACAO",
+                "POLARIZACAO",
+                "ALTURA ANTENA",
+                "HOMOLOGACAO TRANSMISSAO",
+                "LATITUDE",
+                "LONGITUDE",
+                "DATA PRIMEIRO LICENCIAMENTO",
+            )
+        ]
+
+        for row_count, config in enumerate(configs):
+            row = row_position + row_count
             self.anatel_table.insertRow(row)
 
-            self.anatel_table.setItem(row, 0, QTableWidgetItem(str(i)))
-            self.anatel_table.setItem(row, 1, QTableWidgetItem("LIC-LIC-01"))
-            self.anatel_table.setItem(row, 2, QTableWidgetItem("TELEFÔNICA BRASIL S.A."))
-            self.anatel_table.setItem(row, 3, QTableWidgetItem("50409146285"))
-            self.anatel_table.setItem(row, 4, QTableWidgetItem("010"))
-            self.anatel_table.setItem(row, 5, QTableWidgetItem("59072012"))
-            self.anatel_table.setItem(row, 6, QTableWidgetItem("687462363"))
-            self.anatel_table.setItem(row, 7, QTableWidgetItem("UFLA - PRÓXIMO AO PRÉDIO DE CIENCIAS DA SOLO,S/N,CAMPUS UFLA"))
-            self.anatel_table.setItem(row, 8, QTableWidgetItem("MG"))
-            self.anatel_table.setItem(row, 9, QTableWidgetItem("Lavras"))
+            for col_count, config_item in enumerate(config):
+                self.anatel_table.setItem(row, col_count, QTableWidgetItem(config_item))

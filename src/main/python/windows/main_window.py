@@ -42,106 +42,51 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.init_mos_map()
 
         # Calculate button
+        self.button_calculate.clicked.disconnect()
         self.button_calculate.clicked.connect(self.on_button_calculate_clicked)
 
         # Menus
+        self.menu_action_exit.triggered.disconnect()
         self.menu_action_exit.triggered.connect(self.on_menu_exit_triggered)
-        self.menu_action_anatel_base.triggered.connect(
-            self.on_menu_anatel_base_triggered
-        )
+
+        self.menu_action_anatel_base.triggered.disconnect()
+        self.menu_action_anatel_base.triggered.connect(self.on_menu_anatel_base_triggered)
+
+        self.menu_action_settings.triggered.disconnect()
         self.menu_action_settings.triggered.connect(self.on_menu_settings_triggered)
+
+        self.menu_action_about.triggered.disconnect()
         self.menu_action_about.triggered.connect(self.on_menu_about_triggered)
+
+        self.menu_action_help.triggered.disconnect()
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
-
-    def generate_random_position(self, lat, lon):
-        dec_lat = (random.random() / 80) * random.choice([-1, 1])
-        dec_lon = (random.random() / 80) * random.choice([-1, 1])
-
-        return [round(lat + dec_lat, 15), round(lon + dec_lon, 15)]
-
-    def set_zoom_warning(self, zoom):
-        if zoom < 6:
-            print('Woah buddy. You\'re flying pretty high. Hope you don\'t have vertigo..')
-        else:
-            print('Yup, no worries. A fall from here shoudn\'t hurt... too much.')
-
-    def set_warnings(self):
-        self.map.getZoom(self.set_zoom_warning)
-
-    def _get_marker_radius(self, value):
-        # We want the marker size to be exponential to the number
-        power = (1 / 3)
-        MAX_SIZE = 1  # ?
-        return MAX_SIZE * (value ** power) / (self.highIncidents ** power)
-
-    def on_map_clicked(self, event):
-        print(event)
-
-    def on_map_zoomed(self, event):
-        print(event)
-
-    def _init_map_leaf(self):
-        self.map_widget = MapWidget()
-        self.vertical_layout_coverage_map.addWidget(self.map_widget)
-
-        self.map = L.map(self.map_widget)
-        # {
-        #     'minOpacity': 0.05,
-        #     'maxZoom': 18,
-        #     'radius': 25,
-        #     'blur': 15,
-        #     'max': 1.0
-        # }
-        self.map.setView([-21.2284575, -44.9753476], 16)
-
-        # self.map.clicked.connect(self.on_map_clicked)
-        # self.map.zoom.connect(self.on_map_zoomed)
-
-        # self.map.getBounds(lambda bounds: print(bounds))
-
-        # self.set_warnings()
-
-        # L.tileLayer('http://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png').addTo(self.map)
-        # L.tileLayer('http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png', {'noWrap': 'true'}).addTo(self.map)
-        # L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png').addTo(self.map)
-
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png').addTo(self.map)
-
-        for _ in range(50):
-            coo = self.generate_random_position(-21.227026, -44.9778903)
-            self.marker = L.circleMarker(coo, {
-                'color': "red",
-                'opacity': 0.5,
-                # 'fillOpacity': 0.9,
-                # 'stroke': 1,
-                # 'weight': 10,
-                # 'lineCap': 'round',
-                # 'fillColor': "lightgreen",
-                # 'radius': 25,  # self._get_marker_radius(0)
-            })
-
-            self.marker.bindPopup('coo')
-            self.map.addLayer(self.marker)
-
-        self.marker = L.circleMarker([-21.227026, -44.9778903], {
-            'color': '#a31286',
-            'fillOpacity': 0.3,
-            'stroke': 0,
-            'weight': 3
-        })
-
-        self.map.clicked.connect(lambda x: print(x))
-
-        self.map.addLayer(self.marker)
 
     def calc_distance(self, point_1, point_2, unit=Unit.METERS):
         return haversine(point_1, point_2, unit=unit)
 
     def _init_map(self):
+        m = folium.Map(
+            location=(-21.226244, -44.978407),
+            zoom_start=16,
+            control_scale=True
+        )
+
+        data = io.BytesIO()
+        m.save(data, close_file=False)
+
+        self.web_view.setHtml(data.getvalue().decode())
+
+    @pyqtSlot(name="on_button_calculate_clicked")
+    def on_button_calculate_clicked(self):
+        """
+        This method is called when calculate menu button is clicked
+        :return: None
+        """
+        print("Calculate button!")
 
         ERB_LOCATION = (-21.226244, -44.978407)
 
-        transmitted_power = 1872.500 # 74.471580313
+        transmitted_power = 1872.500  # 74.471580313
         SENSITIVITY = -134
 
         n = 0.00
@@ -226,14 +171,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.web_view.setHtml(data.getvalue().decode())
 
-    @pyqtSlot(name="on_button_calculate_clicked")
-    def on_button_calculate_clicked(self):
-        """
-        This method is called when calculate menu button is clicked
-        :return: None
-        """
-        print("Calculate button!")
-
     @pyqtSlot(name="on_menu_anatel_base_triggered")
     def on_menu_anatel_base_triggered(self):
         """
@@ -242,6 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         anatel_dialog = AnatelDialogClass(self)
         anatel_dialog.setModal(True)
+        anatel_dialog.setFixedSize(anatel_dialog.size())
         anatel_dialog.show()
 
     @pyqtSlot(name="on_menu_settings_triggered")

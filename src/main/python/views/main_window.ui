@@ -787,7 +787,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>613</height>
+                  <height>305</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -963,8 +963,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>133</width>
+                  <height>190</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1141,7 +1141,7 @@
                      </widget>
                     </item>
                     <item row="3" column="0" colspan="2">
-                     <widget class="QComboBox" name="combo_box_enviroment">
+                     <widget class="QComboBox" name="combo_box_environment">
                       <item>
                        <property name="text">
                         <string>Select</string>

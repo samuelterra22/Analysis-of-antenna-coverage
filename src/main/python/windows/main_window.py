@@ -11,7 +11,7 @@ import matplotlib.cm
 from PyQt5 import uic
 from pyqtlet import L, MapWidget
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QComboBox
 from haversine import haversine, Unit
 
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
@@ -38,7 +38,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        self._init_map()
+        self._init_rf_map()
         # self.init_mos_map()
 
         # Calculate button
@@ -46,6 +46,108 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.button_calculate.clicked.connect(self.on_button_calculate_clicked)
 
         # Menus
+        self.init_menus()
+
+        # Tab components
+        self.init_transmitter_components()
+        self.init_antenna_components()
+        self.init_model_components()
+        self.init_output_components()
+
+    def init_output_components(self):
+        self.combo_box_output_colour_scheme: QComboBox
+        self.combo_box_output_colour_scheme.addItems([])
+        self.combo_box_output_colour_scheme.currentIndexChanged.connect(
+            self.on_combo_box_output_colour_scheme_changed)
+
+
+    def init_model_components(self):
+        self.combo_box_propagation_model: QComboBox
+        self.combo_box_propagation_model.addItems([])
+        self.combo_box_propagation_model.currentIndexChanged.connect(
+            self.on_combo_box_propagation_model_changed)
+
+        self.combo_box_environment: QComboBox
+        self.combo_box_environment.addItems([])
+        self.combo_box_environment.currentIndexChanged.connect(
+            self.on_combo_box_environment_changed)
+
+    def init_antenna_components(self):
+        self.combo_box_antenna_antenna_polarisation: QComboBox
+        self.combo_box_antenna_antenna_polarisation.addItems([])
+        self.combo_box_antenna_antenna_polarisation.currentIndexChanged.connect(
+            self.on_combo_box_antenna_antenna_polarisation_changed)
+
+    def init_transmitter_components(self):
+        self.combo_box_anatel_base_station: QComboBox
+        self.combo_box_anatel_base_station.addItems([])
+        self.combo_box_anatel_base_station.currentIndexChanged.connect(self.on_combo_box_anatel_base_station_changed)
+
+        self.combo_box_tx_coordinates: QComboBox
+        self.combo_box_tx_coordinates.addItems([])
+        self.combo_box_tx_coordinates.currentIndexChanged.connect(self.on_combo_box_tx_coordinates_changed)
+
+    @pyqtSlot(name="on_combo_box_output_colour_scheme_changed")
+    def on_combo_box_output_colour_scheme_changed(self):
+        print("Items in the list 'combo_box_output_colour_scheme' are :")
+        index = self.combo_box_output_colour_scheme.currentIndex()
+        text = self.combo_box_output_colour_scheme.currentText()
+
+        for count in range(self.combo_box_output_colour_scheme.count()):
+            print(self.combo_box_output_colour_scheme.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_combo_box_environment_changed")
+    def on_combo_box_environment_changed(self):
+        print("Items in the list 'combo_box_environment' are :")
+        index = self.combo_box_environment.currentIndex()
+        text = self.combo_box_environment.currentText()
+
+        for count in range(self.combo_box_environment.count()):
+            print(self.combo_box_environment.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_combo_box_propagation_model_changed")
+    def on_combo_box_propagation_model_changed(self):
+        print("Items in the list 'combo_box_propagation_model' are :")
+        index = self.combo_box_propagation_model.currentIndex()
+        text = self.combo_box_propagation_model.currentText()
+
+        for count in range(self.combo_box_propagation_model.count()):
+            print(self.combo_box_propagation_model.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_combo_box_antenna_antenna_polarisation_changed")
+    def on_combo_box_antenna_antenna_polarisation_changed(self):
+        print("Items in the list 'combo_box_antenna_antenna_polarisation' are :")
+        index = self.combo_box_antenna_antenna_polarisation.currentIndex()
+        text = self.combo_box_antenna_antenna_polarisation.currentText()
+
+        for count in range(self.combo_box_antenna_antenna_polarisation.count()):
+            print(self.combo_box_antenna_antenna_polarisation.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_combo_box_anatel_base_station_changed")
+    def on_combo_box_anatel_base_station_changed(self):
+        print("Items in the list 'combo_box_anatel_base_station' are :")
+        index = self.combo_box_anatel_base_station.currentIndex()
+        text = self.combo_box_anatel_base_station.currentText()
+
+        for count in range(self.combo_box_anatel_base_station.count()):
+            print(self.combo_box_anatel_base_station.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
+    def on_combo_box_tx_coordinates_changed(self):
+        print("Items in the list 'combo_box_tx_coordinates' are :")
+        index = self.combo_box_tx_coordinates.currentIndex()
+        text = self.combo_box_tx_coordinates.currentText()
+
+        for count in range(self.combo_box_tx_coordinates.count()):
+            print(self.combo_box_tx_coordinates.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    def init_menus(self):
         self.menu_action_exit.triggered.disconnect()
         self.menu_action_exit.triggered.connect(self.on_menu_exit_triggered)
 
@@ -64,7 +166,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def calc_distance(self, point_1, point_2, unit=Unit.METERS):
         return haversine(point_1, point_2, unit=unit)
 
-    def _init_map(self):
+    def _init_rf_map(self):
         m = folium.Map(
             location=(-21.226244, -44.978407),
             zoom_start=16,

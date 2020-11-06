@@ -60,7 +60,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.combo_box_output_colour_scheme.currentIndexChanged.connect(
             self.on_combo_box_output_colour_scheme_changed)
 
-
     def init_model_components(self):
         self.combo_box_propagation_model: QComboBox
         self.combo_box_propagation_model.addItems([])

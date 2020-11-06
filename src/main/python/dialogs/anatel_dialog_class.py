@@ -24,13 +24,16 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
+        self.init_ui_components()
+
+        self.fill_anatel_table_rows()
+
+    def init_ui_components(self):
         self.combo_box_state.addItems(["Java", "C#", "Python"])
         self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
 
         self.combo_box_contry.addItems(["Java", "C#", "Python"])
         self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
-
-        self.fill_anatel_table_rows()
 
         self.update_database_button.clicked.disconnect()
         self.update_database_button.clicked.connect(self.on_update_database_button_clicked)

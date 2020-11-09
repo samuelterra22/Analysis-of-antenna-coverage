@@ -48,7 +48,7 @@ numpy==1.19.4
 packaging==20.4
 pandas==1.1.4
 parso==0.8.0
-pathspec==0.8.0
+pathspec==0.8.1
 pd==0.0.1
 peewee==3.13.3
 pefile==2019.4.18

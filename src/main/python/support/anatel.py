@@ -8,6 +8,10 @@ import requests
 
 
 def get_anatel_data():
+    """
+    Get ERB info in Anatel online database
+    :return: Pandas object
+    """
     url_base = "http://sistemas.anatel.gov.br"
     request_url = url_base + "/se/public/view/b/export_licenciamento.php"
 
@@ -33,7 +37,7 @@ def get_anatel_data():
         "sort_14": 0,  # tipo estacao
         "sort_15": 0,  # classificacao infra fisica
         "sort_16": 0,  # compatilhamentro infa fisica
-        "sort_17": 0,  # dissicao compartilhamento infra
+        "sort_17": 0,  # disp compartilhamento infra
         "sort_18": 0,  # tipo antena
         "sort_19": 0,  # homologacao antena
         "sort_20": 0,  # ganho antena
@@ -82,7 +86,7 @@ def get_anatel_data():
         "view": 0
     }
 
-    print("Realizando requisição com parâmetros informados...")
+    print("Performing request with informed parameters ...")
     response = requests.post(
         request_url,
         data=parameters,
@@ -93,18 +97,18 @@ def get_anatel_data():
         file_name = redirect_url.split("=")[1] + ".zip"
 
         try:
-            print("Por favor aguarde, realizando download do arquivo '%s'..." % file_name)
+            print("Please wait, downloading the file '%s'..." % file_name)
 
             with urlopen(url_base + redirect_url) as f:
                 with BytesIO(f.read()) as b, ZipFile(b) as myzipfile:
                     foofile = myzipfile.open(myzipfile.namelist()[0])
                     df = pd.read_csv(foofile, encoding="ISO-8859-1")
 
-            print("Download realizado com sucesso!")
+            print("Download successful!")
             return df
         except requests.exceptions.RequestException as e:
             print(e)
-            print("Ocorreu um erro ao realizar o download...")
+            print("An error occurred while downloading ...")
 
     else:
         print(response["title"])

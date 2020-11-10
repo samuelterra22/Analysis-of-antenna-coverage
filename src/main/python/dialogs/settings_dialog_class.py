@@ -39,7 +39,7 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         """
         self.combo_box_country_county.clear()
 
-        if index is not 0:
+        if index != 0:
             uf_id = self.combo_box_country_state.itemData(index)
             self.__create_or_update_uf(uf_id)
             uf_initial = get_uf_by_id(uf_id)

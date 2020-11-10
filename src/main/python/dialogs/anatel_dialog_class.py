@@ -1,11 +1,13 @@
 #!/usr/bin/env python
-import time
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel
+from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 
+from controllers.settings_controller import SettingsController
 from support.anatel import get_anatel_data
+from support.constants import CURRENT_UF_ID
+from support.region import get_ufs_initials, get_uf_by_id, get_counties
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
 
@@ -23,33 +25,71 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
+        self.__controller = SettingsController()
+
         self.init_ui_components()
 
     def init_ui_components(self):
-        self.combo_box_state.addItems(["Java", "C#", "Python"])
+        self.combo_box_state.addItems(get_ufs_initials())
         self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
 
-        self.combo_box_contry.addItems(["Java", "C#", "Python"])
+        self.combo_box_contry.addItems(["Select a UF first"])
         self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
 
         self.update_database_button.clicked.disconnect()
         self.update_database_button.clicked.connect(self.on_update_database_button_clicked)
 
     @pyqtSlot(name="on_combo_box_state_changed")
-    def on_combo_box_state_changed(self, i):
-        print("Items in the list 'combo_box_state' are :")
+    def on_combo_box_state_changed(self):
+        # reset combo box
+        self.combo_box_contry.clear()
+        self.combo_box_contry.addItems(["Select a UF first"])
 
-        for count in range(self.combo_box_state.count()):
-            print(self.combo_box_state.itemText(count))
-        print("Current index", i, "selection changed ", self.combo_box_state.currentText())
+        print("Items in the list 'combo_box_state' are :")
+        index = self.combo_box_state.currentIndex()
+        text = self.combo_box_state.currentText()
+
+        if index != 0:
+            uf_id = self.combo_box_state.itemData(index)
+            self.__create_or_update_uf(uf_id)
+            uf_initial = get_uf_by_id(uf_id)
+            self.fill_combo_box_country(uf_initial)
+
+    def fill_combo_box_country(self, uf):
+        """
+        This method fill the combo box country county according to uf
+        :param uf:
+        :return:
+        """
+        self.combo_box_contry: QComboBox
+        counties = get_counties(uf)
+        for county in counties:
+            self.combo_box_contry.addItem(county[0], county[1])
+
+    def __create_or_update_uf(self, uf_id):
+        data = {
+            'option': CURRENT_UF_ID,
+            'value': uf_id
+        }
+
+        # The setting no exists, then store
+        if not self.__controller.get(CURRENT_UF_ID):
+            result = self.__controller.store(data)
+            print('Result from store: ' + str(result))
+        else:
+            # The setting exists, then update
+            result = self.__controller.update(data, None)
+            print('Result from update: ' + str(result))
 
     @pyqtSlot(name="on_combo_box_contry_changed")
-    def on_combo_box_contry_changed(self, i):
+    def on_combo_box_contry_changed(self):
         print("Items in the list 'combo_box_contry' are :")
+        index = self.combo_box_contry.currentIndex()
+        text = self.combo_box_contry.currentText()
 
         for count in range(self.combo_box_contry.count()):
             print(self.combo_box_contry.itemText(count))
-        print("Current index", i, "selection changed ", self.combo_box_contry.currentText())
+        print("Current index", index, "selection changed ", text)
 
     def disable_ui_components(self):
         self.anatel_table.setDisabled(True)
@@ -73,11 +113,6 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.progress_bar_anatel: QProgressBar
 
         self.label_last_update.setText("Searching for information in the online database...")
-        # for i in range(101):
-        #     self.progress_bar_anatel.setValue(i)
-        #     time.sleep(0.07)
-
-        # self.disable_ui_components()
 
         # delete all register from table
         self.anatel_table.setRowCount(0)

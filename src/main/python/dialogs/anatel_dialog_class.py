@@ -197,7 +197,11 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.anatel_table.removeRow(0)
         row_position = self.anatel_table.rowCount()
 
-        erb_config = get_anatel_data()
+        self.combo_box_state: QComboBox
+        uf_sigle = self.combo_box_state.itemText(self.combo_box_state.currentIndex())
+        country_code = self.combo_box_contry.itemData(int(self.combo_box_contry.currentIndex()))
+
+        erb_config = get_anatel_data(uf_sigle, int(country_code))
 
         self.label_last_update.setText("Saving information offline")
 

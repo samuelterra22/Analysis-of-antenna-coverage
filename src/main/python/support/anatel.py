@@ -7,7 +7,7 @@ import pandas as pd
 import requests
 
 
-def get_anatel_data():
+def get_anatel_data(uf_sigle, country_id=None):
     """
     Get ERB info in Anatel online database
     :return: Pandas object
@@ -58,8 +58,8 @@ def get_anatel_data():
         "fc_4": None,  # ato de rf
         "fc_5": None,  # num estacao
         "fc_6": None,  # endereco
-        "fc_7": "MG",  # UF
-        "fc_8": 3138203,  # Municipio
+        "fc_7": uf_sigle,  # UF
+        "fc_8": country_id,  # Municipio
         "fc_9": None,  # emissao
         "fc_10": None,  # tecnologia
         "fc_11": None,  # freq ini

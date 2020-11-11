@@ -43,3 +43,11 @@ class BaseController(ABC):
         :return:
         """
         pass
+
+    @abstractmethod
+    def destroy_all(self):
+        """
+        Destroy controller method
+        :return:
+        """
+        pass

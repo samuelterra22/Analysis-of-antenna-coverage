@@ -3,29 +3,29 @@ from datetime import datetime
 
 from src.main.python.controllers.base_controller import BaseController
 from src.main.python.exceptions.application_exception import ApplicationException
-from src.main.python.models.settings import Settings
+from src.main.python.models.base_station import BaseStation
 from src.main.python.support.logs import to_log_error
 
 
-class SettingsController(BaseController):
+class BaseStationController(BaseController):
     """
-    This class implement the setting controller
+    This class implement the base station controller
     """
 
     def __init__(self):
         """
-        Settings controller constructor using service and repository
+        BaseStation controller constructor using service and repository
         """
         pass
 
     def store(self, data):
         """
-        This method store a setting using the service
+        This method store a base station using the service
         :param data:
         :return:
         """
         try:
-            return Settings.create(**data)
+            return BaseStation.create(**data)
 
         except BaseException:
             e = ApplicationException()
@@ -35,14 +35,14 @@ class SettingsController(BaseController):
 
     def get(self, data):
         """
-        This method show details for a specific setting
+        This method show details for a specific base station
         :param data:
         :return:
         """
         print(data)
 
         try:
-            return Settings.select().where(Settings.option == data['option']).get()
+            return BaseStation.select().where(BaseStation.option == data['option']).get()
         except BaseException:
             e = ApplicationException()
             to_log_error(e.get_message())
@@ -51,18 +51,17 @@ class SettingsController(BaseController):
 
     def update(self, data, id):
         """
-        This method update a setting using a service
+        This method update a base station using a service
         :param data:
         :param id:
         :return:
         """
-        model = Settings.select().where(Settings.option == data['option']).get()
 
-        settings = Settings.get_by_id(model.id)
+        base_station = BaseStation.get_by_id(id)
 
         try:
             data['updated_at'] = datetime.now()
-            return settings.update(data).where(Settings.id == model.id).execute()
+            return base_station.update(data).where(BaseStation.id == id).execute()
         except BaseException:
             e = ApplicationException()
             to_log_error(e.get_message())
@@ -71,23 +70,23 @@ class SettingsController(BaseController):
 
     def destroy(self, id):
         """
-        This method delete a setting using a service
+        This method delete a base station using a service
         :param id:
         :return:
         """
         try:
-            model = Settings.get_by_id(id)
+            model = BaseStation.get_by_id(id)
 
-            return Settings.delete_by_id(model.id)
+            return BaseStation.delete_by_id(model.id)
         except Exception as e:
             print(e)
 
     def destroy_all(self):
         """
-        This method delete all setting using a service
+        This method delete all base station using a service
         :return:
         """
         try:
-            return Settings.truncate_table()
+            return BaseStation.truncate_table()
         except Exception as e:
             print(e)

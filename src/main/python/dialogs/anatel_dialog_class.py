@@ -4,6 +4,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 
+from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.anatel import get_anatel_data
 from src.main.python.support.constants import CURRENT_UF_ID
@@ -26,7 +27,8 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
-        self.__controller = SettingsController()
+        self.__settings_controller = SettingsController()
+        self.__base_station_controller = BaseStationController()
 
         self.init_ui_components()
 
@@ -34,7 +36,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         data = {
             'option': CURRENT_UF_ID,
         }
-        res = self.__controller.get(data)
+        res = self.__settings_controller.get(data)
         if res is not None:
             return res.value
         else:
@@ -44,7 +46,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         data = {
             'option': CURRENT_COUNTY_ID,
         }
-        res = self.__controller.get(data)
+        res = self.__settings_controller.get(data)
         if res is not None:
             return res.value
         else:
@@ -124,12 +126,12 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         }
 
         # The setting no exists, then store
-        if not self.__controller.get(data):
-            result = self.__controller.store(data)
+        if not self.__settings_controller.get(data):
+            result = self.__settings_controller.store(data)
             print('Result from store uf id: ' + str(result))
         else:
             # The setting exists, then update
-            result = self.__controller.update(data, None)
+            result = self.__settings_controller.update(data, None)
             print('Result from update uf id: ' + str(result))
 
     def __create_or_update_state(self, state_id):
@@ -139,12 +141,12 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         }
 
         # The setting no exists, then store
-        if not self.__controller.get(data):
-            result = self.__controller.store(data)
+        if not self.__settings_controller.get(data):
+            result = self.__settings_controller.store(data)
             print('Result from store state id: ' + str(result))
         else:
             # The setting exists, then update
-            result = self.__controller.update(data, None)
+            result = self.__settings_controller.update(data, None)
             print('Result from update state id: ' + str(result))
 
     @pyqtSlot(name="on_combo_box_contry_changed")
@@ -178,17 +180,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         for uf in ufs:
             self.combo_box_state.addItem(uf, get_uf_code(uf))
 
-    @pyqtSlot(name="on_update_database_button_clicked")
-    def on_update_database_button_clicked(self):
-        """
-        This method add Anatel antenna info rows in the table
-        :return:
-        """
-        self.label_last_update: QLabel
-        self.progress_bar_anatel: QProgressBar
-
-        self.label_last_update.setText("Searching for information in the online database...")
-
+    def fill_erb_table(self, erb_config):
         # delete all register from table
         self.anatel_table.setRowCount(0)
 
@@ -196,14 +188,6 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
         self.anatel_table.removeRow(0)
         row_position = self.anatel_table.rowCount()
-
-        self.combo_box_state: QComboBox
-        uf_sigle = self.combo_box_state.itemText(self.combo_box_state.currentIndex())
-        country_code = self.combo_box_contry.itemData(int(self.combo_box_contry.currentIndex()))
-
-        erb_config = get_anatel_data(uf_sigle, int(country_code))
-
-        self.label_last_update.setText("Saving information offline")
 
         total = erb_config.shape[0]
         processed = 0
@@ -219,9 +203,71 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
                 table_column_count = table_column_count + 1
 
             processed = processed + 1
-            self.progress_bar_anatel.setValue(round(((processed/total) * 100), 2))
+            self.progress_bar_anatel.setValue(round(((processed / total) * 100), 2))
 
         self.anatel_table.setDisabled(False)
         self.update_database_button.setDisabled(False)
+
+    def save_offline_erb_data(self, erb_config):
+        self.__base_station_controller.destroy_all()
+
+        for row in erb_config.values:
+            data = {
+                "status": row[0],
+                "entidade": row[1],
+                "num_fistel": row[2],
+                "num_servico": row[3],
+                "num_ato_de_rf": row[4],
+                "num_estacao": row[5],
+                "endereco": row[6],
+                "uf": row[7],
+                "municipio": row[8],
+                "emissao": row[9],
+                "tecnologia": row[10],
+                "frequencia_inicial": row[11],
+                "frequencia_final": row[12],
+                "azimute": row[13],
+                "tipo_estacao": row[14],
+                "classificacao_infra_fisica": row[15],
+                "compartilhamento_infra_fisica": row[16],
+                "disp_compartilhamento_infra": row[17],
+                "tipo_antena": row[18],
+                "homologacao_antena": row[19],
+                "ganho_antena": row[20],
+                "ganho_frente_costa": row[21],
+                "angulo_meia_potencia": row[22],
+                "elevacao": row[23],
+                "polarizacao": row[24],
+                "altura": row[25],
+                "homologacao_transmissao": row[26],
+                "potencia_transmisao": row[27],
+                "latitude": row[28],
+                "longitude": row[29],
+                "data_primeiro_licenciamento": row[30],
+            }
+            print(data)
+            self.__base_station_controller.store(data)
+
+    @pyqtSlot(name="on_update_database_button_clicked")
+    def on_update_database_button_clicked(self):
+        """
+        This method add Anatel antenna info rows in the table
+        :return:
+        """
+        self.label_last_update: QLabel
+        self.progress_bar_anatel: QProgressBar
+
+        self.label_last_update.setText("Searching for information in the online database...")
+
+        self.combo_box_state: QComboBox
+        uf_sigle = self.combo_box_state.itemText(self.combo_box_state.currentIndex())
+        country_code = self.combo_box_contry.itemData(int(self.combo_box_contry.currentIndex()))
+
+        erb_config = get_anatel_data(uf_sigle, int(country_code))
+
+        self.label_last_update.setText("Saving information offline")
+
+        self.save_offline_erb_data(erb_config)
+        self.fill_erb_table(erb_config)
 
         self.label_last_update.setText("Updated local database!")

@@ -15,7 +15,7 @@ AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
 
 class AnatelDialogClass(QDialog, AnatelQDialog):
     """
-    This class load the anatel dialog pyqt component
+    This class load the Anatel dialog pyqt component
     """
 
     def __init__(self, parent=None):
@@ -30,19 +30,69 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
         self.init_ui_components()
 
-    def init_ui_components(self):
-        self.fill_combo_box_state()
-        self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
+    def get_current_uf_id(self):
+        data = {
+            'option': CURRENT_UF_ID,
+        }
+        res = self.__controller.get(data)
+        if res is not None:
+            return res.value
+        else:
+            return -1
 
-        self.combo_box_contry.addItems(["Select a UF first"])
+    def get_current_state_id(self):
+        data = {
+            'option': CURRENT_COUNTY_ID,
+        }
+        res = self.__controller.get(data)
+        if res is not None:
+            return res.value
+        else:
+            return -1
+
+    def init_ui_components(self):
+        current_uf_id = self.get_current_uf_id()
+        current_contry_id = self.get_current_state_id()
+        print(current_uf_id)
+        print(current_contry_id)
+
+        self.fill_combo_box_state()
+
+        current_index_uf = self.get_current_state_index(current_uf_id)
+        self.combo_box_state.setCurrentIndex(current_index_uf)
+
+        if current_index_uf != -1:
+            self.fill_combo_box_country(self.combo_box_state.itemText(current_index_uf))
+        else:
+            self.combo_box_contry.addItems(["Select a UF first"])
+
+        current_contry_uf = self.get_current_contry_index(current_contry_id)
+        self.combo_box_contry.setCurrentIndex(current_contry_uf)
+
+        self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
         self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
 
         self.update_database_button.clicked.disconnect()
         self.update_database_button.clicked.connect(self.on_update_database_button_clicked)
 
+    def get_current_state_index(self, current_uf_id):
+        self.combo_box_state: QComboBox
+        if current_uf_id != -1:
+            for count in range(self.combo_box_state.count()):
+                if str(self.combo_box_state.itemData(count)) == current_uf_id:
+                    return count
+        return 0
+
+    def get_current_contry_index(self, current_contry_id):
+        self.combo_box_contry: QComboBox
+        if current_contry_id != -1:
+            for count in range(self.combo_box_contry.count()):
+                if str(self.combo_box_contry.itemData(count)) == current_contry_id:
+                    return count
+        return 0
+
     @pyqtSlot(name="on_combo_box_state_changed")
     def on_combo_box_state_changed(self):
-        # reset combo box
         self.combo_box_contry.clear()
 
         index = self.combo_box_state.currentIndex()
@@ -64,6 +114,8 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         counties = get_counties(uf)
         for county in counties:
             self.combo_box_contry.addItem(county[0], county[1])
+
+        self.combo_box_contry.setCurrentIndex(0)
 
     def __create_or_update_uf(self, uf_id):
         data = {

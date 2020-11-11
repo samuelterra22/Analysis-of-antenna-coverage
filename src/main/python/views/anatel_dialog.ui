@@ -47,7 +47,7 @@
          <number>1</number>
         </property>
         <property name="columnCount">
-         <number>32</number>
+         <number>33</number>
         </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>false</bool>
@@ -226,6 +226,11 @@
         <column>
          <property name="text">
           <string>DATA PRIM. LICENC.</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>CRIADO EM</string>
          </property>
         </column>
         <item row="0" column="0">

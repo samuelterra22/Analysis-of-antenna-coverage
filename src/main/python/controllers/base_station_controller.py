@@ -49,6 +49,20 @@ class BaseStationController(BaseController):
             print(e)
             return None
 
+    def get_all(self):
+        """
+        This method get all details for base stations
+        :return:
+        """
+
+        try:
+            return BaseStation.select()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None
+
     def update(self, data, id):
         """
         This method update a base station using a service

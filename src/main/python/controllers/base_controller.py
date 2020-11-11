@@ -26,6 +26,14 @@ class BaseController(ABC):
         pass
 
     @abstractmethod
+    def get_all(self):
+        """
+        Index controller method
+        :return:
+        """
+        pass
+
+    @abstractmethod
     def update(self, data, id):
         """
         Update controller method

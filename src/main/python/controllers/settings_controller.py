@@ -49,6 +49,19 @@ class SettingsController(BaseController):
             print(e)
             return None
 
+    def get_all(self):
+        """
+        This method show details for all settings
+        :return:
+        """
+        try:
+            return Settings.select().get()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None
+
     def update(self, data, id):
         """
         This method update a setting using a service

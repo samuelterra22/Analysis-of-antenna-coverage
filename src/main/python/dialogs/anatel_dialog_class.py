@@ -4,6 +4,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 
+from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.anatel import get_anatel_data
@@ -70,6 +71,8 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
         current_contry_uf = self.get_current_contry_index(current_contry_id)
         self.combo_box_contry.setCurrentIndex(current_contry_uf)
+
+        self.fill_erb_table_with_database_info()
 
         self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
         self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
@@ -180,7 +183,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         for uf in ufs:
             self.combo_box_state.addItem(uf, get_uf_code(uf))
 
-    def fill_erb_table(self, erb_config):
+    def fill_erb_table_with_database_info(self):
         # delete all register from table
         self.anatel_table.setRowCount(0)
 
@@ -189,18 +192,50 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.anatel_table.removeRow(0)
         row_position = self.anatel_table.rowCount()
 
-        total = erb_config.shape[0]
+        db_configs = self.__base_station_controller.get_all()
+
+        total = len(db_configs)
         processed = 0
 
-        for i, row in erb_config.iterrows():
+        for i, config in enumerate(db_configs):
+            config: BaseStation
+
             table_row_count = row_position + i
             self.anatel_table.insertRow(table_row_count)
 
-            self.anatel_table.setItem(table_row_count, 0, QTableWidgetItem(str(table_row_count)))
-            table_column_count = 1
-            for column, column_data in row.iteritems():
-                self.anatel_table.setItem(table_row_count, table_column_count, QTableWidgetItem(str(column_data)))
-                table_column_count = table_column_count + 1
+            self.anatel_table.setItem(table_row_count, 0, QTableWidgetItem(str(config.id)))
+            self.anatel_table.setItem(table_row_count, 1, QTableWidgetItem(str(config.status)))
+            self.anatel_table.setItem(table_row_count, 2, QTableWidgetItem(str(config.entidade)))
+            self.anatel_table.setItem(table_row_count, 3, QTableWidgetItem(str(config.num_fistel)))
+            self.anatel_table.setItem(table_row_count, 4, QTableWidgetItem(str(config.num_servico)))
+            self.anatel_table.setItem(table_row_count, 5, QTableWidgetItem(str(config.num_ato_de_rf)))
+            self.anatel_table.setItem(table_row_count, 6, QTableWidgetItem(str(config.num_estacao)))
+            self.anatel_table.setItem(table_row_count, 7, QTableWidgetItem(str(config.endereco)))
+            self.anatel_table.setItem(table_row_count, 8, QTableWidgetItem(str(config.uf)))
+            self.anatel_table.setItem(table_row_count, 9, QTableWidgetItem(str(config.municipio)))
+            self.anatel_table.setItem(table_row_count, 10, QTableWidgetItem(str(config.emissao)))
+            self.anatel_table.setItem(table_row_count, 11, QTableWidgetItem(str(config.tecnologia)))
+            self.anatel_table.setItem(table_row_count, 12, QTableWidgetItem(str(config.frequencia_inicial)))
+            self.anatel_table.setItem(table_row_count, 13, QTableWidgetItem(str(config.frequencia_final)))
+            self.anatel_table.setItem(table_row_count, 14, QTableWidgetItem(str(config.azimute)))
+            self.anatel_table.setItem(table_row_count, 15, QTableWidgetItem(str(config.tipo_estacao)))
+            self.anatel_table.setItem(table_row_count, 16, QTableWidgetItem(str(config.classificacao_infra_fisica)))
+            self.anatel_table.setItem(table_row_count, 17, QTableWidgetItem(str(config.compartilhamento_infra_fisica)))
+            self.anatel_table.setItem(table_row_count, 18, QTableWidgetItem(str(config.disp_compartilhamento_infra)))
+            self.anatel_table.setItem(table_row_count, 19, QTableWidgetItem(str(config.tipo_antena)))
+            self.anatel_table.setItem(table_row_count, 20, QTableWidgetItem(str(config.homologacao_antena)))
+            self.anatel_table.setItem(table_row_count, 21, QTableWidgetItem(str(config.ganho_antena)))
+            self.anatel_table.setItem(table_row_count, 22, QTableWidgetItem(str(config.ganho_frente_costa)))
+            self.anatel_table.setItem(table_row_count, 23, QTableWidgetItem(str(config.angulo_meia_potencia)))
+            self.anatel_table.setItem(table_row_count, 24, QTableWidgetItem(str(config.elevacao)))
+            self.anatel_table.setItem(table_row_count, 25, QTableWidgetItem(str(config.polarizacao)))
+            self.anatel_table.setItem(table_row_count, 26, QTableWidgetItem(str(config.altura)))
+            self.anatel_table.setItem(table_row_count, 27, QTableWidgetItem(str(config.homologacao_transmissao)))
+            self.anatel_table.setItem(table_row_count, 28, QTableWidgetItem(str(config.potencia_transmisao)))
+            self.anatel_table.setItem(table_row_count, 29, QTableWidgetItem(str(config.latitude)))
+            self.anatel_table.setItem(table_row_count, 30, QTableWidgetItem(str(config.longitude)))
+            self.anatel_table.setItem(table_row_count, 31, QTableWidgetItem(str(config.data_primeiro_licenciamento)))
+            self.anatel_table.setItem(table_row_count, 32, QTableWidgetItem(str(config.created_at)))
 
             processed = processed + 1
             self.progress_bar_anatel.setValue(round(((processed / total) * 100), 2))
@@ -211,7 +246,10 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
     def save_offline_erb_data(self, erb_config):
         self.__base_station_controller.destroy_all()
 
-        for row in erb_config.values:
+        total = len(erb_config.values)
+        processed = 0
+
+        for row in (erb_config.values):
             data = {
                 "status": row[0],
                 "entidade": row[1],
@@ -245,8 +283,10 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
                 "longitude": row[29],
                 "data_primeiro_licenciamento": row[30],
             }
-            print(data)
             self.__base_station_controller.store(data)
+
+            processed = processed + 1
+            self.progress_bar_anatel.setValue(round(((processed / total) * 100), 2))
 
     @pyqtSlot(name="on_update_database_button_clicked")
     def on_update_database_button_clicked(self):
@@ -268,6 +308,6 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.label_last_update.setText("Saving information offline")
 
         self.save_offline_erb_data(erb_config)
-        self.fill_erb_table(erb_config)
+        self.fill_erb_table_with_database_info()
 
         self.label_last_update.setText("Updated local database!")

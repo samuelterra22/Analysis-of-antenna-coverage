@@ -4,10 +4,10 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 
-from controllers.settings_controller import SettingsController
-from support.anatel import get_anatel_data
-from support.constants import CURRENT_UF_ID
-from support.region import get_ufs_initials, get_uf_by_id, get_counties
+from src.main.python.controllers.settings_controller import SettingsController
+from src.main.python.support.anatel import get_anatel_data
+from src.main.python.support.constants import CURRENT_UF_ID
+from src.main.python.support.region import get_ufs_initials, get_uf_by_id, get_counties
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
 

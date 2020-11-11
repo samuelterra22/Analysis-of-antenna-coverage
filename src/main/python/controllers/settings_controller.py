@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from datetime import datetime
+
 from src.main.python.controllers.base_controller import BaseController
 from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.models.settings import Settings
@@ -41,6 +43,8 @@ class SettingsController(BaseController):
         :param data:
         :return:
         """
+        print(data)
+
         try:
             return Settings.select().where(Settings.option == data['option']).get()
         except BaseException:
@@ -56,15 +60,13 @@ class SettingsController(BaseController):
         :param id:
         :return:
         """
-        model = Settings.select().where(Settings.option == data['option'])
+        model = Settings.select().where(Settings.option == data['option']).get()
 
         settings = Settings.get_by_id(model.id)
 
-        settings.option = data['option'],
-        settings.value = data['value'],
-
         try:
-            return settings.save()
+            data['updated_at'] = datetime.now()
+            return settings.update(data).where(Settings.id == model.id).execute()
         except BaseException:
             e = ApplicationException()
             to_log_error(e.get_message())

@@ -52,7 +52,7 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         }
 
         # The setting no exists, then store
-        if not self.__controller.get(CURRENT_UF_ID):
+        if not self.__controller.get(data):
             result = self.__controller.store(data)
             print('Result from store: ' + str(result))
         else:

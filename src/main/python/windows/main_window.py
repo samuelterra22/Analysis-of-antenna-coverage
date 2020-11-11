@@ -9,7 +9,6 @@ import matplotlib
 import matplotlib.cm
 
 from PyQt5 import uic
-from pyqtlet import L, MapWidget
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from haversine import haversine, Unit
@@ -18,7 +17,7 @@ from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
 from src.main.python.dialogs.help_dialog_class import HelpDialogClass
-from support.propagation_models import cost231_path_loss
+from src.main.python.support.propagation_models import cost231_path_loss
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 

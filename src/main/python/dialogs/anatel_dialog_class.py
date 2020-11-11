@@ -7,7 +7,8 @@ from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidge
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.anatel import get_anatel_data
 from src.main.python.support.constants import CURRENT_UF_ID
-from src.main.python.support.region import get_ufs_initials, get_uf_by_id, get_counties
+from src.main.python.support.region import get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
+from src.main.python.support.constants import CURRENT_COUNTY_ID
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
 
@@ -30,7 +31,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.init_ui_components()
 
     def init_ui_components(self):
-        self.combo_box_state.addItems(get_ufs_initials())
+        self.fill_combo_box_state()
         self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
 
         self.combo_box_contry.addItems(["Select a UF first"])
@@ -43,13 +44,10 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
     def on_combo_box_state_changed(self):
         # reset combo box
         self.combo_box_contry.clear()
-        self.combo_box_contry.addItems(["Select a UF first"])
 
-        print("Items in the list 'combo_box_state' are :")
         index = self.combo_box_state.currentIndex()
-        text = self.combo_box_state.currentText()
 
-        if index != 0:
+        if index != 0 and index != -1 and index is not None:
             uf_id = self.combo_box_state.itemData(index)
             self.__create_or_update_uf(uf_id)
             uf_initial = get_uf_by_id(uf_id)
@@ -62,6 +60,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         :return:
         """
         self.combo_box_contry: QComboBox
+
         counties = get_counties(uf)
         for county in counties:
             self.combo_box_contry.addItem(county[0], county[1])
@@ -73,23 +72,36 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         }
 
         # The setting no exists, then store
-        if not self.__controller.get(CURRENT_UF_ID):
+        if not self.__controller.get(data):
             result = self.__controller.store(data)
-            print('Result from store: ' + str(result))
+            print('Result from store uf id: ' + str(result))
         else:
             # The setting exists, then update
             result = self.__controller.update(data, None)
-            print('Result from update: ' + str(result))
+            print('Result from update uf id: ' + str(result))
+
+    def __create_or_update_state(self, state_id):
+        data = {
+            'option': CURRENT_COUNTY_ID,
+            'value': state_id
+        }
+
+        # The setting no exists, then store
+        if not self.__controller.get(data):
+            result = self.__controller.store(data)
+            print('Result from store state id: ' + str(result))
+        else:
+            # The setting exists, then update
+            result = self.__controller.update(data, None)
+            print('Result from update state id: ' + str(result))
 
     @pyqtSlot(name="on_combo_box_contry_changed")
     def on_combo_box_contry_changed(self):
-        print("Items in the list 'combo_box_contry' are :")
         index = self.combo_box_contry.currentIndex()
         text = self.combo_box_contry.currentText()
 
-        for count in range(self.combo_box_contry.count()):
-            print(self.combo_box_contry.itemText(count))
-        print("Current index", index, "selection changed ", text)
+        uf_id = self.combo_box_contry.itemData(index)
+        self.__create_or_update_state(uf_id)
 
     def disable_ui_components(self):
         self.anatel_table.setDisabled(True)
@@ -102,6 +114,17 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.update_database_button.setDisabled(False)
         self.combo_box_state.setDisabled(False)
         self.combo_box_contry.setDisabled(False)
+
+    def fill_combo_box_state(self):
+        """
+        This method fill the combo box country state according with all ufs
+        :return:
+        """
+        self.combo_box_state: QComboBox
+        ufs = get_ufs_initials()
+
+        for uf in ufs:
+            self.combo_box_state.addItem(uf, get_uf_code(uf))
 
     @pyqtSlot(name="on_update_database_button_clicked")
     def on_update_database_button_clicked(self):

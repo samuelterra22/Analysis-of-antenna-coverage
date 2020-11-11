@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QDialog, QComboBox
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.constants import CURRENT_UF_ID
 from src.main.python.support.region import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
+from src.main.python.support.constants import CURRENT_COUNTY_ID
 
 SettingsQDialog = uic.loadUiType("./views/settings_dialog.ui")[0]
 
@@ -28,7 +29,6 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         self.fill_combo_box_country_state()
 
         self.combo_box_country_state.currentIndexChanged.connect(self.on_combo_box_country_state_changed)
-
         self.combo_box_country_county.currentIndexChanged.connect(self.on_combo_box_country_county_changed)
 
     def on_combo_box_country_state_changed(self, index):
@@ -60,6 +60,21 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
             result = self.__controller.update(data, None)
             print('Result from update: ' + str(result))
 
+    def __create_or_update_state(self, state_id):
+        data = {
+            'option': CURRENT_COUNTY_ID,
+            'value': state_id
+        }
+
+        # The setting no exists, then store
+        if not self.__controller.get(data):
+            result = self.__controller.store(data)
+            print('Result from store state id: ' + str(result))
+        else:
+            # The setting exists, then update
+            result = self.__controller.update(data, None)
+            print('Result from update state id: ' + str(result))
+
     def on_combo_box_country_county_changed(self, index):
         """
         This method is fired when combo box county state is changed
@@ -67,6 +82,7 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         :return: None
         """
         county_id = self.combo_box_country_county.itemData(index)
+        self.__create_or_update_state(county_id)
 
     def fill_combo_box_country_county(self, uf):
         """

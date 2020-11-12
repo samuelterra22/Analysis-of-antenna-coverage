@@ -2,7 +2,6 @@
 
 import io
 import sys
-import random
 import folium
 import numpy as np
 import matplotlib
@@ -13,6 +12,8 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from haversine import haversine, Unit
 
+from src.main.python.models.base_station import BaseStation
+from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
@@ -43,6 +44,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # Calculate button
         self.button_calculate.clicked.disconnect()
         self.button_calculate.clicked.connect(self.on_button_calculate_clicked)
+
+        self.__base_station_controller = BaseStationController()
 
         # Menus
         self.init_menus()
@@ -77,13 +80,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.on_combo_box_antenna_antenna_polarisation_changed)
 
     def init_transmitter_components(self):
+        # For select a ERB
         self.combo_box_anatel_base_station: QComboBox
-        self.combo_box_anatel_base_station.addItems([])
+
+        self.fill_combo_box_anatel_base_station()
         self.combo_box_anatel_base_station.currentIndexChanged.connect(self.on_combo_box_anatel_base_station_changed)
 
+        # For custom simulation
         self.combo_box_tx_coordinates: QComboBox
         self.combo_box_tx_coordinates.addItems([])
         self.combo_box_tx_coordinates.currentIndexChanged.connect(self.on_combo_box_tx_coordinates_changed)
+
+    def fill_combo_box_anatel_base_station(self):
+        db_configs = self.__base_station_controller.get_all_distinct()
+
+        for i, config in enumerate(db_configs):
+            config: BaseStation
+            self.combo_box_anatel_base_station.addItem(config.entidade + " - " + config.endereco, config.id)
 
     @pyqtSlot(name="on_combo_box_output_colour_scheme_changed")
     def on_combo_box_output_colour_scheme_changed(self):

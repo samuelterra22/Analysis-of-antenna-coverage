@@ -54,7 +54,6 @@ class BaseStationController(BaseController):
         This method get all details for base stations
         :return:
         """
-
         try:
             return BaseStation.select()
         except BaseException:
@@ -104,3 +103,17 @@ class BaseStationController(BaseController):
             return BaseStation.truncate_table()
         except Exception as e:
             print(e)
+
+    def get_all_distinct(self):
+        """
+        This method get all details for base stations
+        :return:
+        """
+        try:
+            # select * from basestation group by endereco order by id;
+            return BaseStation.select().group_by(BaseStation.endereco).order_by(BaseStation.id).execute()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None

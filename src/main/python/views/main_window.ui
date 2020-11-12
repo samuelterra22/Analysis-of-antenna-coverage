@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Analysis of Antenna Coverage</string>
+   <string>Analise da Cobertura de ERBs</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
@@ -72,7 +72,7 @@
            </property>
            <widget class="QWidget" name="tab_transmitter">
             <attribute name="title">
-             <string>Transmitter</string>
+             <string>Transmissor</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_2">
              <property name="leftMargin">
@@ -133,13 +133,13 @@
                      <item>
                       <widget class="QGroupBox" name="group_box_anatel_transmitter_details">
                        <property name="title">
-                        <string>Anatel Transmitter details</string>
+                        <string>Detalhes do Transmissor</string>
                        </property>
                        <layout class="QFormLayout" name="formLayout_5">
                         <item row="0" column="0">
                          <widget class="QLabel" name="label_anatel_base_station">
                           <property name="text">
-                           <string>Base station</string>
+                           <string>Estação Radio Base</string>
                           </property>
                          </widget>
                         </item>
@@ -152,21 +152,11 @@
                            </size>
                           </property>
                           <property name="currentText">
-                           <string>Select</string>
+                           <string>Selecionar</string>
                           </property>
                           <item>
                            <property name="text">
-                            <string>Select</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>TELEFÔNICA BRASIL S.A. - RUA DESEMBARGADOR SABINO LUSTOSA,S/N,CENTRO	</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>CLARO S.A. - R DESEMBARGADOR SABINO LUSTOSA,120,JOSE VILELA</string>
+                            <string>Selecionar</string>
                            </property>
                           </item>
                          </widget>
@@ -174,21 +164,21 @@
                         <item row="2" column="0">
                          <widget class="QLabel" name="label_anatel_entity">
                           <property name="text">
-                           <string>Entity</string>
+                           <string>Entidade</string>
                           </property>
                          </widget>
                         </item>
                         <item row="4" column="0">
                          <widget class="QLabel" name="label_anatel_station_number">
                           <property name="text">
-                           <string>Station Number</string>
+                           <string>Número Fistel</string>
                           </property>
                          </widget>
                         </item>
                         <item row="10" column="0">
                          <widget class="QLabel" name="label_anatel_address">
                           <property name="text">
-                           <string>Address</string>
+                           <string>Endereço</string>
                           </property>
                          </widget>
                         </item>
@@ -234,21 +224,21 @@
                         <item row="8" column="0">
                          <widget class="QLabel" name="label_anatel_contry">
                           <property name="text">
-                           <string>Contry</string>
+                           <string>Município</string>
                           </property>
                          </widget>
                         </item>
                         <item row="12" column="0">
                          <widget class="QLabel" name="label_anatel_initial_frenquency">
                           <property name="text">
-                           <string>Final Freq. (MHz)</string>
+                           <string>Freq. Final (MHz)</string>
                           </property>
                          </widget>
                         </item>
                         <item row="14" column="0">
                          <widget class="QLabel" name="label_anatel_final_frenquency">
                           <property name="text">
-                           <string>Initial Freq. (MHz)</string>
+                           <string>Freq. Inicial (MHz)</string>
                           </property>
                          </widget>
                         </item>
@@ -262,14 +252,14 @@
                         <item row="18" column="0">
                          <widget class="QLabel" name="label_anatel_gain_antenna">
                           <property name="text">
-                           <string>Gain antenna</string>
+                           <string>Ganho Antena</string>
                           </property>
                          </widget>
                         </item>
                         <item row="20" column="0">
                          <widget class="QLabel" name="label_anatel_front_back">
                           <property name="text">
-                           <string>Front-back gain</string>
+                           <string>Frente Costa</string>
                           </property>
                          </widget>
                         </item>
@@ -283,28 +273,28 @@
                         <item row="24" column="0">
                          <widget class="QLabel" name="label_anatel_elevation">
                           <property name="text">
-                           <string>Elevation</string>
+                           <string>Elevação</string>
                           </property>
                          </widget>
                         </item>
                         <item row="26" column="0">
                          <widget class="QLabel" name="label_anatel_polarization">
                           <property name="text">
-                           <string>Polarization</string>
+                           <string>Polarização</string>
                           </property>
                          </widget>
                         </item>
                         <item row="28" column="0">
                          <widget class="QLabel" name="label_anatel_height_antenna">
                           <property name="text">
-                           <string>Height antenna (m)</string>
+                           <string>Altura Antena (m)</string>
                           </property>
                          </widget>
                         </item>
                         <item row="30" column="0">
                          <widget class="QLabel" name="label_anatel_power_trasmission">
                           <property name="text">
-                           <string>Transmission power (W)</string>
+                           <string> Potência de Transmissão</string>
                           </property>
                          </widget>
                         </item>
@@ -325,7 +315,7 @@
                         <item row="36" column="0">
                          <widget class="QLabel" name="label_anatel_first_licensing">
                           <property name="text">
-                           <string>First licensing date</string>
+                           <string>Data Primeiro Lic.</string>
                           </property>
                          </widget>
                         </item>
@@ -602,7 +592,7 @@
                </widget>
                <widget class="QWidget" name="tab_transmitter_custom">
                 <attribute name="title">
-                 <string>Custom</string>
+                 <string>Personalizado</string>
                 </attribute>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
                  <item>
@@ -621,8 +611,8 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>207</width>
-                      <height>566</height>
+                      <width>200</width>
+                      <height>378</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -644,13 +634,13 @@
                      <item>
                       <widget class="QGroupBox" name="group_box_transmitter_location">
                        <property name="title">
-                        <string>Transmitter location</string>
+                        <string>Localização do Transmissor</string>
                        </property>
                        <layout class="QFormLayout" name="formLayout_2">
                         <item row="0" column="0">
                          <widget class="QLabel" name="label_tx_coordinates">
                           <property name="text">
-                           <string>Coordinates</string>
+                           <string>Coordenadas</string>
                           </property>
                          </widget>
                         </item>
@@ -658,7 +648,7 @@
                          <widget class="QComboBox" name="combo_box_tx_coordinates">
                           <item>
                            <property name="text">
-                            <string>Select</string>
+                            <string>Selecionar</string>
                            </property>
                           </item>
                           <item>
@@ -691,7 +681,7 @@
                         <item row="6" column="0">
                          <widget class="QLabel" name="label_tx_height">
                           <property name="text">
-                           <string>Height AGL</string>
+                           <string>Alutura Transmisor</string>
                           </property>
                          </widget>
                         </item>
@@ -720,7 +710,7 @@
                         <item row="0" column="0">
                          <widget class="QLabel" name="label_tx_frequency">
                           <property name="text">
-                           <string>Frequency</string>
+                           <string>Frequência</string>
                           </property>
                          </widget>
                         </item>
@@ -730,7 +720,7 @@
                         <item row="2" column="0">
                          <widget class="QLabel" name="label_tx_rf_power">
                           <property name="text">
-                           <string>RF power</string>
+                           <string>Potência RF</string>
                           </property>
                           <property name="margin">
                            <number>0</number>
@@ -755,7 +745,7 @@
            </widget>
            <widget class="QWidget" name="tab_antenna">
             <attribute name="title">
-             <string>Antenna</string>
+             <string>Antena</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_8">
              <property name="leftMargin">
@@ -787,7 +777,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>227</width>
-                  <height>305</height>
+                  <height>613</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -821,13 +811,13 @@
                  <item>
                   <widget class="QGroupBox" name="group_box_antenna_details">
                    <property name="title">
-                    <string>Antenna details</string>
+                    <string>Detalhes da Antena</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_4">
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_antenna_polarization">
                       <property name="text">
-                       <string>Polarisation</string>
+                       <string>Polarização</string>
                       </property>
                      </widget>
                     </item>
@@ -835,7 +825,7 @@
                      <widget class="QComboBox" name="combo_box_antenna_antenna_polarisation">
                       <item>
                        <property name="text">
-                        <string>Select</string>
+                        <string>Selecionar</string>
                        </property>
                       </item>
                       <item>
@@ -900,7 +890,7 @@
                     <item row="8" column="0">
                      <widget class="QLabel" name="label_antenna_gain">
                       <property name="text">
-                       <string>Antenna Gain (dBi)</string>
+                       <string>Ganho da Antena</string>
                       </property>
                      </widget>
                     </item>
@@ -938,7 +928,7 @@
            </widget>
            <widget class="QWidget" name="tab_receiver">
             <attribute name="title">
-             <string>Receiver</string>
+             <string>Receptor</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_12">
              <property name="leftMargin">
@@ -963,7 +953,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>133</width>
+                  <width>166</width>
                   <height>190</height>
                  </rect>
                 </property>
@@ -986,13 +976,13 @@
                  <item>
                   <widget class="QGroupBox" name="group_box_receive_details">
                    <property name="title">
-                    <string>Receive details</string>
+                    <string>Detalhes do Receptor</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_12">
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_rx_height">
                       <property name="text">
-                       <string>Height AGL</string>
+                       <string>Altura</string>
                       </property>
                      </widget>
                     </item>
@@ -1002,7 +992,7 @@
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_rx_gain">
                       <property name="text">
-                       <string>Gain</string>
+                       <string>Ganho</string>
                       </property>
                      </widget>
                     </item>
@@ -1019,7 +1009,7 @@
                     <item row="4" column="0">
                      <widget class="QLabel" name="label_rx_sensitivity">
                       <property name="text">
-                       <string>Sensitivity</string>
+                       <string>Sensibilidade</string>
                       </property>
                      </widget>
                     </item>
@@ -1044,7 +1034,7 @@
            </widget>
            <widget class="QWidget" name="tab_model">
             <attribute name="title">
-             <string>Model</string>
+             <string>Modelo Prop.</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <property name="leftMargin">
@@ -1069,8 +1059,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>223</width>
+                  <height>167</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1095,15 +1085,18 @@
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_propagation_model">
                       <property name="text">
-                       <string>Propagation model</string>
+                       <string>Modelo de Propagação</string>
                       </property>
                      </widget>
                     </item>
                     <item row="1" column="0" colspan="2">
                      <widget class="QComboBox" name="combo_box_propagation_model">
+                      <property name="currentText">
+                       <string>Selecionar</string>
+                      </property>
                       <item>
                        <property name="text">
-                        <string>Select</string>
+                        <string>Selecionar</string>
                        </property>
                       </item>
                       <item>
@@ -1136,7 +1129,7 @@
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_enviroment">
                       <property name="text">
-                       <string>Environment</string>
+                       <string>Ambiente</string>
                       </property>
                      </widget>
                     </item>
@@ -1144,7 +1137,7 @@
                      <widget class="QComboBox" name="combo_box_environment">
                       <item>
                        <property name="text">
-                        <string>Select</string>
+                        <string>Selecionar</string>
                        </property>
                       </item>
                       <item>
@@ -1182,7 +1175,7 @@
            </widget>
            <widget class="QWidget" name="tab_output">
             <attribute name="title">
-             <string>Output</string>
+             <string>Saída</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_16">
              <property name="leftMargin">
@@ -1207,8 +1200,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
-                  <height>613</height>
+                  <width>179</width>
+                  <height>161</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -1227,13 +1220,13 @@
                  <item>
                   <widget class="QGroupBox" name="group_box_output_settings">
                    <property name="title">
-                    <string>Output settings</string>
+                    <string>Configurações de Saída</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_15">
                     <item row="0" column="0">
                      <widget class="QLabel" name="label_output_colour_scheme">
                       <property name="text">
-                       <string>Colour scheme</string>
+                       <string>Esquema de Cores</string>
                       </property>
                      </widget>
                     </item>
@@ -1241,7 +1234,7 @@
                      <widget class="QComboBox" name="combo_box_output_colour_scheme">
                       <item>
                        <property name="text">
-                        <string>Select</string>
+                        <string>Selecionar</string>
                        </property>
                       </item>
                       <item>
@@ -1274,7 +1267,7 @@
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_output_radius">
                       <property name="text">
-                       <string>Radius</string>
+                       <string>Raio</string>
                       </property>
                      </widget>
                     </item>
@@ -1291,7 +1284,7 @@
                     <item row="4" column="0">
                      <widget class="QLabel" name="label_actual_resolution">
                       <property name="text">
-                       <string>Actual resolution: </string>
+                       <string>Resolução Atual</string>
                       </property>
                      </widget>
                     </item>
@@ -1370,7 +1363,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Calculate</string>
+               <string>Simular</string>
               </property>
              </widget>
             </item>
@@ -1393,7 +1386,7 @@
         </property>
         <widget class="QWidget" name="tab_coverage">
          <attribute name="title">
-          <string>Heatmap Coverage</string>
+          <string>Heatmap Cobertura</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_9">
           <item>
@@ -1438,7 +1431,7 @@
    </property>
    <widget class="QMenu" name="menu_file">
     <property name="title">
-     <string>File</string>
+     <string>Arquivo</string>
     </property>
     <addaction name="menu_action_anatel_base"/>
     <addaction name="menu_action_settings"/>
@@ -1447,7 +1440,7 @@
    </widget>
    <widget class="QMenu" name="menu_help">
     <property name="title">
-     <string>Help</string>
+     <string>Ajuda</string>
     </property>
     <addaction name="menu_action_help"/>
     <addaction name="menu_action_about"/>
@@ -1470,20 +1463,29 @@
    <property name="text">
     <string>Anatel database</string>
    </property>
+   <property name="iconText">
+    <string>Base Anatel</string>
+   </property>
   </action>
   <action name="menu_action_help">
    <property name="text">
-    <string>Help</string>
+    <string>Ajuda</string>
    </property>
   </action>
   <action name="menu_action_about">
    <property name="text">
-    <string>About</string>
+    <string>Sobre</string>
    </property>
   </action>
   <action name="menu_action_settings">
    <property name="text">
-    <string>Settings</string>
+    <string>Configurações</string>
+   </property>
+   <property name="iconText">
+    <string>Configurações</string>
+   </property>
+   <property name="toolTip">
+    <string>Configurações</string>
    </property>
   </action>
  </widget>

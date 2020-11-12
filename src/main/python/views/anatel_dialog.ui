@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ANATEL Data Base</string>
+   <string>Base de Dados Anatel</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
@@ -394,14 +394,14 @@
          <item row="1" column="1">
           <widget class="QLabel" name="label_last_update">
            <property name="text">
-            <string>Database updated on 10/10/2020</string>
+            <string>Base de Dados Atualizada em 10/10/2020</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="update_database_button">
            <property name="text">
-            <string>Update database</string>
+            <string>Atualizar Base de Dados</string>
            </property>
           </widget>
          </item>
@@ -415,7 +415,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Select a state</string>
+             <string>Selecionar Estado</string>
             </property>
            </item>
           </widget>
@@ -426,7 +426,7 @@
             <number>0</number>
            </property>
            <property name="format">
-            <string>%p% completed</string>
+            <string>%p% completo</string>
            </property>
           </widget>
          </item>
@@ -437,7 +437,7 @@
            </property>
            <item>
             <property name="text">
-             <string>Select a country</string>
+             <string>Selecionar Município</string>
             </property>
            </item>
           </widget>

@@ -39,10 +39,25 @@ class BaseStationController(BaseController):
         :param data:
         :return:
         """
-        print(data)
 
         try:
-            return BaseStation.select().where(BaseStation.option == data['option']).get()
+            pass
+            # return BaseStation.select().where(BaseStation.id == id).execute()
+        except BaseException:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(e)
+            return None
+
+    def get_by_id(self, id):
+        """
+        This method show details for a specific base station
+        :param id:
+        :return:
+        """
+
+        try:
+            return BaseStation.get(BaseStation.id == id)
         except BaseException:
             e = ApplicationException()
             to_log_error(e.get_message())

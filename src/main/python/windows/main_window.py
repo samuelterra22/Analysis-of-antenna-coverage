@@ -141,12 +141,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(name="on_combo_box_anatel_base_station_changed")
     def on_combo_box_anatel_base_station_changed(self):
         print("Items in the list 'combo_box_anatel_base_station' are :")
+        self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
         text = self.combo_box_anatel_base_station.currentText()
+        data = self.combo_box_anatel_base_station.itemData(index)
 
-        for count in range(self.combo_box_anatel_base_station.count()):
-            print(self.combo_box_anatel_base_station.itemText(count))
-        print("Current index", index, "selection changed ", text)
+        print("Current index", index, "selection changed: ", text, "data: ", data)
+
+        # ToDo: show ERB in Map
+        erb = self.__base_station_controller.get_by_id(data)
+        self.add_erb_map(erb)
+
+    def add_erb_map(self, base_station: BaseStation):
+        print("latitude", base_station.latitude)
+        print("longitude", base_station.longitude)
 
     @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
     def on_combo_box_tx_coordinates_changed(self):

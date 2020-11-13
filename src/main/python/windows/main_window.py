@@ -153,17 +153,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_erb_in_details(erb)
 
     def add_erb_map(self, base_station: BaseStation):
-        print("latitude", base_station.latitude)
-        print("longitude", base_station.longitude)
+        erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
         m = folium.Map(
-            location=(str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude))),
+            location=erb_location,
             zoom_start=16,
             control_scale=True
         )
 
         folium.Marker(
-            location=(str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude))),
+            location=erb_location,
             popup=base_station.entidade,
             draggable=False,
             icon=folium.Icon(prefix='glyphicon', icon='tower')
@@ -173,7 +172,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         m.save(data, close_file=False)
 
         self.web_view.setHtml(data.getvalue().decode())
-        print(data.getvalue().decode())
 
     def add_erb_in_details(self, base_station: BaseStation):
         self.label_anatel_entity_value.setText(base_station.entidade)

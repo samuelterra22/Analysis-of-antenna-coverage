@@ -27,9 +27,10 @@ class BaseStationController(BaseController):
         try:
             return BaseStation.create(**data)
 
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -39,15 +40,7 @@ class BaseStationController(BaseController):
         :param data:
         :return:
         """
-
-        try:
-            pass
-            # return BaseStation.select().where(BaseStation.id == id).execute()
-        except BaseException:
-            e = ApplicationException()
-            to_log_error(e.get_message())
-            print(e)
-            return None
+        pass
 
     def get_by_id(self, id):
         """
@@ -58,9 +51,10 @@ class BaseStationController(BaseController):
 
         try:
             return BaseStation.get(BaseStation.id == id)
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -71,9 +65,10 @@ class BaseStationController(BaseController):
         """
         try:
             return BaseStation.select()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -90,9 +85,10 @@ class BaseStationController(BaseController):
         try:
             data['updated_at'] = datetime.now()
             return base_station.update(data).where(BaseStation.id == id).execute()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -106,8 +102,12 @@ class BaseStationController(BaseController):
             model = BaseStation.get_by_id(id)
 
             return BaseStation.delete_by_id(model.id)
-        except Exception as e:
+        except Exception as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
             print(e)
+            return None
 
     def destroy_all(self):
         """
@@ -116,8 +116,12 @@ class BaseStationController(BaseController):
         """
         try:
             return BaseStation.truncate_table()
-        except Exception as e:
+        except Exception as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
             print(e)
+            return None
 
     def get_all_distinct(self):
         """
@@ -125,10 +129,9 @@ class BaseStationController(BaseController):
         :return:
         """
         try:
-            # select * from basestation group by endereco order by id;
             return BaseStation.select().group_by(BaseStation.endereco).order_by(BaseStation.id).execute()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
-            return None

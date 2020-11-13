@@ -68,3 +68,10 @@ class BaseController(ABC):
         :return:
         """
         pass
+
+    @abstractmethod
+    def get_all_distinct(self):
+        """
+        Destroy controller method
+        :return:
+        """

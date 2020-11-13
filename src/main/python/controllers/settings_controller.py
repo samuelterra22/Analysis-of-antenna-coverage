@@ -43,9 +43,26 @@ class SettingsController(BaseController):
 
         try:
             return Settings.select().where(Settings.option == data['option']).get()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
+            print(e)
+            return None
+
+    def get_by_id(self, id):
+        """
+        This method show details for a specific setting
+        :param id:
+        :return:
+        """
+
+        try:
+            return Settings.get(Settings.id == id)
+        except BaseException as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -56,9 +73,10 @@ class SettingsController(BaseController):
         """
         try:
             return Settings.select().get()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -76,9 +94,10 @@ class SettingsController(BaseController):
         try:
             data['updated_at'] = datetime.now()
             return settings.update(data).where(Settings.id == model.id).execute()
-        except BaseException:
+        except BaseException as be:
             e = ApplicationException()
             to_log_error(e.get_message())
+            print(be)
             print(e)
             return None
 
@@ -92,8 +111,12 @@ class SettingsController(BaseController):
             model = Settings.get_by_id(id)
 
             return Settings.delete_by_id(model.id)
-        except Exception as e:
+        except Exception as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
             print(e)
+            return None
 
     def destroy_all(self):
         """
@@ -102,5 +125,22 @@ class SettingsController(BaseController):
         """
         try:
             return Settings.truncate_table()
-        except Exception as e:
+        except Exception as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
+            print(e)
+            return None
+
+    def get_all_distinct(self):
+        """
+        This method get all details for settings
+        :return:
+        """
+        try:
+            return Settings.select().group_by(Settings.option).order_by(Settings.id).execute()
+        except BaseException as be:
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            print(be)
             print(e)

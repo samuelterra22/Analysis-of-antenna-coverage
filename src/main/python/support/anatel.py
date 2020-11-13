@@ -1,10 +1,114 @@
+import pandas as pd
+import requests
+import re
+
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
-import pandas as pd
+
+import src.main.python.support.constants as constants
+from src.main.python.exceptions.application_exception import ApplicationException
+from src.main.python.support.logs import to_log_error
 
 # site: https://sistemas.anatel.gov.br/se/public/view/b/licenciamento.php
-import requests
+
+uf_list = {
+    "RO": 11,
+    "RR": 14,
+    "AP": 16,
+    "TO": 17,
+    "PI": 22,
+    "RN": 24,
+    "PE": 26,
+    "BA": 29,
+    "RJ": 33,
+    "SC": 42,
+    "MT": 51,
+    "AL": 27,
+    "MG": 31,
+    "PR": 41,
+    "MS": 50,
+    "DF": 53,
+    "AC": 12,
+    "AM": 13,
+    "PA": 15,
+    "MA": 21,
+    "CE": 23,
+    "PB": 25,
+    "SE": 28,
+    "ES": 32,
+    "SP": 35,
+    "RS": 43,
+    "GO": 52,
+}
+
+
+def get_ufs_initials():
+    """
+    This method return the ufs initials ordered
+    :return: list The of ufs ordered
+    """
+    return sorted(uf_list.keys())
+
+
+def get_uf_code(uf):
+    """
+    This method return the uf code from ufs list
+    :param uf: string The uf name
+    :return: int Return the uf code
+    """
+    return uf_list.get(uf)
+
+
+def get_uf_by_id(uf_id):
+    """
+    This method return the uf code from ufs list
+    :param uf_id: int The uf id
+    :return: string Return the uf initials
+    """
+    for uf, uf_code in uf_list.items():
+        if uf_code == uf_id:
+            return uf
+
+
+def get_counties(uf):
+    """
+    This method get all counties from an uf related
+    :param uf: int The uf code
+    :return:
+    """
+    url_base = (
+        "http://sistemas.anatel.gov.br/se/eApp/forms/b/jf_getMunicipios.php?CodUF="
+    )
+    uf_code = get_uf_code(uf)
+
+    if uf_code:
+        url = url_base + str(uf_code)
+        try:
+            return requests.get(url=url).json()
+        except BaseException as be:
+            print(be)
+            e = ApplicationException()
+            to_log_error(e.get_message())
+            return constants.REQUEST_ERROR
+    else:
+        return constants.INVALID_UF
+
+
+def dms_to_dd(coordinate_in_dms):
+    sign = -1 if re.search("[swSW]", coordinate_in_dms) else 1
+    c = split_coordinates_dms(coordinate_in_dms)
+    dd = sign * (float(c["d"]) + float(c["m"]) / 60 + float(c["s"]) / 3600)
+    return round(dd, 6)
+
+
+def split_coordinates_dms(coordinate_in_dms):
+    degrees = coordinate_in_dms[:2]
+    minutes = coordinate_in_dms[3:5]
+    seconds = coordinate_in_dms[5:7]
+    seconds += "." + coordinate_in_dms[7:]
+
+    return {"d": degrees, "m": minutes, "s": seconds}
 
 
 def get_anatel_data(uf_sigle, country_id=None):

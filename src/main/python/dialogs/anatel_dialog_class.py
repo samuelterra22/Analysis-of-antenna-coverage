@@ -7,9 +7,8 @@ from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidge
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.controllers.settings_controller import SettingsController
-from src.main.python.support.anatel import get_anatel_data
+from src.main.python.support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
 from src.main.python.support.constants import CURRENT_UF_ID
-from src.main.python.support.region import get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
 from src.main.python.support.constants import CURRENT_COUNTY_ID
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]

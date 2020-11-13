@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QDialog, QComboBox
 
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.constants import CURRENT_UF_ID
-from src.main.python.support.region import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
+from src.main.python.support.anatel import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
 from src.main.python.support.constants import CURRENT_COUNTY_ID
 
 SettingsQDialog = uic.loadUiType("./views/settings_dialog.ui")[0]

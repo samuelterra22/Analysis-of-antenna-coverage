@@ -9,7 +9,7 @@ import matplotlib.cm
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QLabel
+from PyQt5.QtWidgets import QMainWindow, QComboBox
 from haversine import haversine, Unit
 
 from src.main.python.models.base_station import BaseStation
@@ -19,6 +19,8 @@ from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
 from src.main.python.dialogs.help_dialog_class import HelpDialogClass
 from src.main.python.support.propagation_models import cost231_path_loss
+from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
+from support.anatel import dms_to_dd
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 
@@ -144,12 +146,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Items in the list 'combo_box_anatel_base_station' are :")
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
-        text = self.combo_box_anatel_base_station.currentText()
         data = self.combo_box_anatel_base_station.itemData(index)
 
-        print("Current index", index, "selection changed: ", text, "data: ", data)
-
-        # ToDo: show ERB in Map
         erb = self.__base_station_controller.get_by_id(data)
         self.add_erb_map(erb)
         self.add_erb_in_details(erb)
@@ -157,6 +155,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def add_erb_map(self, base_station: BaseStation):
         print("latitude", base_station.latitude)
         print("longitude", base_station.longitude)
+
+        m = folium.Map(
+            location=(str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude))),
+            zoom_start=16,
+            control_scale=True
+        )
+
+        folium.Marker(
+            location=(str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude))),
+            popup=base_station.entidade,
+            draggable=False,
+            icon=folium.Icon(prefix='glyphicon', icon='tower')
+        ).add_to(m)
+
+        data = io.BytesIO()
+        m.save(data, close_file=False)
+
+        self.web_view.setHtml(data.getvalue().decode())
+        print(data.getvalue().decode())
 
     def add_erb_in_details(self, base_station: BaseStation):
         self.label_anatel_entity_value.setText(base_station.entidade)
@@ -174,8 +191,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_anatel_polarization_value.setText(base_station.polarizacao)
         self.label_anatel_height_antenna_value.setText(base_station.altura)
         self.label_anatel_power_transmission_value.setText(base_station.potencia_transmissao)
-        self.label_anatel_latitude_value.setText(base_station.longitude)
-        self.label_anatel_longitude_value.setText(base_station.longitude)
+        self.label_anatel_latitude_value.setText(str(dms_to_dd(base_station.latitude)))
+        self.label_anatel_longitude_value.setText(str(dms_to_dd(base_station.longitude)))
         self.label_anatel_first_licensing_value.setText(base_station.data_primeiro_licenciamento)
 
     @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
@@ -209,7 +226,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def _init_rf_map(self):
         m = folium.Map(
-            location=(-21.226244, -44.978407),
+            location=UFLA_LAT_LONG_POSITION,
             zoom_start=16,
             control_scale=True
         )

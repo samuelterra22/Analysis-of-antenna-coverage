@@ -231,7 +231,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
             self.anatel_table.setItem(table_row_count, 25, QTableWidgetItem(str(config.polarizacao)))
             self.anatel_table.setItem(table_row_count, 26, QTableWidgetItem(str(config.altura)))
             self.anatel_table.setItem(table_row_count, 27, QTableWidgetItem(str(config.homologacao_transmissao)))
-            self.anatel_table.setItem(table_row_count, 28, QTableWidgetItem(str(config.potencia_transmisao)))
+            self.anatel_table.setItem(table_row_count, 28, QTableWidgetItem(str(config.potencia_transmissao)))
             self.anatel_table.setItem(table_row_count, 29, QTableWidgetItem(str(config.latitude)))
             self.anatel_table.setItem(table_row_count, 30, QTableWidgetItem(str(config.longitude)))
             self.anatel_table.setItem(table_row_count, 31, QTableWidgetItem(str(config.data_primeiro_licenciamento)))
@@ -278,7 +278,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
                 "polarizacao": row[24],
                 "altura": row[25],
                 "homologacao_transmissao": row[26],
-                "potencia_transmisao": row[27],
+                "potencia_transmissao": row[27],
                 "latitude": row[28],
                 "longitude": row[29],
                 "data_primeiro_licenciamento": row[30],

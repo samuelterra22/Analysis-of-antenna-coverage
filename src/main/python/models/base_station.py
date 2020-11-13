@@ -36,7 +36,7 @@ class BaseStation(BaseModel):
     polarizacao = CharField()
     altura = CharField()
     homologacao_transmissao = CharField()
-    potencia_transmisao = CharField()
+    potencia_transmissao = CharField()
     latitude = CharField()
     longitude = CharField()
     data_primeiro_licenciamento = CharField()

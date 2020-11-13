@@ -46,7 +46,7 @@ for row in rows:
         "polarizacao": row[24],
         "altura": row[25],
         "homologacao_transmissao": row[26],
-        "potencia_transmisao": row[27],
+        "potencia_transmissao": row[27],
         "latitude": row[28],
         "longitude": row[29],
         "data_primeiro_licenciamento": row[30],

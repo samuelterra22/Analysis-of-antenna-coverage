@@ -9,7 +9,7 @@ import matplotlib.cm
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QLabel
 from haversine import haversine, Unit
 
 from src.main.python.models.base_station import BaseStation
@@ -94,9 +94,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def fill_combo_box_anatel_base_station(self):
         db_configs = self.__base_station_controller.get_all_distinct()
 
-        for i, config in enumerate(db_configs):
-            config: BaseStation
-            self.combo_box_anatel_base_station.addItem(config.entidade + " - " + config.endereco, config.id)
+        if db_configs is not None:
+            for i, config in enumerate(db_configs):
+                config: BaseStation
+                self.combo_box_anatel_base_station.addItem(config.entidade + " - " + config.endereco, config.id)
 
     @pyqtSlot(name="on_combo_box_output_colour_scheme_changed")
     def on_combo_box_output_colour_scheme_changed(self):
@@ -151,10 +152,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # ToDo: show ERB in Map
         erb = self.__base_station_controller.get_by_id(data)
         self.add_erb_map(erb)
+        self.add_erb_in_details(erb)
 
     def add_erb_map(self, base_station: BaseStation):
         print("latitude", base_station.latitude)
         print("longitude", base_station.longitude)
+
+    def add_erb_in_details(self, base_station: BaseStation):
+        self.label_anatel_entity_value.setText(base_station.entidade)
+        self.label_anatel_station_number_value.setText(base_station.num_estacao)
+        self.label_anatel_uf_value.setText(base_station.uf)
+        self.label_anatel_contry_value.setText(base_station.municipio)
+        self.label_anatel_address_value.setText(base_station.endereco)
+        self.label_anatel_final_frequency_value.setText(base_station.frequencia_final)
+        self.label_anatel_initial_frequency_value.setText(base_station.frequencia_inicial)
+        self.label_anatel_azimute_value.setText(base_station.azimute)
+        self.label_anatel_gain_antenna_value.setText(base_station.ganho_antena)
+        self.label_anatel_front_back_value.setText(base_station.ganho_frente_costa)
+        self.label_anatel_half_pot_value.setText(base_station.angulo_meia_potencia)
+        self.label_anatel_elevation_value.setText(base_station.elevacao)
+        self.label_anatel_polarization_value.setText(base_station.polarizacao)
+        self.label_anatel_height_antenna_value.setText(base_station.altura)
+        self.label_anatel_power_transmission_value.setText(base_station.potencia_transmissao)
+        self.label_anatel_latitude_value.setText(base_station.longitude)
+        self.label_anatel_longitude_value.setText(base_station.longitude)
+        self.label_anatel_first_licensing_value.setText(base_station.data_primeiro_licenciamento)
 
     @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
     def on_combo_box_tx_coordinates_changed(self):

@@ -106,7 +106,7 @@
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>0</y>
+                      <y>-322</y>
                       <width>191</width>
                       <height>888</height>
                      </rect>
@@ -175,29 +175,6 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="10" column="0">
-                         <widget class="QLabel" name="label_anatel_address">
-                          <property name="text">
-                           <string>Endereço</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="3" column="0">
-                         <widget class="QLabel" name="label_anatel_entity_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>TELEFÔNICA BRASIL</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="5" column="0">
                          <widget class="QLabel" name="label_anatel_station_number_value">
                           <property name="font">
@@ -207,7 +184,7 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>682655147</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -221,104 +198,6 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="8" column="0">
-                         <widget class="QLabel" name="label_anatel_contry">
-                          <property name="text">
-                           <string>Município</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="12" column="0">
-                         <widget class="QLabel" name="label_anatel_initial_frenquency">
-                          <property name="text">
-                           <string>Freq. Final (MHz)</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="14" column="0">
-                         <widget class="QLabel" name="label_anatel_final_frenquency">
-                          <property name="text">
-                           <string>Freq. Inicial (MHz)</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="16" column="0">
-                         <widget class="QLabel" name="label_anatel_azimute">
-                          <property name="text">
-                           <string>Azimute</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="18" column="0">
-                         <widget class="QLabel" name="label_anatel_gain_antenna">
-                          <property name="text">
-                           <string>Ganho Antena</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="20" column="0">
-                         <widget class="QLabel" name="label_anatel_front_back">
-                          <property name="text">
-                           <string>Frente Costa</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="22" column="0">
-                         <widget class="QLabel" name="label_anatel_angulo_half_pot">
-                          <property name="text">
-                           <string>Angle 1/2 Pot.</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="24" column="0">
-                         <widget class="QLabel" name="label_anatel_elevation">
-                          <property name="text">
-                           <string>Elevação</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="26" column="0">
-                         <widget class="QLabel" name="label_anatel_polarization">
-                          <property name="text">
-                           <string>Polarização</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="28" column="0">
-                         <widget class="QLabel" name="label_anatel_height_antenna">
-                          <property name="text">
-                           <string>Altura Antena (m)</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="30" column="0">
-                         <widget class="QLabel" name="label_anatel_power_trasmission">
-                          <property name="text">
-                           <string> Potência de Transmissão</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="32" column="0">
-                         <widget class="QLabel" name="label_anatel_latitude">
-                          <property name="text">
-                           <string>Latitude</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="34" column="0">
-                         <widget class="QLabel" name="label_anatel_longitude">
-                          <property name="text">
-                           <string>Longitude</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="36" column="0">
-                         <widget class="QLabel" name="label_anatel_first_licensing">
-                          <property name="text">
-                           <string>Data Primeiro Lic.</string>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="7" column="0">
                          <widget class="QLabel" name="label_anatel_uf_value">
                           <property name="font">
@@ -328,10 +207,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>MG</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="8" column="0">
+                         <widget class="QLabel" name="label_anatel_contry">
+                          <property name="text">
+                           <string>Município</string>
                           </property>
                          </widget>
                         </item>
@@ -344,106 +230,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>Lavras</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
                           </property>
                          </widget>
                         </item>
-                        <item row="15" column="0">
-                         <widget class="QLabel" name="label_anatel_initial_frequency_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
+                        <item row="10" column="0">
+                         <widget class="QLabel" name="label_anatel_address">
                           <property name="text">
-                           <string>869.000</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="13" column="0">
-                         <widget class="QLabel" name="label_anatel_final_frequency_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>880.000</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="17" column="0">
-                         <widget class="QLabel" name="label_anatel_azimute_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>60.0</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="19" column="0">
-                         <widget class="QLabel" name="label_anatel_gain_antenna_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>18.0</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="21" column="0">
-                         <widget class="QLabel" name="label_anatel_front_back_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>30.0</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
-                        <item row="23" column="0">
-                         <widget class="QLabel" name="label_anatel_half_pot_value">
-                          <property name="font">
-                           <font>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="text">
-                           <string>65.0</string>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
+                           <string>Endereço</string>
                           </property>
                          </widget>
                         </item>
@@ -462,10 +259,155 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>UFLA - PRÓXIMO AO PRÉDIO DE CIENCIAS DA SOLO,S/N,CAMPUS UFLA	</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="12" column="0">
+                         <widget class="QLabel" name="label_anatel_initial_frenquency">
+                          <property name="text">
+                           <string>Freq. Final (MHz)</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="13" column="0">
+                         <widget class="QLabel" name="label_anatel_final_frequency_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="14" column="0">
+                         <widget class="QLabel" name="label_anatel_final_frenquency">
+                          <property name="text">
+                           <string>Freq. Inicial (MHz)</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="15" column="0">
+                         <widget class="QLabel" name="label_anatel_initial_frequency_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="16" column="0">
+                         <widget class="QLabel" name="label_anatel_azimute">
+                          <property name="text">
+                           <string>Azimute</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="17" column="0">
+                         <widget class="QLabel" name="label_anatel_azimute_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="18" column="0">
+                         <widget class="QLabel" name="label_anatel_gain_antenna">
+                          <property name="text">
+                           <string>Ganho Antena</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="19" column="0">
+                         <widget class="QLabel" name="label_anatel_gain_antenna_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="20" column="0">
+                         <widget class="QLabel" name="label_anatel_front_back">
+                          <property name="text">
+                           <string>Frente Costa</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="21" column="0">
+                         <widget class="QLabel" name="label_anatel_front_back_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="22" column="0">
+                         <widget class="QLabel" name="label_anatel_angulo_half_pot">
+                          <property name="text">
+                           <string>Angle 1/2 Pot.</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="23" column="0">
+                         <widget class="QLabel" name="label_anatel_half_pot_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="24" column="0">
+                         <widget class="QLabel" name="label_anatel_elevation">
+                          <property name="text">
+                           <string>Elevação</string>
                           </property>
                          </widget>
                         </item>
@@ -478,10 +420,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>6.50</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="26" column="0">
+                         <widget class="QLabel" name="label_anatel_polarization">
+                          <property name="text">
+                           <string>Polarização</string>
                           </property>
                          </widget>
                         </item>
@@ -494,10 +443,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>X</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="28" column="0">
+                         <widget class="QLabel" name="label_anatel_height_antenna">
+                          <property name="text">
+                           <string>Altura Antena (m)</string>
                           </property>
                          </widget>
                         </item>
@@ -510,15 +466,22 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>30.0</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
                           </property>
                          </widget>
                         </item>
+                        <item row="30" column="0">
+                         <widget class="QLabel" name="label_anatel_power_trasmission">
+                          <property name="text">
+                           <string> Potência de Transmissão</string>
+                          </property>
+                         </widget>
+                        </item>
                         <item row="31" column="0">
-                         <widget class="QLabel" name="label_anatel_power_transmision_value">
+                         <widget class="QLabel" name="label_anatel_power_transmission_value">
                           <property name="font">
                            <font>
                             <weight>75</weight>
@@ -526,10 +489,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>28.000</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="32" column="0">
+                         <widget class="QLabel" name="label_anatel_latitude">
+                          <property name="text">
+                           <string>Latitude</string>
                           </property>
                          </widget>
                         </item>
@@ -542,10 +512,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>21S140289</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="34" column="0">
+                         <widget class="QLabel" name="label_anatel_longitude">
+                          <property name="text">
+                           <string>Longitude</string>
                           </property>
                          </widget>
                         </item>
@@ -558,10 +535,17 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>45W001629</string>
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="36" column="0">
+                         <widget class="QLabel" name="label_anatel_first_licensing">
+                          <property name="text">
+                           <string>Data Primeiro Lic.</string>
                           </property>
                          </widget>
                         </item>
@@ -574,7 +558,23 @@
                            </font>
                           </property>
                           <property name="text">
-                           <string>06/11/2002</string>
+                           <string>-</string>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="3" column="0">
+                         <widget class="QLabel" name="label_anatel_entity_value">
+                          <property name="font">
+                           <font>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="text">
+                           <string>-</string>
                           </property>
                           <property name="wordWrap">
                            <bool>true</bool>
@@ -611,8 +611,8 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>200</width>
-                      <height>378</height>
+                      <width>207</width>
+                      <height>566</height>
                      </rect>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -953,8 +953,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>166</width>
-                  <height>190</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1059,8 +1059,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>223</width>
-                  <height>167</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1200,8 +1200,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>179</width>
-                  <height>161</height>
+                  <width>229</width>
+                  <height>613</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_15">

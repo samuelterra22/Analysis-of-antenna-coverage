@@ -33,13 +33,13 @@
        <widget class="QFrame" name="frame_tab_menus">
         <property name="minimumSize">
          <size>
-          <width>290</width>
+          <width>300</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>290</width>
+          <width>300</width>
           <height>16777215</height>
          </size>
         </property>
@@ -54,7 +54,7 @@
           <widget class="QTabWidget" name="tab_widget_menus">
            <property name="minimumSize">
             <size>
-             <width>270</width>
+             <width>280</width>
              <height>0</height>
             </size>
            </property>
@@ -99,6 +99,12 @@
                 <layout class="QVBoxLayout" name="verticalLayout_17">
                  <item>
                   <widget class="QScrollArea" name="scroll_area_transmitter_anatel">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="widgetResizable">
                     <bool>true</bool>
                    </property>
@@ -106,14 +112,14 @@
                     <property name="geometry">
                      <rect>
                       <x>0</x>
-                      <y>-322</y>
-                      <width>191</width>
-                      <height>888</height>
+                      <y>0</y>
+                      <width>203</width>
+                      <height>846</height>
                      </rect>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>191</width>
+                      <width>203</width>
                       <height>16777215</height>
                      </size>
                     </property>
@@ -132,6 +138,12 @@
                      </property>
                      <item>
                       <widget class="QGroupBox" name="group_box_anatel_transmitter_details">
+                       <property name="minimumSize">
+                        <size>
+                         <width>210</width>
+                         <height>0</height>
+                        </size>
+                       </property>
                        <property name="title">
                         <string>Detalhes do Transmissor</string>
                        </property>
@@ -473,13 +485,6 @@
                           </property>
                          </widget>
                         </item>
-                        <item row="30" column="0">
-                         <widget class="QLabel" name="label_anatel_power_trasmission">
-                          <property name="text">
-                           <string> Potência de Transmissão</string>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="31" column="0">
                          <widget class="QLabel" name="label_anatel_power_transmission_value">
                           <property name="font">
@@ -581,6 +586,13 @@
                           </property>
                          </widget>
                         </item>
+                        <item row="30" column="0" colspan="2">
+                         <widget class="QLabel" name="label_anatel_power_trasmission">
+                          <property name="text">
+                           <string> Potência de Transmissão (W)</string>
+                          </property>
+                         </widget>
+                        </item>
                        </layout>
                       </widget>
                      </item>
@@ -611,7 +623,7 @@
                      <rect>
                       <x>0</x>
                       <y>0</y>
-                      <width>207</width>
+                      <width>217</width>
                       <height>566</height>
                      </rect>
                     </property>
@@ -953,7 +965,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
+                  <width>239</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -1059,7 +1071,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
+                  <width>239</width>
                   <height>613</height>
                  </rect>
                 </property>
@@ -1200,7 +1212,7 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>229</width>
+                  <width>239</width>
                   <height>613</height>
                  </rect>
                 </property>

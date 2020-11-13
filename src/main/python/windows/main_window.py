@@ -242,14 +242,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         print("Calculate button!")
 
-        ERB_LOCATION = (-21.226244, -44.978407)
+        self.combo_box_anatel_base_station: QComboBox
+        index = self.combo_box_anatel_base_station.currentIndex()
+        data = self.combo_box_anatel_base_station.itemData(index)
 
-        transmitted_power = 1872.500  # 74.471580313
+        base_station_selected: BaseStation
+        base_station_selected = self.__base_station_controller.get_by_id(data)
+
+        ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+
+        transmitted_power = float(base_station_selected.potencia_transmissao)
         SENSITIVITY = -134
 
-        n = 0.00
-
-        n_lats, n_lons = (4, 4)
+        n_lats, n_lons = (500, 500)
         lat_bounds = (-21.211645, -21.246091)
         long_bounds = (-44.995876, -44.954157)
 
@@ -270,7 +275,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 point = (point_lat, point_long)
                 distance = self.calc_distance(ERB_LOCATION, point)
 
-                path_loss = cost231_path_loss(transmitted_power, 56, 1, distance, 2)
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_final), float(base_station_selected.altura), 1, distance, 2)
                 received_power = transmitted_power - path_loss
 
                 propagation_matrix[i][j] = received_power
@@ -297,8 +302,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # color_map = matplotlib.cm.get_cmap('BuPu')
         color_map = matplotlib.cm.get_cmap('OrRd')
 
-        normed_data = (propagation_matrix - propagation_matrix.min()) / (
-                propagation_matrix.max() - propagation_matrix.min())
+        normed_data = (propagation_matrix - propagation_matrix.min()) / (propagation_matrix.max() - propagation_matrix.min())
         colored_data = color_map(normed_data)
 
         m = folium.Map(
@@ -319,7 +323,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         folium.Marker(
             location=ERB_LOCATION,
-            popup='Estação Rádio Base Vivo',
+            popup=base_station_selected.entidade,
             draggable=False,
             icon=folium.Icon(prefix='glyphicon', icon='tower')
         ).add_to(m)

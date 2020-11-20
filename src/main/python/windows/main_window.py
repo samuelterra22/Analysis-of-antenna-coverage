@@ -2,6 +2,8 @@
 
 import io
 import sys
+from math import pi, cos
+
 import folium
 import numpy as np
 import matplotlib
@@ -254,9 +256,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         transmitted_power = float(base_station_selected.potencia_transmissao)
         SENSITIVITY = -134
 
+        bm_max_sensitivity = -100
+        bm_min_sensitivity = -160
+
         n_lats, n_lons = (500, 500)
-        lat_bounds = (-21.211645, -21.246091)
-        long_bounds = (-44.995876, -44.954157)
+        r_earth = 6378
+        dy, dx = 3, 3
+
+        new_latitude1 = ERB_LOCATION[0] + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
+        new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
+
+        new_latitude2 = ERB_LOCATION[0] - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
+        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
+
+        lat_bounds = (new_latitude1, new_latitude2)
+        long_bounds = (new_longitude1, new_longitude2)
+
+        # lat_bounds = (-21.211645, -21.246091)
+        # long_bounds = (-44.995876, -44.954157)
 
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
@@ -273,9 +290,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
                 point = (point_lat, point_long)
-                distance = self.calc_distance(ERB_LOCATION, point)
+                distance = self.calc_distance(point, ERB_LOCATION)
 
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_final), float(base_station_selected.altura), 1, distance, 2)
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), float(base_station_selected.altura), 2, distance, 2)
+                print(path_loss)
                 received_power = transmitted_power - path_loss
 
                 propagation_matrix[i][j] = received_power
@@ -286,6 +304,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         print(propagation_matrix.shape)
 
+        color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
         # color_map = matplotlib.cm.get_cmap('plasma')
         # color_map = matplotlib.cm.get_cmap('spring')
@@ -300,9 +319,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # color_map = matplotlib.cm.get_cmap('RdPu')
         # color_map = matplotlib.cm.get_cmap('Blues')
         # color_map = matplotlib.cm.get_cmap('BuPu')
-        color_map = matplotlib.cm.get_cmap('OrRd')
+        # color_map = matplotlib.cm.get_cmap('OrRd')
+        # color_map = matplotlib.cm.get_cmap('Greens')
 
-        normed_data = (propagation_matrix - propagation_matrix.min()) / (propagation_matrix.max() - propagation_matrix.min())
+        print(propagation_matrix.min())
+        print(propagation_matrix.max())
+
+        normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
         colored_data = color_map(normed_data)
 
         m = folium.Map(

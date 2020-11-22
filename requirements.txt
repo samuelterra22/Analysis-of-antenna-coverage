@@ -83,7 +83,7 @@ regex==2020.11.13
 requests==2.25.0
 rope==0.18.0
 scipy==1.5.4
-shiboken2==5.15.1
+shiboken2==5.15.2
 sip==5.4.0
 six==1.15.0
 snowballstemmer==2.0.0

@@ -256,8 +256,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         transmitted_power = float(base_station_selected.potencia_transmissao)
         SENSITIVITY = -134
 
-        bm_max_sensitivity = -100
-        bm_min_sensitivity = -160
+        bm_max_sensitivity = -80
+        bm_min_sensitivity = -180
 
         n_lats, n_lons = (500, 500)
         r_earth = 6378

@@ -70,7 +70,7 @@ PyQt5==5.15.1
 PyQt5-sip==12.8.1
 PyQt5-stubs==5.14.2.2
 pyqtlet==0.3.3
-PyQtWebEngine==5.15.1
+PyQtWebEngine==5.15.2
 PySide2==5.15.2
 python-dateutil==2.8.1
 python-dotenv==0.15.0

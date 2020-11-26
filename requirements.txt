@@ -66,7 +66,7 @@ pylint==2.6.0
 pyparsing==3.0.0b1
 pypesq==1.2.4
 pyproj==3.0.0.post1
-PyQt5==5.15.1
+PyQt5==5.15.2
 PyQt5-sip==12.8.1
 PyQt5-stubs==5.14.2.2
 pyqtlet==0.3.3

@@ -12,6 +12,7 @@ import matplotlib.cm
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
+from PyQt5 import QtCore, QtWidgets
 from haversine import haversine, Unit
 
 from src.main.python.models.base_station import BaseStation
@@ -20,6 +21,7 @@ from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
 from src.main.python.dialogs.help_dialog_class import HelpDialogClass
+from src.main.python.dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from src.main.python.support.propagation_models import cost231_path_loss
 from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
 from support.anatel import dms_to_dd
@@ -244,6 +246,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         print("Calculate button!")
 
+        data = {
+            "simulation": {
+                "propagation_model": "Hata",
+                "environment": "",
+                "max_ray": ""
+            },
+            "transmitter": {
+                "entidade": "",
+                "uf_municipio": "",
+                "endereco": "",
+                "frequencia": "",
+                "ganho": "",
+                "elevacao": "",
+                "polarizacao": "",
+                "altura": "",
+                "latitude": "",
+                "longitude": "",
+            },
+            "receptor": {
+                "altura": "",
+                "ganho": "",
+                "sensibilidade": "",
+            },
+        }
+
+        confirm_simulation_dialog = ConfirmSimulationDialogClass(data)
+        confirm_simulation_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        confirm_simulation_dialog.setModal(True)
+        confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
+
+        if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
+            self.simulated()
+
+    def simulated(self):
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
         data = self.combo_box_anatel_base_station.itemData(index)
@@ -264,10 +300,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dy, dx = 3, 3
 
         new_latitude1 = ERB_LOCATION[0] + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
+        new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
+            round(ERB_LOCATION[0] * pi / 180, 6))
 
         new_latitude2 = ERB_LOCATION[0] - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
+        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
+            round(ERB_LOCATION[0] * pi / 180, 6))
 
         lat_bounds = (new_latitude1, new_latitude2)
         long_bounds = (new_longitude1, new_longitude2)
@@ -292,8 +330,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 point = (point_lat, point_long)
                 distance = self.calc_distance(point, ERB_LOCATION)
 
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), float(base_station_selected.altura), 2, distance, 2)
-                print(path_loss)
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
+                                              float(base_station_selected.altura), 2, distance, 2)
+                # print(path_loss)
                 received_power = transmitted_power - path_loss
 
                 propagation_matrix[i][j] = received_power

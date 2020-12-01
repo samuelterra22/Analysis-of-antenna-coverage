@@ -283,10 +283,17 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
+         <item row="0" column="1">
           <widget class="QPushButton" name="btn_confirmar_simulacao">
            <property name="text">
             <string>CONFIRMAR</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="btn_cancelar_simulacao">
+           <property name="text">
+            <string>CANCELAR</string>
            </property>
           </widget>
          </item>

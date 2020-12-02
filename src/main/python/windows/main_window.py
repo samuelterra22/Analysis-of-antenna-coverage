@@ -25,6 +25,7 @@ from src.main.python.dialogs.confirm_simulation_dialog_class import ConfirmSimul
 from src.main.python.support.propagation_models import cost231_path_loss
 from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
 from support.anatel import dms_to_dd
+from support.physical_constants import r_earth
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 
@@ -279,6 +280,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
             self.simulated()
 
+    def get_new_lat_lng(self, latitude, longitude, dx=3, dy=3):
+        new_latitude = latitude + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
+        new_longitude = longitude + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(latitude * pi / 180, 6))
+        return tuple(round(new_latitude, 6), round(new_longitude, 6))
+
     def simulated(self):
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
@@ -290,14 +296,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
-        SENSITIVITY = -134
 
         bm_max_sensitivity = -80
         bm_min_sensitivity = -180
 
         n_lats, n_lons = (500, 500)
-        r_earth = 6378
-        dy, dx = 3, 3
+        dy, dx = 3, 3  # 3km
 
         new_latitude1 = ERB_LOCATION[0] + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
@@ -309,9 +313,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         lat_bounds = (new_latitude1, new_latitude2)
         long_bounds = (new_longitude1, new_longitude2)
-
-        # lat_bounds = (-21.211645, -21.246091)
-        # long_bounds = (-44.995876, -44.954157)
 
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)

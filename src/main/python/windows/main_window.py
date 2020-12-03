@@ -247,6 +247,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         print("Calculate button!")
 
+        index = self.combo_box_anatel_base_station.currentIndex()
+        if index == 0:
+            print("ERB was not selected")
+            return
+
         data = {
             "simulation": {
                 "propagation_model": "Hata",

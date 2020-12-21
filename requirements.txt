@@ -61,7 +61,7 @@ pycparser==2.20
 pydocstyle==5.1.1
 pyflakes==2.2.0
 pyinstaller==4.1
-pyinstaller-hooks-contrib==2020.10
+pyinstaller-hooks-contrib==2020.11
 pylint==2.6.0
 pyparsing==3.0.0b1
 pypesq==1.2.4

@@ -27,7 +27,7 @@ haversine==2.3.0
 identify==1.5.10
 idna==2.10
 importlib-metadata==3.3.0
-importlib-resources==4.1.0
+importlib-resources==4.1.1
 isort==5.6.4
 itur==0.2.1
 jedi==0.17.2

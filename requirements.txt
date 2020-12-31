@@ -6,7 +6,7 @@ astropy==4.2
 attrs==20.3.0
 autopep8==1.5.4
 black==20.8b1
-branca==0.4.1
+branca==0.4.2
 certifi==2020.12.5
 cffi==1.14.4
 cfgv==3.2.0

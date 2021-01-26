@@ -8,6 +8,10 @@ import folium
 import numpy as np
 import matplotlib
 import matplotlib.cm
+from srtm import Srtm1HeightMapCollection
+from srtm.base_coordinates import RasterBaseCoordinates
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
@@ -295,6 +299,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         index = self.combo_box_anatel_base_station.currentIndex()
         data = self.combo_box_anatel_base_station.itemData(index)
 
+        srtm1_data = Srtm1HeightMapCollection()
+        srtm1_data.build_file_index()
+        srtm1_data.load_area(RasterBaseCoordinates.from_file_name("S22W045"),
+                             RasterBaseCoordinates.from_file_name("S22W046"))
+
+        print("passosui")
+
         base_station_selected: BaseStation
         base_station_selected = self.__base_station_controller.get_by_id(data)
 
@@ -306,7 +317,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         bm_min_sensitivity = -180
 
         n_lats, n_lons = (500, 500)
-        dy, dx = 3, 3  # 3km
+        dy, dx = 6, 6  # 3km
 
         new_latitude1 = ERB_LOCATION[0] + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
@@ -330,24 +341,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         lats_mesh_deg = np.rad2deg(lats_mesh)
         lons_mesh_deg = np.rad2deg(lons_mesh)
 
+        x = []
+        y = []
+        z = []
+
         propagation_matrix = np.empty([n_lats, n_lons])
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
                 point = (point_lat, point_long)
-                distance = self.calc_distance(point, ERB_LOCATION)
+                a = srtm1_data.get_altitude(latitude=point_lat, longitude=point_long)
+                print(str(point), "=", str(a))
+                x.append(point_lat * 30)
+                y.append(point_long * 30)
+                z.append(a)
 
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
-                                              float(base_station_selected.altura), 2, distance, 2)
-                # print(path_loss)
-                received_power = transmitted_power - path_loss
-
-                propagation_matrix[i][j] = received_power
+                # distance = self.calc_distance(point, ERB_LOCATION)
+                #
+                # path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
+                #                               float(base_station_selected.altura), 2, distance, 2)
+                # # print(path_loss)
+                # received_power = transmitted_power - path_loss
+                #
+                # propagation_matrix[i][j] = received_power
                 # if received_power >= SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
                 #     propagation_matrix[i][j] = 0
 
         print(propagation_matrix.shape)
+
+        # x = np.linspace(-8, 8, 300)
+        # y = np.linspace(-8, 8, 300)
+        #
+        # X, Y, Z = np.meshgrid(x, y, z)
+        # Z = f(X, Y)
+
+        yFormatter = FormatStrFormatter('%.7f')
+
+        fig = plt.figure()
+        ax = plt.axes(projection='3d')
+
+        ax.yaxis.set_major_formatter(yFormatter)
+        ax.xaxis.set_major_formatter(yFormatter)
+
+        # ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
+        ax.scatter(x,y,z, c=z)
+        ax.set_title('surface')
+
+        fig.show()
 
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')

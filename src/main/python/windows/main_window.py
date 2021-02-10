@@ -310,11 +310,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         base_station_selected = self.__base_station_controller.get_by_id(data)
 
         ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+        altitude_tx = srtm1_data.get_altitude(latitude=ERB_LOCATION[0], longitude=ERB_LOCATION[1])
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
-        bm_max_sensitivity = -80
-        bm_min_sensitivity = -180
+        bm_max_sensitivity = -60
+        bm_min_sensitivity = -160
 
         n_lats, n_lons = (500, 500)
         dy, dx = 6, 6  # 3km
@@ -341,28 +342,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         lats_mesh_deg = np.rad2deg(lats_mesh)
         lons_mesh_deg = np.rad2deg(lons_mesh)
 
-        x = []
-        y = []
-        z = []
+        # x = []
+        # y = []
+        # z = []
 
         propagation_matrix = np.empty([n_lats, n_lons])
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
                 point = (point_lat, point_long)
-                a = srtm1_data.get_altitude(latitude=point_lat, longitude=point_long)
-                print(str(point), "=", str(a))
-                x.append(point_lat * 30)
-                y.append(point_long * 30)
-                z.append(a)
+                altitude_rx = srtm1_data.get_altitude(latitude=point_lat, longitude=point_long)
+                # print(str(point), "=", str(a))
+                # x.append(point_lat * 30)
+                # y.append(point_long * 30)
+                # z.append(a)
 
-                # distance = self.calc_distance(point, ERB_LOCATION)
+                distance = self.calc_distance(point, ERB_LOCATION)
                 #
-                # path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
-                #                               float(base_station_selected.altura), 2, distance, 2)
-                # # print(path_loss)
-                # received_power = transmitted_power - path_loss
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
+                                               float(base_station_selected.altura) + float(altitude_tx), 2 + float(altitude_rx), distance, 2)
+                print(path_loss)
+                received_power = transmitted_power - path_loss
                 #
-                # propagation_matrix[i][j] = received_power
+                propagation_matrix[i][j] = received_power
                 # if received_power >= SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
@@ -376,19 +377,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # X, Y, Z = np.meshgrid(x, y, z)
         # Z = f(X, Y)
 
-        yFormatter = FormatStrFormatter('%.7f')
+        # yFormatter = FormatStrFormatter('%.7f')
 
-        fig = plt.figure()
-        ax = plt.axes(projection='3d')
+        # fig = plt.figure()
+        # ax = plt.axes(projection='3d')
 
-        ax.yaxis.set_major_formatter(yFormatter)
-        ax.xaxis.set_major_formatter(yFormatter)
+        # ax.yaxis.set_major_formatter(yFormatter)
+        # ax.xaxis.set_major_formatter(yFormatter)
 
         # ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
-        ax.scatter(x,y,z, c=z)
-        ax.set_title('surface')
+        # ax.scatter(x,y,z, c=z)
+        # ax.set_title('surface')
 
-        fig.show()
+        # fig.show()
 
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')

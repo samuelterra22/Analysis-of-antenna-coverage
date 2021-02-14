@@ -304,8 +304,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         srtm1_data.load_area(RasterBaseCoordinates.from_file_name("S22W045"),
                              RasterBaseCoordinates.from_file_name("S22W046"))
 
-        print("passosui")
-
         base_station_selected: BaseStation
         base_station_selected = self.__base_station_controller.get_by_id(data)
 

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
+    <width>1216</width>
     <height>720</height>
    </rect>
   </property>
@@ -89,6 +89,9 @@
              </property>
              <item>
               <widget class="QTabWidget" name="tab_widget_transmitter">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="currentIndex">
                 <number>0</number>
                </property>
@@ -603,6 +606,9 @@
                 </layout>
                </widget>
                <widget class="QWidget" name="tab_transmitter_custom">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <attribute name="title">
                  <string>Personalizado</string>
                 </attribute>
@@ -1387,6 +1393,9 @@
       </item>
       <item>
        <widget class="QTabWidget" name="tab_widget_maps">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="minimumSize">
          <size>
           <width>500</width>
@@ -1417,6 +1426,9 @@
          </layout>
         </widget>
         <widget class="QWidget" name="tab_mos">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <attribute name="title">
           <string>Heatmap MOS</string>
          </attribute>
@@ -1437,7 +1449,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1216</width>
      <height>20</height>
     </rect>
    </property>

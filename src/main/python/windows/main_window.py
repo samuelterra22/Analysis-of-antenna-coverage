@@ -67,13 +67,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.init_model_components()
         self.init_output_components()
 
-    def init_output_components(self):
+    def init_output_components(self) -> None:
         self.combo_box_output_colour_scheme: QComboBox
         self.combo_box_output_colour_scheme.addItems([])
         self.combo_box_output_colour_scheme.currentIndexChanged.connect(
             self.on_combo_box_output_colour_scheme_changed)
 
-    def init_model_components(self):
+    def init_model_components(self) -> None:
         self.combo_box_propagation_model: QComboBox
         self.combo_box_propagation_model.addItems([])
         self.combo_box_propagation_model.currentIndexChanged.connect(
@@ -84,13 +84,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.combo_box_environment.currentIndexChanged.connect(
             self.on_combo_box_environment_changed)
 
-    def init_antenna_components(self):
+    def init_antenna_components(self) -> None:
         self.combo_box_antenna_antenna_polarisation: QComboBox
         self.combo_box_antenna_antenna_polarisation.addItems([])
         self.combo_box_antenna_antenna_polarisation.currentIndexChanged.connect(
             self.on_combo_box_antenna_antenna_polarisation_changed)
 
-    def init_transmitter_components(self):
+    def init_transmitter_components(self) -> None:
         # For select a ERB
         self.combo_box_anatel_base_station: QComboBox
 
@@ -102,7 +102,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.combo_box_tx_coordinates.addItems([])
         self.combo_box_tx_coordinates.currentIndexChanged.connect(self.on_combo_box_tx_coordinates_changed)
 
-    def fill_combo_box_anatel_base_station(self):
+    def fill_combo_box_anatel_base_station(self) -> None:
         db_configs = self.__base_station_controller.get_all_distinct()
 
         if db_configs is not None:
@@ -111,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.combo_box_anatel_base_station.addItem(config.entidade + " - " + config.endereco, config.id)
 
     @pyqtSlot(name="on_combo_box_output_colour_scheme_changed")
-    def on_combo_box_output_colour_scheme_changed(self):
+    def on_combo_box_output_colour_scheme_changed(self) -> None:
         print("Items in the list 'combo_box_output_colour_scheme' are :")
         index = self.combo_box_output_colour_scheme.currentIndex()
         text = self.combo_box_output_colour_scheme.currentText()
@@ -121,7 +121,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Current index", index, "selection changed ", text)
 
     @pyqtSlot(name="on_combo_box_environment_changed")
-    def on_combo_box_environment_changed(self):
+    def on_combo_box_environment_changed(self) -> None:
         print("Items in the list 'combo_box_environment' are :")
         index = self.combo_box_environment.currentIndex()
         text = self.combo_box_environment.currentText()
@@ -131,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Current index", index, "selection changed ", text)
 
     @pyqtSlot(name="on_combo_box_propagation_model_changed")
-    def on_combo_box_propagation_model_changed(self):
+    def on_combo_box_propagation_model_changed(self) -> None:
         print("Items in the list 'combo_box_propagation_model' are :")
         index = self.combo_box_propagation_model.currentIndex()
         text = self.combo_box_propagation_model.currentText()
@@ -141,7 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Current index", index, "selection changed ", text)
 
     @pyqtSlot(name="on_combo_box_antenna_antenna_polarisation_changed")
-    def on_combo_box_antenna_antenna_polarisation_changed(self):
+    def on_combo_box_antenna_antenna_polarisation_changed(self) -> None:
         print("Items in the list 'combo_box_antenna_antenna_polarisation' are :")
         index = self.combo_box_antenna_antenna_polarisation.currentIndex()
         text = self.combo_box_antenna_antenna_polarisation.currentText()
@@ -151,7 +151,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Current index", index, "selection changed ", text)
 
     @pyqtSlot(name="on_combo_box_anatel_base_station_changed")
-    def on_combo_box_anatel_base_station_changed(self):
+    def on_combo_box_anatel_base_station_changed(self) -> None:
         print("Items in the list 'combo_box_anatel_base_station' are :")
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
@@ -161,7 +161,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_erb_map(erb)
         self.add_erb_in_details(erb)
 
-    def add_erb_map(self, base_station: BaseStation):
+    def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
         m = folium.Map(
@@ -182,7 +182,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.web_view.setHtml(data.getvalue().decode())
 
-    def add_erb_in_details(self, base_station: BaseStation):
+    def add_erb_in_details(self, base_station: BaseStation) -> None:
         self.label_anatel_entity_value.setText(base_station.entidade)
         self.label_anatel_station_number_value.setText(base_station.num_estacao)
         self.label_anatel_uf_value.setText(base_station.uf)
@@ -203,7 +203,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_anatel_first_licensing_value.setText(base_station.data_primeiro_licenciamento)
 
     @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
-    def on_combo_box_tx_coordinates_changed(self):
+    def on_combo_box_tx_coordinates_changed(self) -> None:
         print("Items in the list 'combo_box_tx_coordinates' are :")
         index = self.combo_box_tx_coordinates.currentIndex()
         text = self.combo_box_tx_coordinates.currentText()
@@ -212,7 +212,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             print(self.combo_box_tx_coordinates.itemText(count))
         print("Current index", index, "selection changed ", text)
 
-    def init_menus(self):
+    def init_menus(self) -> None:
         self.menu_action_exit.triggered.disconnect()
         self.menu_action_exit.triggered.connect(self.on_menu_exit_triggered)
 
@@ -228,10 +228,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_action_help.triggered.disconnect()
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
-    def calc_distance(self, point_1, point_2, unit=Unit.METERS):
+    def calc_distance(self, point_1: tuple, point_2: tuple, unit=Unit.METERS) -> float:
         return haversine(point_1, point_2, unit=unit)
 
-    def _init_rf_map(self):
+    def _init_rf_map(self) -> None:
         m = folium.Map(
             location=UFLA_LAT_LONG_POSITION,
             zoom_start=16,
@@ -244,7 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     @pyqtSlot(name="on_button_calculate_clicked")
-    def on_button_calculate_clicked(self):
+    def on_button_calculate_clicked(self) -> None:
         """
         This method is called when calculate menu button is clicked
         :return: None
@@ -289,12 +289,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
             self.simulated()
 
-    def get_new_lat_lng(self, latitude, longitude, dx=3, dy=3):
+    def get_new_lat_lng(self, latitude: float, longitude: float, dx: float = 3, dy: float = 3) -> tuple:
         new_latitude = latitude + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude = longitude + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(latitude * pi / 180, 6))
-        return tuple(round(new_latitude, 6), round(new_longitude, 6))
+        return tuple((round(new_latitude, 6), round(new_longitude, 6)))
 
-    def simulated(self):
+    def simulated(self) -> None:
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
         data = self.combo_box_anatel_base_station.itemData(index)
@@ -340,24 +340,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         lats_mesh_deg = np.rad2deg(lats_mesh)
         lons_mesh_deg = np.rad2deg(lons_mesh)
 
-        # x = []
-        # y = []
-        # z = []
-
         propagation_matrix = np.empty([n_lats, n_lons])
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
                 point = (point_lat, point_long)
                 altitude_rx = srtm1_data.get_altitude(latitude=point_lat, longitude=point_long)
                 # print(str(point), "=", str(a))
-                # x.append(point_lat * 30)
-                # y.append(point_long * 30)
-                # z.append(a)
 
                 distance = self.calc_distance(point, ERB_LOCATION)
                 #
                 path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
-                                               float(base_station_selected.altura) + float(altitude_tx), 2 + float(altitude_rx), distance, 2)
+                                              float(base_station_selected.altura) + float(altitude_tx),
+                                              2 + float(altitude_rx), distance, 2)
                 print(path_loss)
                 received_power = transmitted_power - path_loss
                 #
@@ -368,26 +362,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 #     propagation_matrix[i][j] = 0
 
         print(propagation_matrix.shape)
-
-        # x = np.linspace(-8, 8, 300)
-        # y = np.linspace(-8, 8, 300)
-        #
-        # X, Y, Z = np.meshgrid(x, y, z)
-        # Z = f(X, Y)
-
-        # yFormatter = FormatStrFormatter('%.7f')
-
-        # fig = plt.figure()
-        # ax = plt.axes(projection='3d')
-
-        # ax.yaxis.set_major_formatter(yFormatter)
-        # ax.xaxis.set_major_formatter(yFormatter)
-
-        # ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
-        # ax.scatter(x,y,z, c=z)
-        # ax.set_title('surface')
-
-        # fig.show()
 
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
@@ -442,7 +416,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     @pyqtSlot(name="on_menu_anatel_base_triggered")
-    def on_menu_anatel_base_triggered(self):
+    def on_menu_anatel_base_triggered(self) -> None:
         """
         This method is called when calculate button is clicked
         :return: None
@@ -453,7 +427,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         anatel_dialog.show()
 
     @pyqtSlot(name="on_menu_settings_triggered")
-    def on_menu_settings_triggered(self):
+    def on_menu_settings_triggered(self) -> None:
         """
         This method is called when settings menu button is clicked
         :return: None
@@ -463,7 +437,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         settings_dialog.show()
 
     @pyqtSlot(name="on_menu_about_triggered")
-    def on_menu_about_triggered(self):
+    def on_menu_about_triggered(self) -> None:
         """
         This method is called when about menu button is clicked
         :return: None
@@ -473,7 +447,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         about_dialog.show()
 
     @pyqtSlot(name="on_menu_help_triggered")
-    def on_menu_help_triggered(self):
+    def on_menu_help_triggered(self) -> None:
         """
         This method is called when help menu button is clicked
         :return: None
@@ -483,7 +457,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         help_dialog.show()
 
     @pyqtSlot(name="on_menu_exit_triggered")
-    def on_menu_exit_triggered(self):
+    def on_menu_exit_triggered(self) -> None:
         """
         This method is called when exit menu button is clicked
         :return: None

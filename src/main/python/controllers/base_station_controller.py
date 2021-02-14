@@ -72,7 +72,7 @@ class BaseStationController(BaseController):
             print(e)
             return None
 
-    def update(self, data, id):
+    def update(self, data, id: int):
         """
         This method update a base station using a service
         :param data:
@@ -92,7 +92,7 @@ class BaseStationController(BaseController):
             print(e)
             return None
 
-    def destroy(self, id):
+    def destroy(self, id: int):
         """
         This method delete a base station using a service
         :param id:

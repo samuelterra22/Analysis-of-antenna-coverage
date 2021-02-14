@@ -1,7 +1,7 @@
 import xlsxwriter
 
 
-def to_excel(filename, title, data):
+def to_excel(filename: str, title: str, data: list):
     """
     This method exports a excel file from the data provided
     :param filename:    File name to output

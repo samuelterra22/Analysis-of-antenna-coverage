@@ -8,7 +8,7 @@ root = get_project_root()
 formatter = logging.Formatter('%(levelname)s - \t %(asctime)s -->\t  %(message)s')
 
 
-def log_to_database(type, message, stack_trace):
+def log_to_database(type: str, message: str, stack_trace: str) -> None:
     """
     This method save a exception log in database
     :param type: Type of log
@@ -19,7 +19,7 @@ def log_to_database(type, message, stack_trace):
     Log.create(type=type, message=message, stack_trace=stack_trace)
 
 
-def to_log_error(log_text):
+def to_log_error(log_text: str) -> None:
     """
     This method write the informed text log in error log file
     :param string log_text: The text to log
@@ -34,7 +34,7 @@ def to_log_error(log_text):
     logger.error(log_text)
 
 
-def to_log_debug(log_text):
+def to_log_debug(log_text: str) -> None:
     """
     This method write the informed text log in debug log file
     :param string log_text: The text to log
@@ -49,7 +49,7 @@ def to_log_debug(log_text):
     logger.debug(log_text)
 
 
-def to_log_fatal(log_text):
+def to_log_fatal(log_text: str) -> None:
     """
     This method write the informed text log in fatal log file
     :param string log_text: The text to log
@@ -64,7 +64,7 @@ def to_log_fatal(log_text):
     logger.fatal(log_text)
 
 
-def to_log_warning(log_text):
+def to_log_warning(log_text: str) -> None:
     """
     This method write the informed text log in warning log file
     :param string log_text: The text to log
@@ -79,7 +79,7 @@ def to_log_warning(log_text):
     logger.warning(log_text)
 
 
-def to_log_info(log_text):
+def to_log_info(log_text: str) -> None:
     """
     This method write the informed text log in info log file
     :param string log_text: The text to log

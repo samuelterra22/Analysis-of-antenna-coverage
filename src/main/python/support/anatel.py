@@ -6,6 +6,8 @@ from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
 
+from pandas.io.parsers import TextFileReader
+
 import src.main.python.support.constants as constants
 from src.main.python.exceptions.application_exception import ApplicationException
 from src.main.python.support.logs import to_log_error
@@ -43,7 +45,7 @@ uf_list = {
 }
 
 
-def get_ufs_initials():
+def get_ufs_initials() -> list:
     """
     This method return the ufs initials ordered
     :return: list The of ufs ordered
@@ -51,7 +53,7 @@ def get_ufs_initials():
     return sorted(uf_list.keys())
 
 
-def get_uf_code(uf):
+def get_uf_code(uf: str) -> list:
     """
     This method return the uf code from ufs list
     :param uf: string The uf name
@@ -60,7 +62,7 @@ def get_uf_code(uf):
     return uf_list.get(uf)
 
 
-def get_uf_by_id(uf_id):
+def get_uf_by_id(uf_id: int) -> str:
     """
     This method return the uf code from ufs list
     :param uf_id: int The uf id
@@ -71,7 +73,7 @@ def get_uf_by_id(uf_id):
             return uf
 
 
-def get_counties(uf):
+def get_counties(uf: str) -> str:
     """
     This method get all counties from an uf related
     :param uf: int The uf code
@@ -95,14 +97,14 @@ def get_counties(uf):
         return constants.INVALID_UF
 
 
-def dms_to_dd(coordinate_in_dms):
+def dms_to_dd(coordinate_in_dms: str) -> float:
     sign = -1 if re.search("[swSW]", coordinate_in_dms) else 1
     c = split_coordinates_dms(coordinate_in_dms)
     dd = sign * (float(c["d"]) + float(c["m"]) / 60 + float(c["s"]) / 3600)
     return round(dd, 6)
 
 
-def split_coordinates_dms(coordinate_in_dms):
+def split_coordinates_dms(coordinate_in_dms: str) -> dict:
     degrees = coordinate_in_dms[:2]
     minutes = coordinate_in_dms[3:5]
     seconds = coordinate_in_dms[5:7]
@@ -111,7 +113,7 @@ def split_coordinates_dms(coordinate_in_dms):
     return {"d": degrees, "m": minutes, "s": seconds}
 
 
-def get_anatel_data(uf_sigle, country_id=None):
+def get_anatel_data(uf_sigle: str, country_id: int = None) -> TextFileReader:
     """
     Get ERB info in Anatel online database
     :return: Pandas object

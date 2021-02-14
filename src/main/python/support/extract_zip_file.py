@@ -2,7 +2,7 @@ import os
 import zipfile
 
 
-def unzip(filename, extract_to):
+def unzip(filename: str, extract_to: str) -> None:
     """
     This method run unzip a file to specified path
     :param filename:    Path/filename of zip file

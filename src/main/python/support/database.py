@@ -4,7 +4,7 @@ from settings import DATABASE_NAME
 from src.main.python.support.path import get_project_root
 
 
-def get_database_url():
+def get_database_url() -> str:
     """
     This method return the path of database according to database name
     in .env file
@@ -13,7 +13,7 @@ def get_database_url():
     return str(get_project_root()) + '/database/' + str(DATABASE_NAME)
 
 
-def get_sqlite_database_instance():
+def get_sqlite_database_instance() -> SqliteDatabase:
     """
     This method return the sql database instance
     :return:
@@ -21,7 +21,7 @@ def get_sqlite_database_instance():
     return SqliteDatabase(get_database_url())
 
 
-def create_tables():
+def create_tables() -> None:
     """
     In this method creates all the tables in the database
     according to the application models

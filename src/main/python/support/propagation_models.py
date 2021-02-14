@@ -7,7 +7,7 @@ from scipy.constants import speed_of_light
 
 
 @jit(nopython=True)
-def log_distance_path_loss(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
+def log_distance_path_loss(d: float, gamma: float = 2, d0: float = 1, pr_d0: float = -60, pt: float = -17):
     """
     Modelo logaritmo de perda baseado em resultados experimentais. Independe da frequência do sinal transmitido
     e do ganho das antenas transmissora e receptora.
@@ -17,14 +17,14 @@ def log_distance_path_loss(d, gamma=2, d0=1, pr_d0=-60, pt=-17):
     :param pt:      Potência transmitida.
     :param d0:      Distância do ponto de referência d0.
     :param d:       Distância em metros que desejo calcular a perda do sinal.
-    :param gamma:   Valor da constante de propagação que difere para cada tipo de ambiente.
+    :param gamma:   Expoente de perda de caminho.
     :return:        Retorna um float representando a perda do sinal entre a distância d0 e d.
     """
     return (pr_d0 - 10 * gamma * log10(d / d0)) - pt
 
 
 @jit(nopython=True)
-def log_distance_v2_model(d, gamma=3, d0=10, pr_d0=-69, pt=-20):
+def log_distance_v2_model(d: float, gamma: float = 3, d0: float = 10, pr_d0: float = -69, pt: float = -20):
     """
 
     :param d:
@@ -38,7 +38,7 @@ def log_distance_v2_model(d, gamma=3, d0=10, pr_d0=-69, pt=-20):
 
 
 @jit(nopython=True)
-def tree_par_log_model(x):
+def tree_par_log_model(x: float):
     """
 
     :param x:
@@ -48,7 +48,7 @@ def tree_par_log_model(x):
 
 
 @jit(nopython=True)
-def two_par_logistic_model(pt_dbm, x):
+def two_par_logistic_model(pt_dbm: float, x: float):
     """
 
     :param pt_dbm:
@@ -60,7 +60,7 @@ def two_par_logistic_model(pt_dbm, x):
 
 
 @jit(nopython=True)
-def four_par_log_model(pt_dbm, x):
+def four_par_log_model(pt_dbm: float, x: float):
     """
 
     :param pt_dbm:
@@ -77,7 +77,7 @@ def four_par_log_model(pt_dbm, x):
 
 
 @jit(nopython=True)
-def five_par_log_model(pt_dbm, x):
+def five_par_log_model(pt_dbm: float, x: float):
     """
 
     :param pt_dbm:
@@ -94,7 +94,7 @@ def five_par_log_model(pt_dbm, x):
 
 
 @jit(nopython=True)
-def cost231_path_loss(f, tx_h, rx_h, d, mode):
+def cost231_path_loss(f: float, tx_h: float, rx_h: float, d: float, mode):
     """
     COST231 extension to HATA model
     http://morse.colorado.edu/~tlen5510/text/classwebch3.html
@@ -167,7 +167,7 @@ def ericsson_path_loss():
 
 
 @jit(nopython=True)
-def fspl_path_loss(d, fc):
+def fspl_path_loss(d: float, fc: float) -> float:
     """
     Recommendation ITU-R P.525-4 - Calculation of free-space attenuation
 
@@ -186,7 +186,7 @@ def fspl_path_loss(d, fc):
 
 
 @jit(nopython=True)
-def hata_path_loss(f, h_B, h_M, d, mode=None):
+def hata_path_loss(f: float, h_B: float, h_M: float, d: float, mode: int = None) -> float:
     """
     HATA URBAN model for cellular planning. The Hata model is a radio propagation model for predicting the path loss of
     cellular transmissions in exterior environments, valid for microwave frequencies from 150 to 1500 MHz
@@ -202,7 +202,7 @@ def hata_path_loss(f, h_B, h_M, d, mode=None):
     # https://github.com/Cloud-RF/Signal-Server/blob/master/models/hata.cc
     logf = log10(f)
 
-    if (f < 200):
+    if f < 200:
         lh_M = log10(1.54 * h_M)
         C_H = 8.29 * (lh_M * lh_M) - 1.1
     else:
@@ -221,11 +221,11 @@ def hata_path_loss(f, h_B, h_M, d, mode=None):
     if mode == 3:  # OPEN
         return L_u - 4.78 * logf * logf + 18.33 * logf - 40.94
 
-    return 0
+    return 0.0
 
 
 @jit(nopython=True)
-def sui_path_loss():
+def sui_path_loss(f: float, d: float, terdicpr: float) -> float:
     """
     Todo
     :return:

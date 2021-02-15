@@ -6,7 +6,7 @@ from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
 
-from pandas.io.parsers import TextFileReader
+from pandas import DataFrame
 
 import src.main.python.support.constants as constants
 from src.main.python.exceptions.application_exception import ApplicationException
@@ -113,7 +113,7 @@ def split_coordinates_dms(coordinate_in_dms: str) -> dict:
     return {"d": degrees, "m": minutes, "s": seconds}
 
 
-def get_anatel_data(uf_sigle: str, country_id: int = None) -> TextFileReader:
+def get_anatel_data(uf_sigle: str, country_id: int = None) -> DataFrame:
     """
     Get ERB info in Anatel online database
     :return: Pandas object
@@ -206,9 +206,9 @@ def get_anatel_data(uf_sigle: str, country_id: int = None) -> TextFileReader:
             print("Please wait, downloading the file '%s'..." % file_name)
 
             with urlopen(url_base + redirect_url) as f:
-                with BytesIO(f.read()) as b, ZipFile(b) as myzipfile:
-                    foofile = myzipfile.open(myzipfile.namelist()[0])
-                    df = pd.read_csv(foofile, encoding="ISO-8859-1")
+                with BytesIO(f.read()) as b, ZipFile(b) as zipfile:
+                    file = zipfile.open(zipfile.namelist()[0])
+                    df = pd.read_csv(file, encoding="ISO-8859-1")
 
             print("Download successful!")
             return df

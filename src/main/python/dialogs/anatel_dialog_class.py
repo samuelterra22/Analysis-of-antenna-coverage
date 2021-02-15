@@ -3,6 +3,7 @@
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
+from pandas import DataFrame
 
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
@@ -10,6 +11,7 @@ from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
 from src.main.python.support.constants import CURRENT_UF_ID
 from src.main.python.support.constants import CURRENT_COUNTY_ID
+from src.main.python.dialogs.alert_dialog_class import AlertDialogClass
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
 
@@ -54,9 +56,9 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
     def init_ui_components(self):
         current_uf_id = self.get_current_uf_id()
-        current_contry_id = self.get_current_state_id()
+        current_country_id = self.get_current_state_id()
         print(current_uf_id)
-        print(current_contry_id)
+        print(current_country_id)
 
         self.fill_combo_box_state()
 
@@ -66,15 +68,15 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         if current_index_uf != -1:
             self.fill_combo_box_country(self.combo_box_state.itemText(current_index_uf))
         else:
-            self.combo_box_contry.addItems(["Select a UF first"])
+            self.combo_box_county.addItems(["Select a UF first"])
 
-        current_contry_uf = self.get_current_contry_index(current_contry_id)
-        self.combo_box_contry.setCurrentIndex(current_contry_uf)
+        current_country_uf = self.get_current_contry_index(current_country_id)
+        self.combo_box_county.setCurrentIndex(current_country_uf)
 
         self.fill_erb_table_with_database_info()
 
         self.combo_box_state.currentIndexChanged.connect(self.on_combo_box_state_changed)
-        self.combo_box_contry.currentIndexChanged.connect(self.on_combo_box_contry_changed)
+        self.combo_box_county.currentIndexChanged.connect(self.on_combo_box_county_changed)
 
         self.update_database_button.clicked.disconnect()
         self.update_database_button.clicked.connect(self.on_update_database_button_clicked)
@@ -88,16 +90,16 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         return 0
 
     def get_current_contry_index(self, current_contry_id):
-        self.combo_box_contry: QComboBox
+        self.combo_box_county: QComboBox
         if current_contry_id != -1:
-            for count in range(self.combo_box_contry.count()):
-                if str(self.combo_box_contry.itemData(count)) == current_contry_id:
+            for count in range(self.combo_box_county.count()):
+                if str(self.combo_box_county.itemData(count)) == current_contry_id:
                     return count
         return 0
 
     @pyqtSlot(name="on_combo_box_state_changed")
     def on_combo_box_state_changed(self):
-        self.combo_box_contry.clear()
+        self.combo_box_county.clear()
 
         index = self.combo_box_state.currentIndex()
 
@@ -113,13 +115,13 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         :param uf:
         :return:
         """
-        self.combo_box_contry: QComboBox
+        self.combo_box_county: QComboBox
 
         counties = get_counties(uf)
         for county in counties:
-            self.combo_box_contry.addItem(county[0], county[1])
+            self.combo_box_county.addItem(county[0], county[1])
 
-        self.combo_box_contry.setCurrentIndex(0)
+        self.combo_box_county.setCurrentIndex(0)
 
     def __create_or_update_uf(self, uf_id):
         data = {
@@ -146,30 +148,35 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         if not self.__settings_controller.get(data):
             result = self.__settings_controller.store(data)
             print('Result from store state id: ' + str(result))
+
+            if result is not None:
+                AlertDialogClass("Atualizar base",
+                                 "Configurações de região atualizadas com sucesso! Lembre-se de atualizar a base de "
+                                 "ERBs.").exec_()
         else:
             # The setting exists, then update
             result = self.__settings_controller.update(data, None)
             print('Result from update state id: ' + str(result))
 
-    @pyqtSlot(name="on_combo_box_contry_changed")
-    def on_combo_box_contry_changed(self):
-        index = self.combo_box_contry.currentIndex()
-        text = self.combo_box_contry.currentText()
+    @pyqtSlot(name="on_combo_box_county_changed")
+    def on_combo_box_county_changed(self):
+        index = self.combo_box_county.currentIndex()
+        # text = self.combo_box_county.currentText()
 
-        uf_id = self.combo_box_contry.itemData(index)
+        uf_id = self.combo_box_county.itemData(index)
         self.__create_or_update_state(uf_id)
 
     def disable_ui_components(self):
         self.anatel_table.setDisabled(True)
         self.update_database_button.setDisabled(True)
         self.combo_box_state.setDisabled(True)
-        self.combo_box_contry.setDisabled(True)
+        self.combo_box_county.setDisabled(True)
 
     def enable_ui_components(self):
         self.anatel_table.setDisabled(False)
         self.update_database_button.setDisabled(False)
         self.combo_box_state.setDisabled(False)
-        self.combo_box_contry.setDisabled(False)
+        self.combo_box_county.setDisabled(False)
 
     def fill_combo_box_state(self):
         """
@@ -242,13 +249,13 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.anatel_table.setDisabled(False)
         self.update_database_button.setDisabled(False)
 
-    def save_offline_erb_data(self, erb_config):
+    def save_offline_erb_data(self, erb_config: DataFrame):
         self.__base_station_controller.destroy_all()
 
         total = len(erb_config.values)
         processed = 0
 
-        for row in (erb_config.values):
+        for row in erb_config.values:
             data = {
                 "status": row[0],
                 "entidade": row[1],
@@ -300,7 +307,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
         self.combo_box_state: QComboBox
         uf_sigle = self.combo_box_state.itemText(self.combo_box_state.currentIndex())
-        country_code = self.combo_box_contry.itemData(int(self.combo_box_contry.currentIndex()))
+        country_code = self.combo_box_county.itemData(int(self.combo_box_county.currentIndex()))
 
         erb_config = get_anatel_data(uf_sigle, int(country_code))
 

@@ -19,9 +19,9 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
 from haversine import haversine, Unit
 
-from dialogs.alert_dialog_class import AlertDialogClass
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
+from src.main.python.dialogs.alert_dialog_class import AlertDialogClass
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
 from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
 from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
@@ -301,8 +301,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         print("Calculate button!")
 
-        if not self.required_fields_filed():
-            return
+        # if not self.required_fields_filed():
+        #     return
 
         data = {
             "simulation": {

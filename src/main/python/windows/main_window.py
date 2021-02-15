@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
 from haversine import haversine, Unit
 
+from dialogs.alert_dialog_class import AlertDialogClass
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.dialogs.about_dialog_class import AboutDialogClass
@@ -243,6 +244,55 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.web_view.setHtml(data.getvalue().decode())
 
+    def required_fields_filed(self) -> bool:
+        if self.combo_box_anatel_base_station.currentIndex() == 0:
+            AlertDialogClass("Selecione uma ERB", "ERB não selecionada! Selecione uma ERB para continuar...").exec_()
+            return False
+
+        if self.combo_box_antenna_antenna_polarisation.currentIndex() == 0:
+            AlertDialogClass("Selecione uma polarização", "Polarização não selecionada! Selecione uma polarização "
+                                                          "para continuar...").exec_()
+            return False
+
+        if self.combo_box_propagation_model.currentIndex() == 0:
+            AlertDialogClass("Selecione um modelo de propagação", "Modelo de propagação não selecionado! Selecione um "
+                                                                  "modelo de propagação para continuar...").exec_()
+            return False
+
+        if self.combo_box_environment.currentIndex() == 0:
+            AlertDialogClass("Selecione um ambiente", "Ambiente de propagação não selecionado! Selecione um ambiente "
+                                                      "de propagação para continuar...").exec_()
+            return False
+
+        if self.combo_box_output_colour_scheme.currentIndex() == 0:
+            AlertDialogClass("Selecione um esquema de cores", "Esquema de cores da propagação não selecionada! "
+                                                              "Selecione um esquema de cores da propagação para "
+                                                              "continuar...").exec_()
+            return False
+
+        if not self.input_output_radius.text():
+            AlertDialogClass("Raio Simulação", "Raio máximo de propagação não informado! Informe um raio máximo de "
+                                               "propagação para continuar...").exec_()
+            return False
+
+        if not self.input_rx_height.text():
+            AlertDialogClass("Altura RX", "Altura da antena receptora não informada! Informe uma altura para "
+                                          "continuar...").exec_()
+            return False
+
+        if not self.input_rx_gain.text():
+            AlertDialogClass("Ganho RX",
+                             "Ganho da antena receptora não informado! Informe o ganho para continuar...").exec_()
+            return False
+
+        if not self.input_rx_sensitivity.text():
+            AlertDialogClass("Sensibilidade RX",
+                             "Sensibilidade da antena receptora não informada! Informe a Sensibilidade para "
+                             "continuar...").exec_()
+            return False
+
+        return True
+
     @pyqtSlot(name="on_button_calculate_clicked")
     def on_button_calculate_clicked(self) -> None:
         """
@@ -251,9 +301,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         print("Calculate button!")
 
-        index = self.combo_box_anatel_base_station.currentIndex()
-        if index == 0:
-            print("ERB was not selected")
+        if not self.required_fields_filed():
             return
 
         data = {

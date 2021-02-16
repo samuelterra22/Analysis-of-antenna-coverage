@@ -14,6 +14,7 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
+from numpy.core.multiarray import ndarray
 
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
@@ -261,7 +262,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
             self.run_simulation()
-        
+
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
@@ -380,7 +381,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
-    def get_bs_selected(self):
+    def get_bs_selected(self) -> BaseStation:
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
         data = self.combo_box_anatel_base_station.itemData(index)
@@ -422,13 +423,52 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return lat_bounds, long_bounds
 
+    @staticmethod
+    def simulates_propagation(lons_deg: ndarray, lats_deg: ndarray, base_station_selected: BaseStation) -> ndarray:
+        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+
+        transmitted_power = float(base_station_selected.potencia_transmissao)
+
+        propagation_matrix = np.empty([len(lons_deg), len(lats_deg)])
+        for i, point_long in enumerate(lons_deg):
+            for j, point_lat in enumerate(lats_deg):
+                base_movel_location = (point_lat, point_long)
+
+                altitude_rx = get_altitude(lat=point_lat, long=point_long)
+
+                distance = calc_distance(base_movel_location, erb_location)
+
+                # Todo: ajustar o calculo
+
+                # random altitude
+                random_bs_h = random.randint(0, 100)
+                random_rx_h = random.randint(0, 100)
+
+                # random_bs_h = float(altitude_tx)
+                # random_rx_h = float(altitude_rx)
+
+                tx_h = float(base_station_selected.altura) + random_bs_h
+                rx_h = 2 + random_rx_h
+
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h, distance, 2)
+
+                received_power = transmitted_power - path_loss
+
+                propagation_matrix[i][j] = received_power
+
+                # print(received_power)
+                # if received_power >= SENSITIVITY:
+                #     propagation_matrix[i][j] = received_power
+                # else:
+                #     propagation_matrix[i][j] = 0
+
+        return propagation_matrix
+
     def run_simulation(self):
         base_station_selected = self.get_bs_selected()
 
         ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
         altitude_tx = get_altitude(lat=ERB_LOCATION[0], long=ERB_LOCATION[1])
-
-        transmitted_power = float(base_station_selected.potencia_transmissao)
 
         # get simulation bounds
         dy, dx = 6, 6  # 3km
@@ -447,43 +487,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         lats_mesh_deg = np.rad2deg(lats_mesh)
         lons_mesh_deg = np.rad2deg(lons_mesh)
 
-        propagation_matrix = np.empty([n_lats, n_lons])
-        for i, point_long in enumerate(lons_deg):
-            for j, point_lat in enumerate(lats_deg):
-                point = (point_lat, point_long)
-
-                altitude_rx = get_altitude(lat=point_lat, long=point_long)
-
-                distance = calc_distance(point, ERB_LOCATION)
-
-                # Todo: ajustar o calculo
-
-                # random altitude
-                random_bs_h = random.randint(0, 100)
-                random_rx_h = random.randint(0, 100)
-
-                # random_bs_h = float(altitude_tx)
-                # random_rx_h = float(altitude_rx)
-
-                bs_h = float(base_station_selected.altura) + random_bs_h
-                rx_h = 2 + random_rx_h
-
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), bs_h, rx_h, distance, 2)
-
-                received_power = transmitted_power - path_loss
-
-                propagation_matrix[i][j] = received_power
-
-                # print(received_power)
-                # if received_power >= SENSITIVITY:
-                #     propagation_matrix[i][j] = received_power
-                # else:
-                #     propagation_matrix[i][j] = 0
-
+        propagation_matrix = self.simulates_propagation(lons_deg, lats_deg, base_station_selected)
         # print(propagation_matrix)
         print(propagation_matrix.shape)
         print(self.objective_function(propagation_matrix))
 
+        # Print matrix result in map
         bm_max_sensitivity = -80
         bm_min_sensitivity = -180
 

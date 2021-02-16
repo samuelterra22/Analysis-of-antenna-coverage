@@ -3,21 +3,17 @@
 import io
 import sys
 from math import pi, cos
+import random
 
 import folium
 import numpy as np
 import matplotlib
 import matplotlib.cm
-from srtm import Srtm1HeightMapCollection
-from srtm.base_coordinates import RasterBaseCoordinates
-import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
-from haversine import haversine, Unit
 
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
@@ -29,8 +25,9 @@ from src.main.python.dialogs.help_dialog_class import HelpDialogClass
 from src.main.python.dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from src.main.python.support.propagation_models import cost231_path_loss
 from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
-from support.anatel import dms_to_dd
-from support.physical_constants import r_earth
+from src.main.python.support.core import calc_distance, get_altitude
+from src.main.python.support.anatel import dms_to_dd
+from src.main.python.support.physical_constants import r_earth
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 
@@ -229,9 +226,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_action_help.triggered.disconnect()
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
-    def calc_distance(self, point_1: tuple, point_2: tuple, unit=Unit.METERS) -> float:
-        return haversine(point_1, point_2, unit=unit)
-
     def _init_rf_map(self) -> None:
         m = folium.Map(
             location=UFLA_LAT_LONG_POSITION,
@@ -335,33 +329,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            self.simulated()
+            self.run_simulation()
 
-    def get_new_lat_lng(self, latitude: float, longitude: float, dx: float = 3, dy: float = 3) -> tuple:
-        new_latitude = latitude + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude = longitude + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(latitude * pi / 180, 6))
-        return tuple((round(new_latitude, 6), round(new_longitude, 6)))
+    @staticmethod
+    def objective_function(matrix):
+        fo = 0
+        TOTAL_OF_POINTS = len(matrix) * len(matrix[0])
+        SENSITIVITY = -150
 
-    def simulated(self) -> None:
+        print(TOTAL_OF_POINTS)
+
+        for line in matrix:
+            for value in line:
+                if value >= SENSITIVITY:
+                    fo += 1
+
+        coverage_percent = (fo / TOTAL_OF_POINTS) * 100  # porcentagem de cobertura
+        shadow_percent = 100 - coverage_percent  # porcentagem de sombra
+
+        fo_alpha = 7
+        return (fo_alpha * coverage_percent) - ((10 - fo_alpha) * shadow_percent)  # pesos 7 pra 3
+
+    def run_simulation(self):
         self.combo_box_anatel_base_station: QComboBox
         index = self.combo_box_anatel_base_station.currentIndex()
         data = self.combo_box_anatel_base_station.itemData(index)
-
-        srtm1_data = Srtm1HeightMapCollection()
-        srtm1_data.build_file_index()
-        srtm1_data.load_area(RasterBaseCoordinates.from_file_name("S22W045"),
-                             RasterBaseCoordinates.from_file_name("S22W046"))
 
         base_station_selected: BaseStation
         base_station_selected = self.__base_station_controller.get_by_id(data)
 
         ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
-        altitude_tx = srtm1_data.get_altitude(latitude=ERB_LOCATION[0], longitude=ERB_LOCATION[1])
+        altitude_tx = get_altitude(lat=ERB_LOCATION[0], long=ERB_LOCATION[1])
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
-
-        bm_max_sensitivity = -60
-        bm_min_sensitivity = -160
 
         n_lats, n_lons = (500, 500)
         dy, dx = 6, 6  # 3km
@@ -371,11 +371,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             round(ERB_LOCATION[0] * pi / 180, 6))
 
         new_latitude2 = ERB_LOCATION[0] - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
-            round(ERB_LOCATION[0] * pi / 180, 6))
+        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
 
         lat_bounds = (new_latitude1, new_latitude2)
         long_bounds = (new_longitude1, new_longitude2)
+
+        print([lat_bounds, long_bounds])
 
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
@@ -392,16 +393,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
                 point = (point_lat, point_long)
-                altitude_rx = srtm1_data.get_altitude(latitude=point_lat, longitude=point_long)
-                # print(str(point), "=", str(a))
 
-                distance = self.calc_distance(point, ERB_LOCATION)
+                altitude_rx = get_altitude(lat=point_lat, long=point_long)
 
-                random_bs_h = 0
-                random_rx_h = 0
+                distance = calc_distance(point, ERB_LOCATION)
 
-                bs_h = float(base_station_selected.altura) + random_bs_h  # float(altitude_tx)
-                rx_h = 2 + random_rx_h  # float(altitude_rx)
+                # Todo: ajustar o calculo
+
+                # random altitude
+                random_bs_h = random.randint(0, 100)
+                random_rx_h = random.randint(0, 100)
+
+                # random_bs_h = float(altitude_tx)
+                # random_rx_h = float(altitude_rx)
+
+                bs_h = float(base_station_selected.altura) + random_bs_h
+                rx_h = 2 + random_rx_h
 
                 path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), bs_h, rx_h, distance, 2)
 
@@ -409,14 +416,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 propagation_matrix[i][j] = received_power
 
-                print(received_power)
+                # print(received_power)
                 # if received_power >= SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
                 #     propagation_matrix[i][j] = 0
 
+        # print(propagation_matrix)
         print(propagation_matrix.shape)
+        print(self.objective_function(propagation_matrix))
 
+        bm_max_sensitivity = -80
+        bm_min_sensitivity = -180
+        
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
         # color_map = matplotlib.cm.get_cmap('plasma')

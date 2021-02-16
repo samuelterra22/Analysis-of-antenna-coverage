@@ -467,17 +467,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def run_simulation(self):
         base_station_selected = self.get_bs_selected()
 
-        ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
-        altitude_tx = get_altitude(lat=ERB_LOCATION[0], long=ERB_LOCATION[1])
+        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+        altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
         # get simulation bounds
         dy, dx = 6, 6  # 3km
-        lat_bounds, long_bounds = self.__get_simulation_bounds(ERB_LOCATION[0], ERB_LOCATION[1], dx, dy)
-        print([lat_bounds, long_bounds])
+        lat_bounds, long_bounds = self.__get_simulation_bounds(erb_location[0], erb_location[1], dx, dy)
 
+        # get coordinates list
         n_lats, n_lons = (500, 500)
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
+
+        propagation_matrix = self.simulates_propagation(lons_deg, lats_deg, base_station_selected)
+
+        # print(propagation_matrix)
+        print(propagation_matrix.shape)
+        print(self.objective_function(propagation_matrix))
+
+        self.print_simulation_result(propagation_matrix, lats_deg, lons_deg, base_station_selected)
+
+    def print_simulation_result(self, propagation_matrix, lats_deg, lons_deg, base_station_selected):
+        # Print matrix result in map
+        bm_max_sensitivity = -80
+        bm_min_sensitivity = -180
+
+        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
         lats_in_rad = np.deg2rad(lats_deg)
         longs_in_rad = np.deg2rad(lons_deg)
@@ -486,15 +501,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         lats_mesh_deg = np.rad2deg(lats_mesh)
         lons_mesh_deg = np.rad2deg(lons_mesh)
-
-        propagation_matrix = self.simulates_propagation(lons_deg, lats_deg, base_station_selected)
-        # print(propagation_matrix)
-        print(propagation_matrix.shape)
-        print(self.objective_function(propagation_matrix))
-
-        # Print matrix result in map
-        bm_max_sensitivity = -80
-        bm_min_sensitivity = -180
 
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
@@ -521,7 +527,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         colored_data = color_map(normed_data)
 
         m = folium.Map(
-            location=ERB_LOCATION,
+            location=erb_location,
             zoom_start=16,
             control_scale=True
         )
@@ -530,14 +536,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             image=colored_data,
             bounds=[[lats_mesh_deg.min(), lons_mesh_deg.min()], [lats_mesh_deg.max(), lons_mesh_deg.max()]],
             mercator_project=True,
-
             opacity=0.6,
             interactive=True,
             cross_origin=False,
         ).add_to(m)
 
         folium.Marker(
-            location=ERB_LOCATION,
+            location=erb_location,
             popup=base_station_selected.entidade,
             draggable=False,
             icon=folium.Icon(prefix='glyphicon', icon='tower')

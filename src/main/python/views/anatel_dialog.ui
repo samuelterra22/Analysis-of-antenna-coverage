@@ -404,7 +404,7 @@
          <item row="1" column="1">
           <widget class="QLabel" name="label_last_update">
            <property name="text">
-            <string>Base de Dados Atualizada em 10/10/2020</string>
+            <string>Base de Dados Anatel</string>
            </property>
           </widget>
          </item>

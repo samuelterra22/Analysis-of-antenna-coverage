@@ -4,13 +4,13 @@ from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 from pandas import DataFrame
+from datetime import datetime
 
 from src.main.python.models.base_station import BaseStation
 from src.main.python.controllers.base_station_controller import BaseStationController
 from src.main.python.controllers.settings_controller import SettingsController
 from src.main.python.support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
-from src.main.python.support.constants import CURRENT_UF_ID
-from src.main.python.support.constants import CURRENT_COUNTY_ID
+from src.main.python.support.constants import CURRENT_COUNTY_ID, CURRENT_UF_ID, LAST_DATABASE_UPDATE
 from src.main.python.dialogs.alert_dialog_class import AlertDialogClass
 
 AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
@@ -54,6 +54,16 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         else:
             return -1
 
+    def get_last_update_date(self):
+        data = {
+            'option': LAST_DATABASE_UPDATE,
+        }
+        res = self.__settings_controller.get(data)
+        if res is not None:
+            return res.value
+        else:
+            return None
+
     def init_ui_components(self):
         current_uf_id = self.get_current_uf_id()
         current_country_id = self.get_current_state_id()
@@ -80,6 +90,19 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
         self.update_database_button.clicked.disconnect()
         self.update_database_button.clicked.connect(self.on_update_database_button_clicked)
+
+        # Label info - last update
+        last_update_date = self.get_last_update_date()
+        print(last_update_date)
+
+        if last_update_date is None:
+            label_last_update = "A base de dados ainda não foi atualizada"
+        else:
+            date = str(datetime.strptime(last_update_date[:-7], "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y às %H:%M:%S"))
+            label_last_update = "Base de Dados Atualizada em " + date
+
+        self.label_last_update: QLabel
+        self.label_last_update.setText(label_last_update)
 
     def get_current_state_index(self, current_uf_id):
         self.combo_box_state: QComboBox
@@ -122,6 +145,21 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
             self.combo_box_county.addItem(county[0], county[1])
 
         self.combo_box_county.setCurrentIndex(0)
+
+    def __create_or_update_last_updated_date(self):
+        data = {
+            'option': LAST_DATABASE_UPDATE,
+            'value': datetime.now()
+        }
+
+        # The setting no exists, then store
+        if not self.__settings_controller.get(data):
+            result = self.__settings_controller.store(data)
+            print('Result from store last updated date: ' + str(result))
+        else:
+            # The setting exists, then update
+            result = self.__settings_controller.update(data, None)
+            print('Result from update last updated date: ' + str(result))
 
     def __create_or_update_uf(self, uf_id):
         data = {
@@ -321,3 +359,5 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         self.fill_erb_table_with_database_info()
 
         self.label_last_update.setText("Updated local database!")
+
+        self.__create_or_update_last_updated_date()

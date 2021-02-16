@@ -20,6 +20,7 @@ class BaseStation(BaseModel):
     municipio = CharField()
     emissao = CharField()
     tecnologia = CharField()
+    meio_acesso = CharField()
     frequencia_inicial = CharField()
     frequencia_final = CharField()
     azimute = CharField()
@@ -39,6 +40,9 @@ class BaseStation(BaseModel):
     potencia_transmissao = CharField()
     latitude = CharField()
     longitude = CharField()
+    cod_debito_tfi = CharField()
     data_primeiro_licenciamento = CharField()
 
     created_at = DateTimeField(default=datetime.datetime.now)
+
+

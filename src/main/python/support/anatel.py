@@ -98,6 +98,7 @@ def get_counties(uf: str) -> str:
 
 
 def dms_to_dd(coordinate_in_dms: str) -> float:
+    print(coordinate_in_dms)
     sign = -1 if re.search("[swSW]", coordinate_in_dms) else 1
     c = split_coordinates_dms(coordinate_in_dms)
     dd = sign * (float(c["d"]) + float(c["m"]) / 60 + float(c["s"]) / 3600)
@@ -137,26 +138,28 @@ def get_anatel_data(uf_sigle: str, country_id: int = None) -> DataFrame:
         "sort_8": 0,  # Municipio
         "sort_9": 0,  # emissao
         "sort_10": 0,  # tecnologia
-        "sort_11": 0,  # freq ini
-        "sort_12": 0,  # freq final
-        "sort_13": 0,  # azimute
-        "sort_14": 0,  # tipo estacao
-        "sort_15": 0,  # classificacao infra fisica
-        "sort_16": 0,  # compatilhamentro infa fisica
-        "sort_17": 0,  # disp compartilhamento infra
-        "sort_18": 0,  # tipo antena
-        "sort_19": 0,  # homologacao antena
-        "sort_20": 0,  # ganho antena
-        "sort_21": 0,  # frente costa
-        "sort_22": 0,  # angulo meia potencia
-        "sort_23": 0,  # elevacao
-        "sort_24": 0,  # polarizacao
-        "sort_25": 0,  # altura antena
-        "sort_26": 0,  # homologacao transmissao
-        "sort_27": 0,  # potencia transmissao
-        "sort_28": 0,  # latitude
-        "sort_29": 0,  # longitude
-        "sort_30": 0,  # data primeiro licenciamento
+        "sort_11": 0,  # meio acesso
+        "sort_12": 0,  # freq ini
+        "sort_13": 0,  # freq final
+        "sort_14": 0,  # azimute
+        "sort_15": 0,  # tipo estacao
+        "sort_16": 0,  # classificacao infra fisica
+        "sort_17": 0,  # compatilhamentro infa fisica
+        "sort_18": 0,  # disp compartilhamento infra
+        "sort_19": 0,  # tipo antena
+        "sort_20": 0,  # homologacao antena
+        "sort_21": 0,  # ganho antena
+        "sort_22": 0,  # frente costa
+        "sort_23": 0,  # angulo meia potencia
+        "sort_24": 0,  # elevacao
+        "sort_25": 0,  # polarizacao
+        "sort_26": 0,  # altura antena
+        "sort_27": 0,  # homologacao transmissao
+        "sort_28": 0,  # potencia transmissao
+        "sort_29": 0,  # latitude
+        "sort_30": 0,  # longitude
+        "sort_31": 0,  # cod deb tfi
+        "sort_32": 0,  # data primeiro licenciamento
         "fc_0": None,  # status
         "fc_1": None,  # entidade
         "fc_2": None,  # fistel
@@ -168,26 +171,28 @@ def get_anatel_data(uf_sigle: str, country_id: int = None) -> DataFrame:
         "fc_8": country_id,  # Municipio
         "fc_9": None,  # emissao
         "fc_10": None,  # tecnologia
-        "fc_11": None,  # freq ini
-        "fc_12": None,  # freq final
-        "fc_13": None,  # azimute
-        "fc_14": None,  # tipo estacao
-        "fc_15": None,  # classificacao infra fisica
-        "fc_16": None,  # compatilhamentro infa fisica
-        "fc_17": None,  # dissicao compartilhamento infra
-        "fc_18": None,  # tipo antena
-        "fc_19": None,  # homologacao antena
-        "fc_20": None,  # ganho antena
-        "fc_21": None,  # frente costa
-        "fc_22": None,  # angulo meia potencia
-        "fc_23": None,  # elevacao
-        "fc_24": None,  # polarizacao
-        "fc_25": None,  # altura antena
-        "fc_26": None,  # homologacao transmissao
-        "fc_27": None,  # potencia transmissao
-        "fc_28": None,  # latitude
-        "fc_29": None,  # longitude
-        "fc_30": None,  # data primeiro licenciamento
+        "fc_11": None,  # meio acesso
+        "fc_12": None,  # freq ini
+        "fc_13": None,  # freq final
+        "fc_14": None,  # azimute
+        "fc_15": None,  # tipo estacao
+        "fc_16": None,  # classificacao infra fisica
+        "fc_17": None,  # compatilhamentro infa fisica
+        "fc_18": None,  # dissicao compartilhamento infra
+        "fc_19": None,  # tipo antena
+        "fc_20": None,  # homologacao antena
+        "fc_21": None,  # ganho antena
+        "fc_22": None,  # frente costa
+        "fc_23": None,  # angulo meia potencia
+        "fc_24": None,  # elevacao
+        "fc_25": None,  # polarizacao
+        "fc_26": None,  # altura antena
+        "fc_27": None,  # homologacao transmissao
+        "fc_28": None,  # potencia transmissao
+        "fc_29": None,  # latitude
+        "fc_30": None,  # longitude
+        "fc_31": None,  # cod deb tfi
+        "fc_32": None,  # data primeiro licenciamento
         "wfid": "licencas",
         "view": 0
     }

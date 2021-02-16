@@ -396,14 +396,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # print(str(point), "=", str(a))
 
                 distance = self.calc_distance(point, ERB_LOCATION)
-                #
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial),
-                                              float(base_station_selected.altura) + float(altitude_tx),
-                                              2 + float(altitude_rx), distance, 2)
-                print(path_loss)
+
+                random_bs_h = 0
+                random_rx_h = 0
+
+                bs_h = float(base_station_selected.altura) + random_bs_h  # float(altitude_tx)
+                rx_h = 2 + random_rx_h  # float(altitude_rx)
+
+                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), bs_h, rx_h, distance, 2)
+
                 received_power = transmitted_power - path_loss
-                #
+
                 propagation_matrix[i][j] = received_power
+
+                print(received_power)
                 # if received_power >= SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:

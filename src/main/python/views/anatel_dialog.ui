@@ -47,7 +47,7 @@
          <number>1</number>
         </property>
         <property name="columnCount">
-         <number>33</number>
+         <number>35</number>
         </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>false</bool>
@@ -126,6 +126,11 @@
         <column>
          <property name="text">
           <string>TECNOLOGIA</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>MEIO DE ACESSO</string>
          </property>
         </column>
         <column>
@@ -225,6 +230,11 @@
         </column>
         <column>
          <property name="text">
+          <string>CODIGO DEBITO TFI</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>DATA PRIM. LICENC.</string>
          </property>
         </column>
@@ -288,11 +298,6 @@
           <string/>
          </property>
         </item>
-        <item row="0" column="12">
-         <property name="text">
-          <string/>
-         </property>
-        </item>
         <item row="0" column="13">
          <property name="text">
           <string/>
@@ -308,7 +313,7 @@
           <string/>
          </property>
         </item>
-        <item row="0" column="19">
+        <item row="0" column="16">
          <property name="text">
           <string/>
          </property>
@@ -353,7 +358,7 @@
           <string/>
          </property>
         </item>
-        <item row="0" column="29">
+        <item row="0" column="28">
          <property name="text">
           <string/>
          </property>
@@ -364,6 +369,11 @@
          </property>
         </item>
         <item row="0" column="31">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="0" column="33">
          <property name="text">
           <string/>
          </property>

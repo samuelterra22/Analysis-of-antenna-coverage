@@ -390,26 +390,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return self.__base_station_controller.get_by_id(data)
 
     @staticmethod
-    def objective_function(matrix):
-        fo = 0
-        TOTAL_OF_POINTS = len(matrix) * len(matrix[0])
+    def objective_function(propagation_matrix: ndarray) -> float:
+        fo_value = 0
+        total_of_points = len(propagation_matrix) * len(propagation_matrix[0])
         SENSITIVITY = -150
 
-        print(TOTAL_OF_POINTS)
+        print(total_of_points)
 
-        for line in matrix:
+        for line in propagation_matrix:
             for value in line:
                 if value >= SENSITIVITY:
-                    fo += 1
+                    fo_value += 1
 
-        coverage_percent = (fo / TOTAL_OF_POINTS) * 100  # porcentagem de cobertura
+        coverage_percent = (fo_value / total_of_points) * 100  # porcentagem de cobertura
         shadow_percent = 100 - coverage_percent  # porcentagem de sombra
 
         fo_alpha = 7
         return (fo_alpha * coverage_percent) - ((10 - fo_alpha) * shadow_percent)  # pesos 7 pra 3
 
     @staticmethod
-    def __get_simulation_bounds(lat, long, dx, dy):
+    def __get_simulation_bounds(lat: float, long: float, dx: float, dy: float):
         new_latitude1 = lat + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude1 = long + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
             round(lat * pi / 180, 6))
@@ -466,7 +466,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return propagation_matrix
 
-    def run_simulation(self):
+    def run_simulation(self) -> None:
         base_station_selected = self.get_bs_selected()
 
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
@@ -490,7 +490,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #  Print simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, lons_deg, base_station_selected)
 
-    def print_simulation_result(self, propagation_matrix, lats_deg, lons_deg, base_station_selected):
+    def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, lons_deg: ndarray,
+                                base_station_selected: BaseStation) -> None:
         # Print matrix result in map
         bm_max_sensitivity = -80
         bm_min_sensitivity = -180
@@ -526,6 +527,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print(propagation_matrix.min())
         print(propagation_matrix.max())
 
+        # dados normatizados
         normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
         colored_data = color_map(normed_data)
 

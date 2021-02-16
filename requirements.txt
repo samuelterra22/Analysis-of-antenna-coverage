@@ -1,7 +1,7 @@
 altgraph==0.17
 appdirs==1.4.4
 aspy.yaml==1.3.0
-astroid==2.4.2
+astroid==2.5
 astropy==4.2
 attrs==20.3.0
 autopep8==1.5.5
@@ -63,7 +63,7 @@ pyerfa==1.7.2
 pyflakes==2.2.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
-pylint==2.6.0
+pylint==2.6.1
 pypesq==1.2.4
 pyproj==3.0.0.post1
 PyQt5==5.15.2

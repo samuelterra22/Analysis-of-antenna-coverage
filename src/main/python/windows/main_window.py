@@ -429,6 +429,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
+        altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
+
         propagation_matrix = np.empty([len(lons_deg), len(lats_deg)])
         for i, point_long in enumerate(lons_deg):
             for j, point_lat in enumerate(lats_deg):
@@ -468,7 +470,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         base_station_selected = self.get_bs_selected()
 
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
-        altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
         # get simulation bounds
         dy, dx = 6, 6  # 3km
@@ -479,12 +480,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
 
+        # Get matrix result for matrix coordinates
         propagation_matrix = self.simulates_propagation(lons_deg, lats_deg, base_station_selected)
 
         # print(propagation_matrix)
         print(propagation_matrix.shape)
         print(self.objective_function(propagation_matrix))
 
+        #  Print simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, lons_deg, base_station_selected)
 
     def print_simulation_result(self, propagation_matrix, lats_deg, lons_deg, base_station_selected):

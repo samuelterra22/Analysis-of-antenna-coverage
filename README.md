@@ -1,5 +1,7 @@
 # Analysis of allocation of antenna coverage
 
+![Release Multi Platform](https://github.com/samuelterra22/Analysis-of-antenna-coverage/workflows/Release%20Multi%20Platform/badge.svg)
+
 ### Dependencies for development
 
 ###### Linux dependencies

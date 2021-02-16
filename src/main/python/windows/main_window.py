@@ -47,7 +47,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
 
-        self._init_rf_map()
+        self.__init_rf_map()
         # self.init_mos_map()
 
         # Calculate button
@@ -57,7 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.__base_station_controller = BaseStationController()
 
         # Menus
-        self.init_menus()
+        self.__init_menus()
 
         # Tab components
         self.init_transmitter_components()
@@ -159,6 +159,109 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_erb_map(erb)
         self.add_erb_in_details(erb)
 
+    @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
+    def on_combo_box_tx_coordinates_changed(self) -> None:
+        print("Items in the list 'combo_box_tx_coordinates' are :")
+        index = self.combo_box_tx_coordinates.currentIndex()
+        text = self.combo_box_tx_coordinates.currentText()
+
+        for count in range(self.combo_box_tx_coordinates.count()):
+            print(self.combo_box_tx_coordinates.itemText(count))
+        print("Current index", index, "selection changed ", text)
+
+    @pyqtSlot(name="on_menu_anatel_base_triggered")
+    def on_menu_anatel_base_triggered(self) -> None:
+        """
+        This method is called when calculate button is clicked
+        :return: None
+        """
+        anatel_dialog = AnatelDialogClass(self)
+        anatel_dialog.setModal(True)
+        anatel_dialog.setFixedSize(anatel_dialog.size())
+        anatel_dialog.show()
+
+    @pyqtSlot(name="on_menu_settings_triggered")
+    def on_menu_settings_triggered(self) -> None:
+        """
+        This method is called when settings menu button is clicked
+        :return: None
+        """
+        settings_dialog = SettingsDialogClass(self)
+        settings_dialog.setModal(True)
+        settings_dialog.show()
+
+    @pyqtSlot(name="on_menu_about_triggered")
+    def on_menu_about_triggered(self) -> None:
+        """
+        This method is called when about menu button is clicked
+        :return: None
+        """
+        about_dialog = AboutDialogClass(self)
+        about_dialog.setModal(True)
+        about_dialog.show()
+
+    @pyqtSlot(name="on_menu_help_triggered")
+    def on_menu_help_triggered(self) -> None:
+        """
+        This method is called when help menu button is clicked
+        :return: None
+        """
+        help_dialog = HelpDialogClass(self)
+        help_dialog.setModal(True)
+        help_dialog.show()
+
+    @pyqtSlot(name="on_menu_exit_triggered")
+    def on_menu_exit_triggered(self) -> None:
+        """
+        This method is called when exit menu button is clicked
+        :return: None
+        """
+        sys.exit()
+
+    @pyqtSlot(name="on_button_calculate_clicked")
+    def on_button_calculate_clicked(self) -> None:
+        """
+        This method is called when calculate menu button is clicked
+        :return: None
+        """
+        print("Calculate button!")
+
+        # if not self.required_fields_filed():
+        #     return
+
+        data = {
+            "simulation": {
+                "propagation_model": "Hata",
+                "environment": "",
+                "max_ray": ""
+            },
+            "transmitter": {
+                "entidade": "",
+                "uf_municipio": "",
+                "endereco": "",
+                "frequencia": "",
+                "ganho": "",
+                "elevacao": "",
+                "polarizacao": "",
+                "altura": "",
+                "latitude": "",
+                "longitude": "",
+            },
+            "receptor": {
+                "altura": "",
+                "ganho": "",
+                "sensibilidade": "",
+            },
+        }
+
+        confirm_simulation_dialog = ConfirmSimulationDialogClass(data)
+        confirm_simulation_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        confirm_simulation_dialog.setModal(True)
+        confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
+
+        if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
+            self.run_simulation()
+        
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
@@ -200,17 +303,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_anatel_longitude_value.setText(str(dms_to_dd(base_station.longitude)))
         self.label_anatel_first_licensing_value.setText(base_station.data_primeiro_licenciamento)
 
-    @pyqtSlot(name="on_combo_box_tx_coordinates_changed")
-    def on_combo_box_tx_coordinates_changed(self) -> None:
-        print("Items in the list 'combo_box_tx_coordinates' are :")
-        index = self.combo_box_tx_coordinates.currentIndex()
-        text = self.combo_box_tx_coordinates.currentText()
-
-        for count in range(self.combo_box_tx_coordinates.count()):
-            print(self.combo_box_tx_coordinates.itemText(count))
-        print("Current index", index, "selection changed ", text)
-
-    def init_menus(self) -> None:
+    def __init_menus(self) -> None:
         self.menu_action_exit.triggered.disconnect()
         self.menu_action_exit.triggered.connect(self.on_menu_exit_triggered)
 
@@ -226,7 +319,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.menu_action_help.triggered.disconnect()
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
-    def _init_rf_map(self) -> None:
+    def __init_rf_map(self) -> None:
         m = folium.Map(
             location=UFLA_LAT_LONG_POSITION,
             zoom_start=16,
@@ -287,49 +380,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return True
 
-    @pyqtSlot(name="on_button_calculate_clicked")
-    def on_button_calculate_clicked(self) -> None:
-        """
-        This method is called when calculate menu button is clicked
-        :return: None
-        """
-        print("Calculate button!")
+    def get_bs_selected(self):
+        self.combo_box_anatel_base_station: QComboBox
+        index = self.combo_box_anatel_base_station.currentIndex()
+        data = self.combo_box_anatel_base_station.itemData(index)
 
-        # if not self.required_fields_filed():
-        #     return
-
-        data = {
-            "simulation": {
-                "propagation_model": "Hata",
-                "environment": "",
-                "max_ray": ""
-            },
-            "transmitter": {
-                "entidade": "",
-                "uf_municipio": "",
-                "endereco": "",
-                "frequencia": "",
-                "ganho": "",
-                "elevacao": "",
-                "polarizacao": "",
-                "altura": "",
-                "latitude": "",
-                "longitude": "",
-            },
-            "receptor": {
-                "altura": "",
-                "ganho": "",
-                "sensibilidade": "",
-            },
-        }
-
-        confirm_simulation_dialog = ConfirmSimulationDialogClass(data)
-        confirm_simulation_dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        confirm_simulation_dialog.setModal(True)
-        confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
-
-        if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            self.run_simulation()
+        base_station_selected: BaseStation
+        return self.__base_station_controller.get_by_id(data)
 
     @staticmethod
     def objective_function(matrix):
@@ -350,34 +407,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         fo_alpha = 7
         return (fo_alpha * coverage_percent) - ((10 - fo_alpha) * shadow_percent)  # pesos 7 pra 3
 
-    def run_simulation(self):
-        self.combo_box_anatel_base_station: QComboBox
-        index = self.combo_box_anatel_base_station.currentIndex()
-        data = self.combo_box_anatel_base_station.itemData(index)
+    @staticmethod
+    def __get_simulation_bounds(lat, long, dx, dy):
+        new_latitude1 = lat + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
+        new_longitude1 = long + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
+            round(lat * pi / 180, 6))
 
-        base_station_selected: BaseStation
-        base_station_selected = self.__base_station_controller.get_by_id(data)
+        new_latitude2 = lat - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
+        new_longitude2 = long - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
+            round(lat * pi / 180, 6))
+
+        lat_bounds = (new_latitude1, new_latitude2)
+        long_bounds = (new_longitude1, new_longitude2)
+
+        return lat_bounds, long_bounds
+
+    def run_simulation(self):
+        base_station_selected = self.get_bs_selected()
 
         ERB_LOCATION = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
         altitude_tx = get_altitude(lat=ERB_LOCATION[0], long=ERB_LOCATION[1])
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
-        n_lats, n_lons = (500, 500)
+        # get simulation bounds
         dy, dx = 6, 6  # 3km
-
-        new_latitude1 = ERB_LOCATION[0] + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude1 = ERB_LOCATION[1] + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
-            round(ERB_LOCATION[0] * pi / 180, 6))
-
-        new_latitude2 = ERB_LOCATION[0] - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude2 = ERB_LOCATION[1] - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(ERB_LOCATION[0] * pi / 180, 6))
-
-        lat_bounds = (new_latitude1, new_latitude2)
-        long_bounds = (new_longitude1, new_longitude2)
-
+        lat_bounds, long_bounds = self.__get_simulation_bounds(ERB_LOCATION[0], ERB_LOCATION[1], dx, dy)
         print([lat_bounds, long_bounds])
 
+        n_lats, n_lons = (500, 500)
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
 
@@ -428,7 +486,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         bm_max_sensitivity = -80
         bm_min_sensitivity = -180
-        
+
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
         # color_map = matplotlib.cm.get_cmap('plasma')
@@ -480,52 +538,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         m.save(data, close_file=False)
 
         self.web_view.setHtml(data.getvalue().decode())
-
-    @pyqtSlot(name="on_menu_anatel_base_triggered")
-    def on_menu_anatel_base_triggered(self) -> None:
-        """
-        This method is called when calculate button is clicked
-        :return: None
-        """
-        anatel_dialog = AnatelDialogClass(self)
-        anatel_dialog.setModal(True)
-        anatel_dialog.setFixedSize(anatel_dialog.size())
-        anatel_dialog.show()
-
-    @pyqtSlot(name="on_menu_settings_triggered")
-    def on_menu_settings_triggered(self) -> None:
-        """
-        This method is called when settings menu button is clicked
-        :return: None
-        """
-        settings_dialog = SettingsDialogClass(self)
-        settings_dialog.setModal(True)
-        settings_dialog.show()
-
-    @pyqtSlot(name="on_menu_about_triggered")
-    def on_menu_about_triggered(self) -> None:
-        """
-        This method is called when about menu button is clicked
-        :return: None
-        """
-        about_dialog = AboutDialogClass(self)
-        about_dialog.setModal(True)
-        about_dialog.show()
-
-    @pyqtSlot(name="on_menu_help_triggered")
-    def on_menu_help_triggered(self) -> None:
-        """
-        This method is called when help menu button is clicked
-        :return: None
-        """
-        help_dialog = HelpDialogClass(self)
-        help_dialog.setModal(True)
-        help_dialog.show()
-
-    @pyqtSlot(name="on_menu_exit_triggered")
-    def on_menu_exit_triggered(self) -> None:
-        """
-        This method is called when exit menu button is clicked
-        :return: None
-        """
-        sys.exit()

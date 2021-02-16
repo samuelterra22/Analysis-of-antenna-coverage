@@ -66,9 +66,9 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
 
     def init_ui_components(self):
         current_uf_id = self.get_current_uf_id()
-        current_country_id = self.get_current_state_id()
+        current_county_id = self.get_current_state_id()
         print(current_uf_id)
-        print(current_country_id)
+        print(current_county_id)
 
         self.fill_combo_box_state()
 
@@ -80,7 +80,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         else:
             self.combo_box_county.addItems(["Select a UF first"])
 
-        current_country_uf = self.get_current_contry_index(current_country_id)
+        current_country_uf = self.get_current_county_index(current_county_id)
         self.combo_box_county.setCurrentIndex(current_country_uf)
 
         self.fill_erb_table_with_database_info()
@@ -112,11 +112,11 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
                     return count
         return 0
 
-    def get_current_contry_index(self, current_contry_id):
+    def get_current_county_index(self, current_county_id):
         self.combo_box_county: QComboBox
-        if current_contry_id != -1:
+        if current_county_id != -1:
             for count in range(self.combo_box_county.count()):
-                if str(self.combo_box_county.itemData(count)) == current_contry_id:
+                if str(self.combo_box_county.itemData(count)) == current_county_id:
                     return count
         return 0
 

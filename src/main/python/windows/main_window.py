@@ -2,7 +2,8 @@
 
 import io
 import sys
-from math import pi, cos
+from math import pi, cos, exp
+
 import random
 
 import folium
@@ -26,7 +27,7 @@ from src.main.python.dialogs.help_dialog_class import HelpDialogClass
 from src.main.python.dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from src.main.python.support.propagation_models import cost231_path_loss
 from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
-from src.main.python.support.core import calc_distance, get_altitude
+from src.main.python.support.core import calc_distance, get_altitude, get_coordinate_in_circle
 from src.main.python.support.anatel import dms_to_dd
 from src.main.python.support.physical_constants import r_earth
 
@@ -411,12 +412,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @staticmethod
     def __get_simulation_bounds(lat: float, long: float, dx: float, dy: float):
         new_latitude1 = lat + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude1 = long + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
-            round(lat * pi / 180, 6))
+        new_longitude1 = long + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(lat * pi / 180, 6))
 
         new_latitude2 = lat - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
-        new_longitude2 = long - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(
-            round(lat * pi / 180, 6))
+        new_longitude2 = long - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(lat * pi / 180, 6))
 
         lat_bounds = (new_latitude1, new_latitude2)
         long_bounds = (new_longitude1, new_longitude2)
@@ -424,15 +423,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return lat_bounds, long_bounds
 
     @staticmethod
-    def simulates_propagation(lons_deg: ndarray, lats_deg: ndarray, base_station_selected: BaseStation) -> ndarray:
+    def simulates_propagation(longs_deg: ndarray, lats_deg: ndarray, base_station_selected: BaseStation) -> ndarray:
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
         altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
-        propagation_matrix = np.empty([len(lons_deg), len(lats_deg)])
-        for i, point_long in enumerate(lons_deg):
+        propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
+        for i, point_long in enumerate(longs_deg):
             for j, point_lat in enumerate(lats_deg):
                 base_movel_location = (point_lat, point_long)
 
@@ -466,31 +465,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         return propagation_matrix
 
-    def run_simulation(self) -> None:
-        base_station_selected = self.get_bs_selected()
-
-        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
-
-        # get simulation bounds
-        dy, dx = 6, 6  # 3km
-        lat_bounds, long_bounds = self.__get_simulation_bounds(erb_location[0], erb_location[1], dx, dy)
-
-        # get coordinates list
-        n_lats, n_lons = (500, 500)
-        lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
-        lons_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_lons)
-
-        # Get matrix result for matrix coordinates
-        propagation_matrix = self.simulates_propagation(lons_deg, lats_deg, base_station_selected)
-
-        # print(propagation_matrix)
-        print(propagation_matrix.shape)
-        print(self.objective_function(propagation_matrix))
-
-        #  Print simulation map
-        self.print_simulation_result(propagation_matrix, lats_deg, lons_deg, base_station_selected)
-
-    def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, lons_deg: ndarray,
+    def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, longs_deg: ndarray,
                                 base_station_selected: BaseStation) -> None:
         # Print matrix result in map
         bm_max_sensitivity = -80
@@ -499,12 +474,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
         lats_in_rad = np.deg2rad(lats_deg)
-        longs_in_rad = np.deg2rad(lons_deg)
+        longs_in_rad = np.deg2rad(longs_deg)
 
-        lons_mesh, lats_mesh = np.meshgrid(longs_in_rad, lats_in_rad)
+        longs_mesh, lats_mesh = np.meshgrid(longs_in_rad, lats_in_rad)
 
         lats_mesh_deg = np.rad2deg(lats_mesh)
-        lons_mesh_deg = np.rad2deg(lons_mesh)
+        longs_mesh_deg = np.rad2deg(longs_mesh)
 
         color_map = matplotlib.cm.get_cmap('YlOrBr')
         # color_map = matplotlib.cm.get_cmap('YlOrRd')
@@ -539,7 +514,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         folium.raster_layers.ImageOverlay(
             image=colored_data,
-            bounds=[[lats_mesh_deg.min(), lons_mesh_deg.min()], [lats_mesh_deg.max(), lons_mesh_deg.max()]],
+            bounds=[[lats_mesh_deg.min(), longs_mesh_deg.min()], [lats_mesh_deg.max(), longs_mesh_deg.max()]],
             mercator_project=True,
             opacity=0.6,
             interactive=True,
@@ -557,3 +532,119 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         m.save(data, close_file=False)
 
         self.web_view.setHtml(data.getvalue().decode())
+
+    def evaluate_solution(self, matrix_solution: ndarray) -> float:
+        return self.objective_function(matrix_solution)
+
+    @staticmethod
+    def disturb_solution(latitude: float, longitude: float) -> tuple:
+        return get_coordinate_in_circle(latitude, longitude, 2)
+
+    def run_simulation(self) -> None:
+        base_station_selected = self.get_bs_selected()
+
+        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+
+        # get simulation bounds
+        dy, dx = 6, 6  # 3km
+        lat_bounds, long_bounds = self.__get_simulation_bounds(erb_location[0], erb_location[1], dx, dy)
+
+        # get coordinates list
+        n_lats, n_longs = (500, 500)
+        lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
+        longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
+
+        # Get matrix result for matrix coordinates
+        propagation_matrix = self.simulates_propagation(longs_deg, lats_deg, base_station_selected)
+
+        # print(propagation_matrix)
+        print(propagation_matrix.shape)
+        print(self.objective_function(propagation_matrix))
+
+        #  Print simulation map
+        self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
+
+    def simulated_annealing(self, M: int, P: int, L: int, T0: float, alpha: float):
+        """
+        :param T0: Temperatura inicial.
+        :param M: Número máximo de iterações.
+        :param P: Número máximo de Perturbações por iteração.
+        :param L: Número máximo de sucessos por iteração.
+        :param alpha: Factor de redução da temperatura.
+        :return: Retorna um ponto sendo o mais indicado.
+        """
+
+        FOs = []
+
+        # cria Soluções iniciais com pontos aleatórios para os APs
+        s = np.empty([size, 2], np.float32)
+
+        for i in range(size):  # VALADAO testing
+            if INITIAL_POSITION == RANDOM:
+                s = [rd.randrange(0, WIDTH), rd.randrange(0, HEIGHT)]
+            elif INITIAL_POSITION == CENTER:
+                s = [WIDTH * 0.5, HEIGHT * 0.5]
+
+        s0 = s.copy()
+        print("Solução inicial:\n" + str(s0))
+
+        result = self.evaluate_solution(s)
+        f_s = result
+
+        T = T0
+        j = 1
+
+        # Armazena a MELHOR solução encontrada
+        best_s_array = s.copy()
+        best_fs = f_s
+        # BEST_matrix_FO = result[1]
+
+        # Loop principal – Verifica se foram atendidas as condições de termino do algoritmo
+        while True:
+            i = 1
+            n_success = 0
+
+            # Loop Interno – Realização de perturbação em uma iteração
+            while True:
+
+                initial_solution = s.copy()
+
+                initial_solution = self.disturb_solution(s)
+
+                # retorna a FO e suas matrizes
+                result = self.evaluate_solution(initial_solution)
+                f_si = result
+                # matrix_FO = result[1]
+
+                # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
+                delta_fi = f_si - f_s
+
+                # Minimização: delta_fi >= 0
+                # Maximização: delta_fi <= 0
+                # Teste de aceitação de uma nova solução
+                if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
+
+                    s = initial_solution.copy()
+                    f_s = f_si
+
+                    n_success = n_success + 1
+
+                    if f_s > best_fs:
+                        best_fs = f_s
+                        best_s_array = s.copy()
+
+                    FOs.append(f_s)
+
+                i = i + 1
+
+                if (n_success >= L) or (i > P):
+                    break
+
+            # Atualização da temperatura (Deicaimento geométrico)
+            T = alpha * T
+
+            # Atualização do contador de iterações
+            j = j + 1
+
+            if (n_success == 0) or (j > M):
+                break

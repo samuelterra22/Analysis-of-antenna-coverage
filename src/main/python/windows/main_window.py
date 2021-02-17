@@ -533,13 +533,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.web_view.setHtml(data.getvalue().decode())
 
-    def evaluate_solution(self, matrix_solution: ndarray) -> float:
-        return self.objective_function(matrix_solution)
-
-    @staticmethod
-    def disturb_solution(latitude: float, longitude: float) -> tuple:
-        return get_coordinate_in_circle(latitude, longitude, 2)
-
     def run_simulation(self) -> None:
         base_station_selected = self.get_bs_selected()
 
@@ -564,29 +557,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #  Print simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
-    def simulated_annealing(self, M: int, P: int, L: int, T0: float, alpha: float):
+    def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
+        matrix_solution = self.simulates_propagation(longs_deg, lats_deg, point)
+
+        return self.objective_function(matrix_solution)
+
+    @staticmethod
+    def disturb_solution(latitude: float, longitude: float) -> tuple:
+        return get_coordinate_in_circle(latitude, longitude, 2)
+
+    def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float):
         """
+        :param problem: Dados do problema principal
         :param T0: Temperatura inicial.
         :param M: Número máximo de iterações.
         :param P: Número máximo de Perturbações por iteração.
         :param L: Número máximo de sucessos por iteração.
         :param alpha: Factor de redução da temperatura.
-        :return: Retorna um ponto sendo o mais indicado.
+        :return: Retorna um ponto (tupla de coordenadas) sendo a mais indicada.
         """
+        # Get parâmetros do problema
+
+        longs_deg, lats_deg = problem
+
+        # ToDo: ajustar depois
+        RANDOM = 1
+        CENTER = 2
+
+        INITIAL_POSITION = CENTER
 
         FOs = []
 
-        # cria Soluções iniciais com pontos aleatórios para os APs
+        # cria Soluções (posições) iniciais com pontos aleatórios para os APs
         s = np.empty([size, 2], np.float32)
 
-        for i in range(size):  # VALADAO testing
+        for i in range(size):
             if INITIAL_POSITION == RANDOM:
-                s = [rd.randrange(0, WIDTH), rd.randrange(0, HEIGHT)]
+                s = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
             elif INITIAL_POSITION == CENTER:
                 s = [WIDTH * 0.5, HEIGHT * 0.5]
 
         s0 = s.copy()
-        print("Solução inicial:\n" + str(s0))
+        print("Solução inicial: " + str(s0))
 
         result = self.evaluate_solution(s)
         f_s = result

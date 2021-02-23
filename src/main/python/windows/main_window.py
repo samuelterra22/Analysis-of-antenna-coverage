@@ -5,6 +5,7 @@ import sys
 from math import pi, cos, exp
 
 import random
+import copy
 
 import folium
 import numpy as np
@@ -423,7 +424,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         return lat_bounds, long_bounds
 
     @staticmethod
-    def simulates_propagation(longs_deg: ndarray, lats_deg: ndarray, base_station_selected: BaseStation) -> ndarray:
+    def simulates_propagation(base_station_selected: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> ndarray:
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
@@ -548,7 +549,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
 
         # Get matrix result for matrix coordinates
-        propagation_matrix = self.simulates_propagation(longs_deg, lats_deg, base_station_selected)
+        propagation_matrix = self.simulates_propagation(base_station_selected, longs_deg, lats_deg)
 
         # print(propagation_matrix)
         print(propagation_matrix.shape)
@@ -558,7 +559,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
-        matrix_solution = self.simulates_propagation(longs_deg, lats_deg, point)
+        matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
 
         return self.objective_function(matrix_solution)
 
@@ -600,7 +601,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         s0 = s.copy()
         print("Solução inicial: " + str(s0))
 
-        result = self.evaluate_solution(s)
+        result = self.evaluate_solution(s, longs_deg, lats_deg)
         f_s = result
 
         T = T0
@@ -619,12 +620,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             # Loop Interno – Realização de perturbação em uma iteração
             while True:
 
-                initial_solution = s.copy()
+                initial_solution = copy.deepcopy(s)
 
                 initial_solution = self.disturb_solution(s)
 
                 # retorna a FO e suas matrizes
-                result = self.evaluate_solution(initial_solution)
+                result = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
                 f_si = result
                 # matrix_FO = result[1]
 
@@ -636,14 +637,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 # Teste de aceitação de uma nova solução
                 if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
 
-                    s = initial_solution.copy()
+                    s = copy.deepcopy(initial_solution)
                     f_s = f_si
 
                     n_success = n_success + 1
 
                     if f_s > best_fs:
                         best_fs = f_s
-                        best_s_array = s.copy()
+                        best_s_array = copy.deepcopy(s)
 
                     FOs.append(f_s)
 

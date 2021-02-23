@@ -434,11 +434,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
         for i, point_long in enumerate(longs_deg):
             for j, point_lat in enumerate(lats_deg):
-                base_movel_location = (point_lat, point_long)
+                mobile_base_location = (point_lat, point_long)
 
                 altitude_rx = get_altitude(lat=point_lat, long=point_long)
 
-                distance = calc_distance(base_movel_location, erb_location)
+                distance = calc_distance(mobile_base_location, erb_location)
 
                 # Todo: ajustar o calculo
 

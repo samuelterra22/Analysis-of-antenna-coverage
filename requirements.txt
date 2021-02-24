@@ -28,7 +28,7 @@ geojsoncontour==0.4.0
 haversine==2.3.0
 identify==1.5.14
 idna==3.1
-importlib-metadata==3.4.0
+importlib-metadata==3.6.0
 importlib-resources==5.1.0
 isort==5.7.0
 itur==0.2.1
@@ -63,7 +63,7 @@ pyerfa==1.7.2
 pyflakes==2.2.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
-pylint==2.7.0
+pylint==2.7.1
 pypesq==1.2.4
 pyproj==3.0.0.post1
 PyQt5==5.15.2

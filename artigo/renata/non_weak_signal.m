@@ -36,8 +36,8 @@ end
 hold on
 errorbar(ctr, ydt, errorplus, '.k')                  
 hold off
-legend ('NB', 'SVM', 'RF', 'MP', 'CNN BLSTM-RNN(ReLU)', 'CNN BLSTM-RNN(Softmax)', 'CNN BLSTM-RNN(SRS)','location','NW', 'Orientation','horizontal','FontSize',18);
-ylabel('Performance Measure','FontSize',14);
-set(gca,'linewidth', 2, 'FontSize',14);
+legend ('NB', 'SVM', 'RF', 'MP', 'CNN BLSTM-RNN(ReLU)', 'CNN BLSTM-RNN(Softmax)', 'CNN BLSTM-RNN(SRS)', 'location','NW', 'Orientation', 'horizontal', 'FontSize', 21);
+ylabel('Performance Measure', 'FontSize', 20);
+set(gca,'linewidth', 2, 'FontSize', 20);
 ylim([0 1.15]);
-set(gca,'XTickLabel',x)
+set(gca,'XTickLabel', x)

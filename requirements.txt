@@ -63,7 +63,7 @@ pyerfa==1.7.2
 pyflakes==2.2.0
 pyinstaller==4.2
 pyinstaller-hooks-contrib==2020.11
-pylint==2.7.0
+pylint==2.7.1
 pypesq==1.2.4
 pyproj==3.0.0.post1
 PyQt5==5.15.2

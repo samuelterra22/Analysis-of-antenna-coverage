@@ -62,7 +62,7 @@ pydocstyle==5.1.1
 pyerfa==1.7.2
 pyflakes==2.2.0
 pyinstaller==4.2
-pyinstaller-hooks-contrib==2020.11
+pyinstaller-hooks-contrib==2021.1
 pylint==2.7.2
 pypesq==1.2.4
 pyproj==3.0.1

@@ -18,7 +18,7 @@ Cython==0.29.22
 distlib==0.3.1
 elevation==1.1.0
 fasteners==0.16
-fbs==0.9.0
+fbs==0.9.1
 filelock==3.0.12
 flake8==3.8.4
 folium==0.12.1

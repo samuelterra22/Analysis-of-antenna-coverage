@@ -15,6 +15,7 @@ sudo apt install -y \
                  build-essential \
                  libpython3-dev \
                  python3-pip \
+                 python3-pyqt5.qtwebengine \
                  g++ 
 ```
 

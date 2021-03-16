@@ -255,6 +255,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "ganho": "",
                 "sensibilidade": "",
             },
+            "heuristica": {
+                "altura": "",
+                "ganho": "",
+                "sensibilidade": "",
+            },
         }
 
         confirm_simulation_dialog = ConfirmSimulationDialogClass(data)

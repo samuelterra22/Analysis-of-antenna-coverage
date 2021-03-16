@@ -30,6 +30,28 @@ class ConfirmSimulationDialogClass(QDialog, ConfirmSimulationQDialog):
         self.btn_cancelar_simulacao.clicked.disconnect()
         self.btn_cancelar_simulacao.clicked.connect(self.on_btn_cancelar_simulacao_clicked)
 
+    def fill_data(self, data):
+        pass
+        # label_modelo_propagacao_value
+        # label_ambiente_value
+        # label_radio_maximo_value
+
+        # label_entidade_value
+        # label_uf_municipio_value
+        # label_endereco_value
+        # label_frequencia_value
+        # label_ganho_value
+        # label_elevacao_value
+        # label_polarizacao_value
+        # label_altura_value
+        # label_latitude_value
+        # label_longitude_value
+
+        # label_bs_altura_value
+        # label_bs_ganho_value
+        # label_bs_sensibilidade_value
+
+
     @pyqtSlot(name="on_btn_confirmar_simulacao_clicked")
     def on_btn_confirmar_simulacao_clicked(self):
         """

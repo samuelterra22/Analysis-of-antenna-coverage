@@ -46,7 +46,7 @@ packaging==20.9
 pandas==1.2.3
 pathspec==0.8.1
 pd==0.0.1
-peewee==3.14.3
+peewee==3.14.4
 pefile==2019.4.18
 pesq==0.0.2
 Pillow==8.1.2

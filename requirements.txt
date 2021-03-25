@@ -28,7 +28,7 @@ haversine==2.3.0
 identify==2.2.0
 importlib-metadata==3.7.3
 importlib-resources==5.1.2
-isort==5.7.0
+isort==5.8.0
 itur==0.2.1
 joblib==1.0.1
 kiwisolver==1.3.1

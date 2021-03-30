@@ -26,7 +26,7 @@ geojson==2.5.0
 geojsoncontour==0.4.0
 haversine==2.3.0
 identify==2.2.2
-importlib-metadata==3.7.3
+importlib-metadata==3.9.1
 importlib-resources==5.1.2
 isort==5.8.0
 itur==0.2.1

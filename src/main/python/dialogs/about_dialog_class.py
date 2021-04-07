@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog
 
-AboutQDialog = uic.loadUiType("./views/about_dialog.ui")[0]
+from base import context
 
 
-class AboutDialogClass(QDialog, AboutQDialog):
+class AboutDialogClass(QDialog):
     """
     This class load the about dialog pyqt component
     """
@@ -16,4 +16,4 @@ class AboutDialogClass(QDialog, AboutQDialog):
         :param parent:
         """
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.ui = uic.loadUi(context.get_resource("about_dialog.ui"), self)

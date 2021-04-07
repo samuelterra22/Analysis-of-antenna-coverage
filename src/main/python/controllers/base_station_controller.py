@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 from datetime import datetime
 
 from controllers.base_controller import BaseController

@@ -1,13 +1,13 @@
-#!/usr/bin/env python
 
-from PyQt5 import uic
+
 from PyQt5.QtCore import pyqtSlot
+from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog
 
-ConfirmSimulationQDialog = uic.loadUiType("./views/confirm_simulation_dialog.ui")[0]
+from base import context
 
 
-class ConfirmSimulationDialogClass(QDialog, ConfirmSimulationQDialog):
+class ConfirmSimulationDialogClass(QDialog):
     """
     This class load the help dialog pyqt component
     """
@@ -18,8 +18,9 @@ class ConfirmSimulationDialogClass(QDialog, ConfirmSimulationQDialog):
         :param parent:
         """
         QDialog.__init__(self, parent)
+        self.ui = uic.loadUi(context.get_resource("confirm_simulation_dialog.ui"), self)
+
         self.val = None
-        self.setupUi(self)
         print(data)
 
         # Confirm button

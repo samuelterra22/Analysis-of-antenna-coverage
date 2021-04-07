@@ -12,8 +12,8 @@ import numpy as np
 import matplotlib
 import matplotlib.cm
 
-from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
+from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
 from numpy.core.multiarray import ndarray
@@ -32,25 +32,28 @@ from support.core import calc_distance, get_altitude, get_coordinate_in_circle
 from support.anatel import dms_to_dd
 from support.physical_constants import r_earth
 
-Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
+# Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
+from base import context
 
 
-class MainWindow(QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow):
     """
     Main application class. This class load the main window
     """
 
-    def __init__(self, parent=None):
+    def __init__(self, ui, parent=None):
         """
         Main window constructor
         :param parent:
         """
         # Init UI
-        super().__init__()
-        Ui_MainWindow.__init__(self)
-        self.setupUi(self)
+        super().__init__(parent)
+        # self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
+        # Ui_MainWindow.__init__(self)
+        # self.setupUi(self)
+        uic.loadUi(ui, self)
 
-        self.__init_rf_map()
+        # self.__init_rf_map()
         # self.init_mos_map()
 
         # Calculate button

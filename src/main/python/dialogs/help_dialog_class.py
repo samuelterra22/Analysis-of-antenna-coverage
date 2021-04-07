@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog
 
-HelpQDialog = uic.loadUiType("./views/help_dialog.ui")[0]
+from base import context
 
 
-class HelpDialogClass(QDialog, HelpQDialog):
+class HelpDialogClass(QDialog):
     """
     This class load the help dialog pyqt component
     """
@@ -16,4 +16,4 @@ class HelpDialogClass(QDialog, HelpQDialog):
         :param parent:
         """
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.ui = uic.loadUi(context.get_resource("help_dialog.ui"), self)

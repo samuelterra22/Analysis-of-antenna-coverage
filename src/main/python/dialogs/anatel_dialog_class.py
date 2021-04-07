@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 
-from PyQt5 import uic
+
 from PyQt5.QtCore import pyqtSlot
+from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog, QProgressBar, QTableWidgetItem, QTableWidget, QLabel, QComboBox
 from pandas import DataFrame
 from datetime import datetime
@@ -13,10 +13,10 @@ from support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_
 from support.constants import CURRENT_COUNTY_ID, CURRENT_UF_ID, LAST_DATABASE_UPDATE
 from dialogs.alert_dialog_class import AlertDialogClass
 
-AnatelQDialog = uic.loadUiType("./views/anatel_dialog.ui")[0]
+from base import context
 
 
-class AnatelDialogClass(QDialog, AnatelQDialog):
+class AnatelDialogClass(QDialog):
     """
     This class load the Anatel dialog pyqt component
     """
@@ -27,7 +27,7 @@ class AnatelDialogClass(QDialog, AnatelQDialog):
         :param parent:
         """
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.ui = uic.loadUi(context.get_resource("anatel_dialog.ui"), self)
 
         self.__settings_controller = SettingsController()
         self.__base_station_controller = BaseStationController()

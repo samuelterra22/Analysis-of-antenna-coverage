@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import QDialog, QComboBox
@@ -10,10 +9,10 @@ from support.anatel import get_ufs_initials, get_counties, get_uf_code, get_uf_b
 from support.constants import CURRENT_COUNTY_ID
 from dialogs.alert_dialog_class import AlertDialogClass
 
-SettingsQDialog = uic.loadUiType("./views/settings_dialog.ui")[0]
+from base import context
 
 
-class SettingsDialogClass(QDialog, SettingsQDialog):
+class SettingsDialogClass(QDialog):
     """
     This class load the settings dialog pyqt component
     """
@@ -24,7 +23,7 @@ class SettingsDialogClass(QDialog, SettingsQDialog):
         :param parent:
         """
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.ui = uic.loadUi(context.get_resource("settings_dialog.ui"), self)
 
         self.__settings_controller = SettingsController()
         self.__base_station_controller = BaseStationController()

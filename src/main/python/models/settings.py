@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 import datetime
 
 from models.base_model import BaseModel

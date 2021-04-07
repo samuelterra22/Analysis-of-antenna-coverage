@@ -49,7 +49,7 @@ nodeenv==1.5.0
 numba==0.53.1
 numpy==1.19.5
 packaging==20.9
-pandas==1.1.5
+pandas==1.2.3
 parso==0.7.1
 pathspec==0.8.1
 pd==0.0.1

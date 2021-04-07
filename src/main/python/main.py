@@ -2,7 +2,6 @@
 
 import sys
 
-from PyQt5 import QtCore
 from fbs_runtime.application_context.PyQt5 import ApplicationContext, cached_property
 
 

@@ -28,7 +28,7 @@ geojsoncontour==0.4.0
 greenlet==1.0.0
 haversine==2.3.0
 identify==2.2.2
-idna==2.10
+idna==3.1
 importlib-metadata==3.10.0
 importlib-resources==5.1.2
 isort==5.8.0

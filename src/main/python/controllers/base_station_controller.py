@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 from datetime import datetime
 
-from src.main.python.controllers.base_controller import BaseController
-from src.main.python.exceptions.application_exception import ApplicationException
-from src.main.python.models.base_station import BaseStation
-from src.main.python.support.logs import to_log_error
+from controllers.base_controller import BaseController
+from exceptions.application_exception import ApplicationException
+from models.base_station import BaseStation
+from support.logs import to_log_error
 
 
 class BaseStationController(BaseController):

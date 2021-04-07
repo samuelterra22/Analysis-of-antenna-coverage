@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-ENV_FILE = os.path.join(BASE_DIR, ".env")
+ENV_FILE = os.path.join(BASE_DIR, "../../../../.env")
 load_dotenv(dotenv_path=ENV_FILE)
 
 DATABASE_NAME = os.getenv("DATABASE_NAME")

@@ -1,7 +1,7 @@
 from peewee import SqliteDatabase
 
-from settings import DATABASE_NAME
-from src.main.python.support.path import get_project_root
+from support.settings import DATABASE_NAME
+from support.path import get_project_root
 
 
 def get_database_url() -> str:
@@ -29,12 +29,12 @@ def create_tables() -> None:
     """
 
     # Import models locally
-    from src.main.python.models.base_station import BaseStation
-    from src.main.python.models.city import City
-    from src.main.python.models.log import Log
-    from src.main.python.models.simulation_history import SimulationHistory
-    from src.main.python.models.settings import Settings
-    from src.main.python.models.state import State
+    from models.base_station import BaseStation
+    from models.city import City
+    from models.log import Log
+    from models.simulation_history import SimulationHistory
+    from models.settings import Settings
+    from models.state import State
 
     database = get_sqlite_database_instance()
     with database:

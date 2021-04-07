@@ -1,6 +1,6 @@
 from peewee import *
 
-from src.main.python.support.database import get_database_url
+from support.database import get_database_url
 
 database = SqliteDatabase(get_database_url())
 

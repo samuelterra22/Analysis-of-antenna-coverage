@@ -8,9 +8,9 @@ from urllib.request import urlopen
 
 from pandas import DataFrame
 
-import src.main.python.support.constants as constants
-from src.main.python.exceptions.application_exception import ApplicationException
-from src.main.python.support.logs import to_log_error
+import support.constants as constants
+from exceptions.application_exception import ApplicationException
+from support.logs import to_log_error
 
 # site: https://sistemas.anatel.gov.br/se/public/view/b/licenciamento.php
 

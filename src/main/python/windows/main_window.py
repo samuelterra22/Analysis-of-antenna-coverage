@@ -18,19 +18,19 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
 from numpy.core.multiarray import ndarray
 
-from src.main.python.models.base_station import BaseStation
-from src.main.python.controllers.base_station_controller import BaseStationController
-from src.main.python.dialogs.alert_dialog_class import AlertDialogClass
-from src.main.python.dialogs.about_dialog_class import AboutDialogClass
-from src.main.python.dialogs.anatel_dialog_class import AnatelDialogClass
-from src.main.python.dialogs.settings_dialog_class import SettingsDialogClass
-from src.main.python.dialogs.help_dialog_class import HelpDialogClass
-from src.main.python.dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
-from src.main.python.support.propagation_models import cost231_path_loss
-from src.main.python.support.constants import UFLA_LAT_LONG_POSITION
-from src.main.python.support.core import calc_distance, get_altitude, get_coordinate_in_circle
-from src.main.python.support.anatel import dms_to_dd
-from src.main.python.support.physical_constants import r_earth
+from models.base_station import BaseStation
+from controllers.base_station_controller import BaseStationController
+from dialogs.alert_dialog_class import AlertDialogClass
+from dialogs.about_dialog_class import AboutDialogClass
+from dialogs.anatel_dialog_class import AnatelDialogClass
+from dialogs.settings_dialog_class import SettingsDialogClass
+from dialogs.help_dialog_class import HelpDialogClass
+from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
+from support.propagation_models import cost231_path_loss
+from support.constants import UFLA_LAT_LONG_POSITION
+from support.core import calc_distance, get_altitude, get_coordinate_in_circle
+from support.anatel import dms_to_dd
+from support.physical_constants import r_earth
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 

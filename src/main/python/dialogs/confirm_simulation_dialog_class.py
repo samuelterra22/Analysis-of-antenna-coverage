@@ -51,7 +51,6 @@ class ConfirmSimulationDialogClass(QDialog, ConfirmSimulationQDialog):
         # label_bs_ganho_value
         # label_bs_sensibilidade_value
 
-
     @pyqtSlot(name="on_btn_confirmar_simulacao_clicked")
     def on_btn_confirmar_simulacao_clicked(self):
         """

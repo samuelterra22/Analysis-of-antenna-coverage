@@ -6,7 +6,7 @@ from haversine import haversine, Unit
 from math import pi, cos, sin, sqrt, asin, atan2
 import numpy as np
 
-from src.main.python.support.physical_constants import r_earth
+from support.physical_constants import r_earth
 
 srtm1_data = Srtm1HeightMapCollection()
 srtm1_data.build_file_index()

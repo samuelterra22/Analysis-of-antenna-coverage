@@ -15,7 +15,7 @@ import matplotlib.cm
 
 from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
@@ -48,24 +48,10 @@ class MainWindow(QMainWindow):
         :param parent:
         """
         # Init UI
-        # super().__init__(parent)
         super().__init__()
-        # Ui_MainWindow.__init__(self)
-        # self.setupUi(self)
         self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
-        # uic.loadUi(ui, self)
-        # uic.loadUi(context.get_resource("main_window.ui"), self)
-        # self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
-        # self.ui = ui
-
-        # self.webEngineView = QtWebEngineWidgets.QWebEngineView(self.web_view)
-        # self.webEngineView.setUrl(QtCore.QUrl("https://www.google.com/"))
-        # self.webEngineView.showFullScreen()
-        # self.webEngineView.setZoomFactor(1.5)
-        # self.webEngineView.setObjectName("web_view")
 
         self.__init_rf_map()
-        # self.init_mos_map()
 
         # Calculate button
         self.button_calculate.clicked.disconnect()
@@ -79,8 +65,17 @@ class MainWindow(QMainWindow):
         # Tab components
         self.init_transmitter_components()
         self.init_antenna_components()
+        self.init_receptor_components()
         self.init_model_components()
+        self.init_simulated_annealing_components()
         self.init_output_components()
+
+    def init_simulated_annealing_components(self) -> None:
+        self.input_sa_temp_initial: QComboBox
+        self.input_sa_num_max_iterations: QComboBox
+        self.input_sa_num_max_perturbation_per_iteration: QComboBox
+        self.input_sa_num_max_success_per_iteration: QComboBox
+        self.input_sa_alpha: QComboBox
 
     def init_output_components(self) -> None:
         self.combo_box_output_colour_scheme: QComboBox
@@ -98,6 +93,11 @@ class MainWindow(QMainWindow):
         self.combo_box_environment.addItems([])
         self.combo_box_environment.currentIndexChanged.connect(
             self.on_combo_box_environment_changed)
+
+    def init_receptor_components(self) -> None:
+        self.input_rx_height: QLineEdit
+        self.input_rx_gain: QLineEdit
+        self.input_rx_sensitivity: QLineEdit
 
     def init_antenna_components(self) -> None:
         self.combo_box_antenna_antenna_polarisation: QComboBox

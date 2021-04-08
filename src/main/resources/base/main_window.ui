@@ -1144,7 +1144,7 @@
                      </widget>
                     </item>
                     <item row="3" column="0">
-                     <widget class="QLabel" name="label_sa_num_max_sucess_per_iteration">
+                     <widget class="QLabel" name="label_sa_num_max_success_per_iteration">
                       <property name="text">
                        <string>N Max de Sece. por Iter.</string>
                       </property>
@@ -1164,7 +1164,7 @@
                      <widget class="QLineEdit" name="input_sa_num_max_perturbation_per_iteration"/>
                     </item>
                     <item row="3" column="1">
-                     <widget class="QLineEdit" name="input_sa_num_max_sucess_per_iteration"/>
+                     <widget class="QLineEdit" name="input_sa_num_max_success_per_iteration"/>
                     </item>
                     <item row="4" column="0">
                      <widget class="QLabel" name="label_sa_alpha">

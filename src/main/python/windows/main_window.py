@@ -12,8 +12,8 @@ import numpy as np
 import matplotlib
 import matplotlib.cm
 
+from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
 from numpy.core.multiarray import ndarray
@@ -32,7 +32,6 @@ from support.core import calc_distance, get_altitude, get_coordinate_in_circle
 from support.anatel import dms_to_dd
 from support.physical_constants import r_earth
 
-# Ui_MainWindow, QtBaseClass = uic.loadUiType("./views/main_window.ui")
 from base import context
 
 
@@ -41,19 +40,29 @@ class MainWindow(QMainWindow):
     Main application class. This class load the main window
     """
 
-    def __init__(self, ui, parent=None):
+    def __init__(self, parent=None):
         """
         Main window constructor
         :param parent:
         """
         # Init UI
-        super().__init__(parent)
-        # self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
+        # super().__init__(parent)
+        super().__init__()
         # Ui_MainWindow.__init__(self)
         # self.setupUi(self)
-        uic.loadUi(ui, self)
+        self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
+        # uic.loadUi(ui, self)
+        # uic.loadUi(context.get_resource("main_window.ui"), self)
+        # self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
+        # self.ui = ui
 
-        # self.__init_rf_map()
+        # self.webEngineView = QtWebEngineWidgets.QWebEngineView(self.web_view)
+        # self.webEngineView.setUrl(QtCore.QUrl("https://www.google.com/"))
+        # self.webEngineView.showFullScreen()
+        # self.webEngineView.setZoomFactor(1.5)
+        # self.webEngineView.setObjectName("web_view")
+
+        self.__init_rf_map()
         # self.init_mos_map()
 
         # Calculate button
@@ -276,11 +285,13 @@ class MainWindow(QMainWindow):
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
-        m = folium.Map(
-            location=erb_location,
-            zoom_start=16,
-            control_scale=True
-        )
+        # m = folium.Map(
+        #     location=erb_location,
+        #     zoom_start=16,
+        #     control_scale=True
+        # )
+
+        m = self.get_folium_map(location=erb_location)
 
         folium.Marker(
             location=erb_location,
@@ -331,62 +342,64 @@ class MainWindow(QMainWindow):
         self.menu_action_help.triggered.connect(self.on_menu_help_triggered)
 
     def __init_rf_map(self) -> None:
-        m = folium.Map(
-            location=UFLA_LAT_LONG_POSITION,
-            zoom_start=16,
-            control_scale=True
-        )
+        m = self.get_folium_map(UFLA_LAT_LONG_POSITION)
 
         data = io.BytesIO()
         m.save(data, close_file=False)
 
         self.web_view.setHtml(data.getvalue().decode())
 
+    def get_folium_map(self, location=UFLA_LAT_LONG_POSITION, tiles="cartodb positron", zoom_start=16, control_scale=True):
+        # tiles = "Stamen Terrain"
+        return folium.Map(
+            location=location,
+            tiles=tiles,
+            zoom_start=zoom_start,
+            control_scale=control_scale
+        )
+
     def required_fields_filed(self) -> bool:
+        title = None
+        message = None
+
         if self.combo_box_anatel_base_station.currentIndex() == 0:
-            AlertDialogClass("Selecione uma ERB", "ERB não selecionada! Selecione uma ERB para continuar...").exec_()
-            return False
+            title = "Selecione uma ERB"
+            message = "ERB não selecionada! Selecione uma ERB para continuar..."
 
         if self.combo_box_antenna_antenna_polarisation.currentIndex() == 0:
-            AlertDialogClass("Selecione uma polarização", "Polarização não selecionada! Selecione uma polarização "
-                                                          "para continuar...").exec_()
-            return False
+            title = "Selecione uma polarização"
+            message = "Polarização não selecionada! Selecione uma polarização para continuar..."
 
         if self.combo_box_propagation_model.currentIndex() == 0:
-            AlertDialogClass("Selecione um modelo de propagação", "Modelo de propagação não selecionado! Selecione um "
-                                                                  "modelo de propagação para continuar...").exec_()
-            return False
+            title = "Selecione um modelo de propagação"
+            message = "Modelo de propagação não selecionado! Selecione um modelo de propagação para continuar..."
 
         if self.combo_box_environment.currentIndex() == 0:
-            AlertDialogClass("Selecione um ambiente", "Ambiente de propagação não selecionado! Selecione um ambiente "
-                                                      "de propagação para continuar...").exec_()
-            return False
+            title = "Selecione um ambiente"
+            message = "Ambiente de propagação não selecionado! Selecione um ambiente de propagação para continuar..."
 
         if self.combo_box_output_colour_scheme.currentIndex() == 0:
-            AlertDialogClass("Selecione um esquema de cores", "Esquema de cores da propagação não selecionada! "
-                                                              "Selecione um esquema de cores da propagação para "
-                                                              "continuar...").exec_()
-            return False
+            title = "Selecione um esquema de cores"
+            message = "Esquema de cores não selecionada! Selecione um esquema de cores da propagação para continuar..."
 
         if not self.input_output_radius.text():
-            AlertDialogClass("Raio Simulação", "Raio máximo de propagação não informado! Informe um raio máximo de "
-                                               "propagação para continuar...").exec_()
-            return False
+            title = "Raio Simulação"
+            message = "Raio máximo de propagação não informado! Informe um raio máximo de propagação para continuar..."
 
         if not self.input_rx_height.text():
-            AlertDialogClass("Altura RX", "Altura da antena receptora não informada! Informe uma altura para "
-                                          "continuar...").exec_()
-            return False
+            title = "Altura RX"
+            message = "Altura da antena receptora não informada! Informe uma altura para continuar..."
 
         if not self.input_rx_gain.text():
-            AlertDialogClass("Ganho RX",
-                             "Ganho da antena receptora não informado! Informe o ganho para continuar...").exec_()
-            return False
+            title = "Ganho RX"
+            message = "Ganho da antena receptora não informado! Informe o ganho para continuar..."
 
         if not self.input_rx_sensitivity.text():
-            AlertDialogClass("Sensibilidade RX",
-                             "Sensibilidade da antena receptora não informada! Informe a Sensibilidade para "
-                             "continuar...").exec_()
+            title = "Sensibilidade RX"
+            message = "Sensibilidade da antena receptora não informada! Informe a Sensibilidade para continuar..."
+
+        if title is not None and message is not None:
+            AlertDialogClass(title, message).exec_()
             return False
 
         return True
@@ -437,14 +450,14 @@ class MainWindow(QMainWindow):
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
-        altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
+        # altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
         propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
         for i, point_long in enumerate(longs_deg):
             for j, point_lat in enumerate(lats_deg):
                 mobile_base_location = (point_lat, point_long)
 
-                altitude_rx = get_altitude(lat=point_lat, long=point_long)
+                # altitude_rx = get_altitude(lat=point_lat, long=point_long)
 
                 distance = calc_distance(mobile_base_location, erb_location)
 
@@ -515,11 +528,12 @@ class MainWindow(QMainWindow):
         normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
         colored_data = color_map(normed_data)
 
-        m = folium.Map(
-            location=erb_location,
-            zoom_start=16,
-            control_scale=True
-        )
+        # m = folium.Map(
+        #     location=erb_location,
+        #     zoom_start=16,
+        #     control_scale=True
+        # )
+        m = self.get_folium_map(location=erb_location)
 
         folium.raster_layers.ImageOverlay(
             image=colored_data,

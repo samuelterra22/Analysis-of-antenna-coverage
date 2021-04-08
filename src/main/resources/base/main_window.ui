@@ -1409,13 +1409,9 @@
          <attribute name="title">
           <string>Heatmap Cobertura</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <layout class="QVBoxLayout" name="vertical_layout_coverage_map">
-            <item>
-             <widget class="QWebEngineView" name="web_view" native="true"/>
-            </item>
-           </layout>
+           <widget class="QWebEngineView" name="web_view" native="true"/>
           </item>
          </layout>
         </widget>

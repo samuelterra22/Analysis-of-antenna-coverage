@@ -94,7 +94,7 @@ def five_par_log_model(pt_dbm: float, x: float):
 
 
 @jit(nopython=True)
-def cost231_path_loss(f: float, tx_h: float, rx_h: float, d: float, mode):
+def cost231_path_loss(f: float, tx_h: float, rx_h: float, d: float, mode) -> float:
     """
     COST231 extension to HATA model
     http://morse.colorado.edu/~tlen5510/text/classwebch3.html

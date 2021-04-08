@@ -3,6 +3,7 @@
 import sys
 
 from fbs_runtime.application_context.PyQt5 import ApplicationContext, cached_property
+from PyQt5 import uic
 
 
 from support.database import create_tables

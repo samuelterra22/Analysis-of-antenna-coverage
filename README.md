@@ -92,3 +92,8 @@ pip install -r requirements.txt
 Fist preview of software:
 
 ![](screenshots/main_screen.png)
+
+fbs freeze
+fbs installer
+sudo dpkg -i target/analysis-of-antenna-coverage.deb
+sudo dpkg --purge analysis-of-antenna-coverage

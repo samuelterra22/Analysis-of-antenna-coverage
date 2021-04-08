@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Analise da Cobertura de ERBs</string>
+   <string>Analise da Cobertura de ERBs - v.1.0.0</string>
   </property>
   <property name="locale">
    <locale language="Portuguese" country="Brazil"/>
@@ -1360,7 +1360,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Simular</string>
+               <string>Executar Simulação</string>
               </property>
              </widget>
             </item>
@@ -1386,24 +1386,11 @@
         </property>
         <widget class="QWidget" name="tab_coverage">
          <attribute name="title">
-          <string>Heatmap Cobertura</string>
+          <string>Resultado da Simulação</string>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QWebEngineView" name="web_view" native="true"/>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_mos">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <attribute name="title">
-          <string>Heatmap MOS</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_10">
-          <item>
-           <layout class="QVBoxLayout" name="vertical_layout_mos_map"/>
           </item>
          </layout>
         </widget>

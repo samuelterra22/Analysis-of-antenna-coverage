@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import io
+import math
 import sys
 from math import pi, cos, exp
 
@@ -16,6 +17,7 @@ from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import QtCore, QtWidgets
+from folium import Map
 from numpy.core.multiarray import ndarray
 
 from models.base_station import BaseStation
@@ -27,8 +29,8 @@ from dialogs.settings_dialog_class import SettingsDialogClass
 from dialogs.help_dialog_class import HelpDialogClass
 from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from support.propagation_models import cost231_path_loss
-from support.constants import UFLA_LAT_LONG_POSITION
-from support.core import calc_distance, get_altitude, get_coordinate_in_circle
+from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY
+from support.core import calculates_distance_between_coordinates, get_altitude, get_coordinate_in_circle
 from support.anatel import dms_to_dd
 from support.physical_constants import r_earth
 
@@ -349,7 +351,9 @@ class MainWindow(QMainWindow):
 
         self.web_view.setHtml(data.getvalue().decode())
 
-    def get_folium_map(self, location=UFLA_LAT_LONG_POSITION, tiles="cartodb positron", zoom_start=16, control_scale=True):
+    @staticmethod
+    def get_folium_map(location=UFLA_LAT_LONG_POSITION, tiles="cartodb positron", zoom_start=16, control_scale=True) \
+            -> Map:
         # tiles = "Stamen Terrain"
         return folium.Map(
             location=location,
@@ -416,13 +420,12 @@ class MainWindow(QMainWindow):
     def objective_function(propagation_matrix: ndarray) -> float:
         fo_value = 0
         total_of_points = len(propagation_matrix) * len(propagation_matrix[0])
-        SENSITIVITY = -150
 
         print(total_of_points)
 
         for line in propagation_matrix:
             for value in line:
-                if value >= SENSITIVITY:
+                if value >= MIN_SENSITIVITY:
                     fo_value += 1
 
         coverage_percent = (fo_value / total_of_points) * 100  # porcentagem de cobertura
@@ -450,29 +453,36 @@ class MainWindow(QMainWindow):
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
-        # altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
+        altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
+
+        min_altitude = math.inf
+        max_altitude = - math.inf
+        for i, point_long in enumerate(longs_deg):
+            for j, point_lat in enumerate(lats_deg):
+                altitude_point_terrain = get_altitude(lat=point_lat, long=point_long)
+
+                if altitude_point_terrain < min_altitude:
+                    min_altitude = altitude_point_terrain
+
+                if altitude_point_terrain > max_altitude:
+                    max_altitude = altitude_point_terrain
+
+        print("min_altitude=", min_altitude)
+        print("max_altitude=", max_altitude)
 
         propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
         for i, point_long in enumerate(longs_deg):
             for j, point_lat in enumerate(lats_deg):
                 mobile_base_location = (point_lat, point_long)
 
-                # altitude_rx = get_altitude(lat=point_lat, long=point_long)
+                altitude_rx = get_altitude(lat=point_lat, long=point_long)
 
-                distance = calc_distance(mobile_base_location, erb_location)
+                distance = calculates_distance_between_coordinates(mobile_base_location, erb_location)
 
-                # Todo: ajustar o calculo
+                tx_h = (float(base_station_selected.altura) + altitude_tx) - min_altitude
+                rx_h = (2 + altitude_rx) - min_altitude
 
-                # random altitude
-                random_bs_h = random.randint(0, 100)
-                random_rx_h = random.randint(0, 100)
-
-                # random_bs_h = float(altitude_tx)
-                # random_rx_h = float(altitude_rx)
-
-                tx_h = float(base_station_selected.altura) + random_bs_h
-                rx_h = 2 + random_rx_h
-
+                # calculate the path loss using a propagation model
                 path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h, distance, 2)
 
                 received_power = transmitted_power - path_loss
@@ -480,7 +490,7 @@ class MainWindow(QMainWindow):
                 propagation_matrix[i][j] = received_power
 
                 # print(received_power)
-                # if received_power >= SENSITIVITY:
+                # if received_power >= MIN_SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
                 #     propagation_matrix[i][j] = 0

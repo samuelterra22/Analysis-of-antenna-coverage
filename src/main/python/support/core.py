@@ -14,10 +14,11 @@ srtm1_data.load_area(RasterBaseCoordinates.from_file_name("S22W045"), RasterBase
 
 
 def get_altitude(lat: float, long: float) -> int:
+    # Erro médio entre 1m e 2m
     return srtm1_data.get_altitude(latitude=lat, longitude=long)
 
 
-def calc_distance(point_1: tuple, point_2: tuple, unit=Unit.METERS) -> float:
+def calculates_distance_between_coordinates(point_1: tuple, point_2: tuple, unit=Unit.METERS) -> float:
     return haversine(point_1, point_2, unit=unit)
 
 

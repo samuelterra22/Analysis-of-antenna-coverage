@@ -51,18 +51,20 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = uic.loadUi(context.get_resource("main_window.ui"), self)
 
+        # Init controllers
+        self.__base_station_controller = BaseStationController()
+
+        # Init main map
         self.__init_rf_map()
 
-        # Calculate button
+        # Link calculate button with method
         self.button_calculate.clicked.disconnect()
         self.button_calculate.clicked.connect(self.on_button_calculate_clicked)
 
-        self.__base_station_controller = BaseStationController()
-
-        # Menus
+        # Init tha application menus
         self.__init_menus()
 
-        # Tab components
+        # init tab components
         self.init_transmitter_components()
         self.init_antenna_components()
         self.init_receptor_components()

@@ -112,11 +112,6 @@ class MainWindow(QMainWindow):
         self.fill_combo_box_anatel_base_station()
         self.combo_box_anatel_base_station.currentIndexChanged.connect(self.on_combo_box_anatel_base_station_changed)
 
-        # For custom simulation
-        self.combo_box_tx_coordinates: QComboBox
-        self.combo_box_tx_coordinates.addItems([])
-        self.combo_box_tx_coordinates.currentIndexChanged.connect(self.on_combo_box_tx_coordinates_changed)
-
     def fill_combo_box_anatel_base_station(self) -> None:
         db_configs = self.__base_station_controller.get_all_distinct()
 

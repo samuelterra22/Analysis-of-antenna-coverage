@@ -266,10 +266,12 @@ class MainWindow(QMainWindow):
                 "ganho": "",
                 "sensibilidade": "",
             },
-            "heuristica": {
-                "altura": "",
-                "ganho": "",
-                "sensibilidade": "",
+            "heuristic": {
+                "temperatura_inicial": "",
+                "numero_maximo_iteracoes": "",
+                "numero_maximo_pertubacoes_por_iteracao": "",
+                "numero_maximo_sucessos_por_iteracao": "",
+                "alpha": "",
             },
         }
 

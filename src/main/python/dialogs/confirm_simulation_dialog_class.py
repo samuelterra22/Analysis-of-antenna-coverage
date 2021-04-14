@@ -24,6 +24,7 @@ class ConfirmSimulationDialogClass(QDialog):
         simulation = data['simulation']
         print('propagation_model=', simulation['propagation_model'])
         print('environment=', simulation['environment'])
+        print('max_ray=', simulation['max_ray'])
 
         transmitter = data['transmitter']
         print('entidade=', transmitter['entidade'])
@@ -59,7 +60,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_uf_municipio_value: QLabel
         self.label_endereco_value: QLabel
         self.label_frequencia_value: QLabel
-        self.label_ganho: QLabel
+        self.label_ganho_value: QLabel
         self.label_elevacao_value: QLabel
         self.label_polarizacao_value: QLabel
         self.label_altura_value: QLabel
@@ -78,9 +79,28 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_bs_ganho_value: QLabel
         self.label_bs_sensibilidade_value: QLabel
 
-
-        # ToDo: do this
-        self.label_elevacao_value.setText("asdasd")
+        # Add values ins labels
+        self.label_modelo_propagacao_value.setText(simulation['propagation_model'])
+        self.label_ambiente_value.setText(simulation['environment'])
+        self.label_radio_maximo_value.setText(simulation['max_ray'])
+        self.label_entidade_value.setText(transmitter['entidade'])
+        self.label_uf_municipio_value.setText(transmitter['uf_municipio'])
+        self.label_endereco_value.setText(transmitter['endereco'])
+        self.label_frequencia_value.setText(transmitter['frequencia'])
+        self.label_ganho_value.setText(transmitter['ganho'])
+        self.label_elevacao_value.setText(transmitter['elevacao'])
+        self.label_polarizacao_value.setText(transmitter['polarizacao'])
+        self.label_altura_value.setText(transmitter['altura'])
+        self.label_latitude_value.setText(transmitter['latitude'])
+        self.label_longitude_value.setText(transmitter['longitude'])
+        self.label_bs_altura_value.setText(receptor['altura'])
+        self.label_bs_ganho_value.setText(receptor['ganho'])
+        self.label_bs_sensibilidade_value.setText(receptor['sensibilidade'])
+        self.label_temperatura_inicial_value.setText(heuristic['temperatura_inicial'])
+        self.label_num_maximo_iteracoes_value.setText(heuristic['numero_maximo_iteracoes'])
+        self.label_num_maximo_pertubacoes_iteracao_value.setText(heuristic['numero_maximo_pertubacoes_por_iteracao'])
+        self.label_num_maximo_sucessos_iteracao_value.setText(heuristic['numero_maximo_sucessos_por_iteracao'])
+        self.label_alpha_value.setText(heuristic['alpha'])
 
         # Confirm button
         self.btn_confirmar_simulacao.clicked.disconnect()

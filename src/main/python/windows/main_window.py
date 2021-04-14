@@ -246,32 +246,32 @@ class MainWindow(QMainWindow):
         data = {
             "simulation": {
                 "propagation_model": "Hata",
-                "environment": "",
-                "max_ray": ""
+                "environment": "as",
+                "max_ray": "as"
             },
             "transmitter": {
-                "entidade": "",
-                "uf_municipio": "",
-                "endereco": "",
-                "frequencia": "",
-                "ganho": "",
-                "elevacao": "",
-                "polarizacao": "",
-                "altura": "",
-                "latitude": "",
-                "longitude": "",
+                "entidade": "asd",
+                "uf_municipio": "asd",
+                "endereco": "as",
+                "frequencia": "asd",
+                "ganho": "asd",
+                "elevacao": "asd",
+                "polarizacao": "as",
+                "altura": "asd",
+                "latitude": "asd",
+                "longitude": "asd",
             },
             "receptor": {
-                "altura": "",
-                "ganho": "",
-                "sensibilidade": "",
+                "altura": "asd",
+                "ganho": "as",
+                "sensibilidade": "asd",
             },
             "heuristic": {
-                "temperatura_inicial": "",
-                "numero_maximo_iteracoes": "",
-                "numero_maximo_pertubacoes_por_iteracao": "",
-                "numero_maximo_sucessos_por_iteracao": "",
-                "alpha": "",
+                "temperatura_inicial": "asdd",
+                "numero_maximo_iteracoes": "asd",
+                "numero_maximo_pertubacoes_por_iteracao": "asd",
+                "numero_maximo_sucessos_por_iteracao": "dda",
+                "alpha": "asd",
             },
         }
 

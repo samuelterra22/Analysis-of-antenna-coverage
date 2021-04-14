@@ -286,12 +286,6 @@ class MainWindow(QMainWindow):
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
-        # m = folium.Map(
-        #     location=erb_location,
-        #     zoom_start=16,
-        #     control_scale=True
-        # )
-
         m = self.get_folium_map(location=erb_location)
 
         folium.Marker(
@@ -537,11 +531,6 @@ class MainWindow(QMainWindow):
         normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
         colored_data = color_map(normed_data)
 
-        # m = folium.Map(
-        #     location=erb_location,
-        #     zoom_start=16,
-        #     control_scale=True
-        # )
         m = self.get_folium_map(location=erb_location)
 
         folium.raster_layers.ImageOverlay(

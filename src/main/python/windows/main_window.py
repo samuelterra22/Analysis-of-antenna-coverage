@@ -30,7 +30,7 @@ from dialogs.settings_dialog_class import SettingsDialogClass
 from dialogs.help_dialog_class import HelpDialogClass
 from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from support.propagation_models import cost231_path_loss
-from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY
+from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, bm_min_sensitivity, bm_max_sensitivity
 from support.core import calculates_distance_between_coordinates, get_altitude, get_coordinate_in_circle
 from support.anatel import dms_to_dd
 from support.physical_constants import r_earth
@@ -246,33 +246,33 @@ class MainWindow(QMainWindow):
 
         data = {
             "simulation": {
-                "propagation_model": "Hata",
-                "environment": "as",
-                "max_ray": "as"
+                "propagation_model": "---",
+                "environment": "---",
+                "max_ray": "---"
             },
             "transmitter": {
-                "entidade": "asd",
-                "uf_municipio": "asd",
-                "endereco": "as",
-                "frequencia": "asd",
-                "ganho": "asd",
-                "elevacao": "asd",
-                "polarizacao": "as",
-                "altura": "asd",
-                "latitude": "asd",
-                "longitude": "asd",
+                "entidade": "---",
+                "uf_municipio": "---",
+                "endereco": "---",
+                "frequencia": "---",
+                "ganho": "---",
+                "elevacao": "---",
+                "polarizacao": "---",
+                "altura": "---",
+                "latitude": "---",
+                "longitude": "---",
             },
             "receptor": {
-                "altura": "asd",
-                "ganho": "as",
-                "sensibilidade": "asd",
+                "altura": "---",
+                "ganho": "---",
+                "sensibilidade": "---",
             },
             "heuristic": {
-                "temperatura_inicial": "asdd",
-                "numero_maximo_iteracoes": "asd",
-                "numero_maximo_pertubacoes_por_iteracao": "asd",
-                "numero_maximo_sucessos_por_iteracao": "dda",
-                "alpha": "asd",
+                "temperatura_inicial": "---",
+                "numero_maximo_iteracoes": "---",
+                "numero_maximo_pertubacoes_por_iteracao": "---",
+                "numero_maximo_sucessos_por_iteracao": "---",
+                "alpha": "---",
             },
         }
 
@@ -293,6 +293,17 @@ class MainWindow(QMainWindow):
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
 
         m = self.get_folium_map(location=erb_location)
+
+        # html = f"""
+        #         <h1> {base_station.entidade}</h1>
+        #         <p>You can use any html here! Let's do a list:</p>
+        #         <ul>
+        #             <li>Latitude: {base_station.latitude}</li>
+        #             <li>Longitude: {base_station.longitude}</li>
+        #         </ul>
+        #         """
+        # iframe = folium.IFrame(html=html, width=200, height=200)
+        # popup = folium.Popup(iframe, max_width=2650)
 
         folium.Marker(
             location=erb_location,
@@ -499,8 +510,6 @@ class MainWindow(QMainWindow):
     def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, longs_deg: ndarray,
                                 base_station_selected: BaseStation) -> None:
         # Print matrix result in map
-        bm_max_sensitivity = -80
-        bm_min_sensitivity = -180
 
         erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
 
@@ -578,10 +587,10 @@ class MainWindow(QMainWindow):
         propagation_matrix = self.simulates_propagation(base_station_selected, longs_deg, lats_deg)
 
         # print(propagation_matrix)
-        print(propagation_matrix.shape)
-        print(self.objective_function(propagation_matrix))
+        print('propagation_matrix.shape', propagation_matrix.shape)
+        print('objective_function', self.objective_function(propagation_matrix))
 
-        #  Print simulation map
+        #  Show simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:

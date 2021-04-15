@@ -13,3 +13,6 @@ UFLA_LAT_LONG_POSITION = (-21.226244, -44.978407)
 
 
 MIN_SENSITIVITY = -150
+
+bm_max_sensitivity = -80
+bm_min_sensitivity = -180

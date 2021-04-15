@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
+from typing import Tuple, List
 
 from models.base_station import BaseStation
 from controllers.base_station_controller import BaseStationController
@@ -599,7 +600,10 @@ class MainWindow(QMainWindow):
 
         # Run simulated annealing
         # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
-        self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
+        best, _, _ = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
+
+        #  print best solution found
+        self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, best)
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
@@ -611,14 +615,15 @@ class MainWindow(QMainWindow):
         latitude = solution.latitude
         longitude = solution.longitude
 
-        new_coordinates = get_coordinate_in_circle(latitude, longitude, 60) # 60 metros
+        new_coordinates = get_coordinate_in_circle(latitude, longitude, 60)  # 60 metros
 
         solution.latitude = new_coordinates[0]
         solution.longitude = new_coordinates[1]
 
         return solution
 
-    def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float):
+    def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float) \
+            -> Tuple[BaseStation, float, List[float]]:
         """
         :param problem: Dados do problema principal
         :param T0: Temperatura inicial.
@@ -649,6 +654,7 @@ class MainWindow(QMainWindow):
 
         # Armazena a MELHOR solução encontrada
         best_fs = f_s
+        best_erb = s0
 
         # Loop principal – Verifica se foram atendidas as condições de termino do algoritmo
         while True:
@@ -681,6 +687,7 @@ class MainWindow(QMainWindow):
 
                     if f_s > best_fs:
                         best_fs = f_s
+                        best_erb = copy.deepcopy(initial_solution)
 
                     FOs.append(f_s)
                     # FOs.append(f_s)
@@ -705,3 +712,5 @@ class MainWindow(QMainWindow):
             print('best_fs=', best_fs)
 
         print('FOs=', str(FOs))
+
+        return best_erb, best_fs, FOs

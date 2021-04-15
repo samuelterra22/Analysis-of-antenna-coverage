@@ -3,6 +3,7 @@
 import io
 import math
 import sys
+import time
 from math import pi, cos, exp
 
 import random
@@ -15,7 +16,7 @@ import matplotlib.cm
 
 from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
@@ -281,7 +282,12 @@ class MainWindow(QMainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
+            start = time.time()
             self.run_simulation()
+            end = time.time()
+
+            self.label_geral_info_1: QLabel
+            self.label_geral_info_1.setText("Simulação executada em %s segundos" % round(end - start, 2))
 
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))

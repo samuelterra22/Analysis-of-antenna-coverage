@@ -38,8 +38,10 @@ class BaseStation(BaseModel):
     altura = CharField()
     homologacao_transmissao = CharField()
     potencia_transmissao = CharField()
-    latitude = CharField()
-    longitude = CharField()
+    latitude = FloatField()
+    longitude = FloatField()
+    latitude_dms = CharField()
+    longitude_dms = CharField()
     cod_debito_tfi = CharField()
     data_primeiro_licenciamento = CharField()
 

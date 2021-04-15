@@ -32,7 +32,6 @@ from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
 from support.propagation_models import cost231_path_loss
 from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, bm_min_sensitivity, bm_max_sensitivity
 from support.core import calculates_distance_between_coordinates, get_altitude, get_coordinate_in_circle
-from support.anatel import dms_to_dd
 from support.physical_constants import r_earth
 
 from base import context
@@ -290,7 +289,7 @@ class MainWindow(QMainWindow):
             self.label_geral_info_1.setText("Simulação executada em %s segundos" % round(end - start, 2))
 
     def add_erb_map(self, base_station: BaseStation) -> None:
-        erb_location = (str(dms_to_dd(base_station.latitude)), str(dms_to_dd(base_station.longitude)))
+        erb_location = (str(base_station.latitude), str(base_station.longitude))
 
         m = self.get_folium_map(location=erb_location)
 
@@ -333,8 +332,8 @@ class MainWindow(QMainWindow):
         self.label_anatel_polarization_value.setText(base_station.polarizacao)
         self.label_anatel_height_antenna_value.setText(base_station.altura)
         self.label_anatel_power_transmission_value.setText(base_station.potencia_transmissao)
-        self.label_anatel_latitude_value.setText(str(dms_to_dd(base_station.latitude)))
-        self.label_anatel_longitude_value.setText(str(dms_to_dd(base_station.longitude)))
+        self.label_anatel_latitude_value.setText(str(base_station.latitude))
+        self.label_anatel_longitude_value.setText(str(base_station.longitude))
         self.label_anatel_first_licensing_value.setText(base_station.data_primeiro_licenciamento)
 
     def __init_menus(self) -> None:
@@ -459,7 +458,7 @@ class MainWindow(QMainWindow):
 
     @staticmethod
     def simulates_propagation(base_station_selected: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> ndarray:
-        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+        erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
@@ -511,7 +510,7 @@ class MainWindow(QMainWindow):
                                 base_station_selected: BaseStation) -> None:
         # Print matrix result in map
 
-        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+        erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         lats_in_rad = np.deg2rad(lats_deg)
         longs_in_rad = np.deg2rad(longs_deg)
@@ -572,7 +571,7 @@ class MainWindow(QMainWindow):
     def run_simulation(self) -> None:
         base_station_selected = self.get_bs_selected()
 
-        erb_location = (dms_to_dd(base_station_selected.latitude), dms_to_dd(base_station_selected.longitude))
+        erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         # get simulation bounds
         dy, dx = 6, 6  # 3km
@@ -593,14 +592,28 @@ class MainWindow(QMainWindow):
         #  Show simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
+        # problem = (base_station_selected, longs_deg, lats_deg)
+
+        # Run simulated annealing
+        # def simulated_annealing(problem, M: int, P: int, L: int, T0: float, alpha: float):
+        # self.simulated_annealing(problem=problem, M=1, P=1, L=1, T0=100.0, alpha=1)
+
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
 
         return self.objective_function(matrix_solution)
 
     @staticmethod
-    def disturb_solution(latitude: float, longitude: float) -> tuple:
-        return get_coordinate_in_circle(latitude, longitude, 2)
+    def disturb_solution(solution: BaseStation) -> tuple:
+        latitude = solution.latitude
+        longitude = solution.longitude
+
+        new_coordinates = get_coordinate_in_circle(latitude, longitude, 2)
+
+        solution.latitude = new_coordinates[0]
+        solution.longitude = new_coordinates[1]
+
+        return solution
 
     def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float):
         """
@@ -614,38 +627,28 @@ class MainWindow(QMainWindow):
         """
         # Get parâmetros do problema
 
-        longs_deg, lats_deg = problem
-
-        # ToDo: ajustar depois
-        RANDOM = 1
-        CENTER = 2
-
-        INITIAL_POSITION = CENTER
+        base_station_selected, longs_deg, lats_deg = problem
 
         FOs = []
 
         # cria Soluções (posições) iniciais com pontos aleatórios para os APs
-        s = np.empty([size, 2], np.float32)
+        s = base_station_selected
 
-        for i in range(size):
-            if INITIAL_POSITION == RANDOM:
-                s = [random.randrange(0, WIDTH), random.randrange(0, HEIGHT)]
-            elif INITIAL_POSITION == CENTER:
-                s = [WIDTH * 0.5, HEIGHT * 0.5]
-
-        s0 = s.copy()
-        print("Solução inicial: " + str(s0))
+        s0 = s
+        print("Solução inicial: " + str((s0.latitude, s0.longitude)))
 
         result = self.evaluate_solution(s, longs_deg, lats_deg)
+
+        print('result=', result)
+        exit(0)
+
         f_s = result
 
         T = T0
         j = 1
 
         # Armazena a MELHOR solução encontrada
-        best_s_array = s.copy()
         best_fs = f_s
-        # BEST_matrix_FO = result[1]
 
         # Loop principal – Verifica se foram atendidas as condições de termino do algoritmo
         while True:
@@ -654,8 +657,6 @@ class MainWindow(QMainWindow):
 
             # Loop Interno – Realização de perturbação em uma iteração
             while True:
-
-                initial_solution = copy.deepcopy(s)
 
                 initial_solution = self.disturb_solution(s)
 

@@ -47,7 +47,7 @@
          <number>1</number>
         </property>
         <property name="columnCount">
-         <number>35</number>
+         <number>37</number>
         </property>
         <attribute name="horizontalHeaderCascadingSectionResizes">
          <bool>false</bool>
@@ -230,6 +230,16 @@
         </column>
         <column>
          <property name="text">
+          <string>LATITUDE DMS</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>LONGITUDE DMS</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>CODIGO DEBITO TFI</string>
          </property>
         </column>
@@ -373,7 +383,7 @@
           <string/>
          </property>
         </item>
-        <item row="0" column="33">
+        <item row="0" column="35">
          <property name="text">
           <string/>
          </property>

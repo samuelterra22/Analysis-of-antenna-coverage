@@ -9,8 +9,8 @@ from datetime import datetime
 from models.base_station import BaseStation
 from controllers.base_station_controller import BaseStationController
 from controllers.settings_controller import SettingsController
-from support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_counties, get_uf_code
-from support.constants import CURRENT_COUNTY_ID, CURRENT_UF_ID, LAST_DATABASE_UPDATE
+from support.anatel import get_anatel_data, get_ufs_initials, get_uf_by_id, get_counties, get_uf_code, dms_to_dd
+from support.constants import CURRENT_COUNTY_ID, CURRENT_UF_ID, LAST_DATABASE_UPDATE, INVALID_UF
 from dialogs.alert_dialog_class import AlertDialogClass
 
 from base import context
@@ -141,8 +141,10 @@ class AnatelDialogClass(QDialog):
         self.combo_box_county: QComboBox
 
         counties = get_counties(uf)
-        for county in counties:
-            self.combo_box_county.addItem(county[0], county[1])
+
+        if counties != INVALID_UF:
+            for county in counties:
+                self.combo_box_county.addItem(county[0], county[1])
 
         self.combo_box_county.setCurrentIndex(0)
 
@@ -279,9 +281,11 @@ class AnatelDialogClass(QDialog):
             self.anatel_table.setItem(table_row_count, 29, QTableWidgetItem(str(config.potencia_transmissao)))
             self.anatel_table.setItem(table_row_count, 30, QTableWidgetItem(str(config.latitude)))
             self.anatel_table.setItem(table_row_count, 31, QTableWidgetItem(str(config.longitude)))
-            self.anatel_table.setItem(table_row_count, 32, QTableWidgetItem(str(config.cod_debito_tfi)))
-            self.anatel_table.setItem(table_row_count, 33, QTableWidgetItem(str(config.data_primeiro_licenciamento)))
-            self.anatel_table.setItem(table_row_count, 34, QTableWidgetItem(str(config.created_at)))
+            self.anatel_table.setItem(table_row_count, 32, QTableWidgetItem(str(config.latitude_dms)))
+            self.anatel_table.setItem(table_row_count, 33, QTableWidgetItem(str(config.longitude_dms)))
+            self.anatel_table.setItem(table_row_count, 34, QTableWidgetItem(str(config.cod_debito_tfi)))
+            self.anatel_table.setItem(table_row_count, 35, QTableWidgetItem(str(config.data_primeiro_licenciamento)))
+            self.anatel_table.setItem(table_row_count, 36, QTableWidgetItem(str(config.created_at)))
 
             processed = processed + 1
             self.progress_bar_anatel.setValue(round(((processed / total) * 100), 2))
@@ -326,8 +330,10 @@ class AnatelDialogClass(QDialog):
                 "altura": row[26],
                 "homologacao_transmissao": row[27],
                 "potencia_transmissao": row[28],
-                "latitude": row[29],
-                "longitude": row[30],
+                "latitude": dms_to_dd(row[29]),
+                "longitude": dms_to_dd(row[30]),
+                "latitude_dms": row[29],
+                "longitude_dms": row[30],
                 "cod_debito_tfi": row[31],
                 "data_primeiro_licenciamento": row[32],
             }

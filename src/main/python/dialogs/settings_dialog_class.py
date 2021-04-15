@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QDialog, QComboBox
 
 from controllers.settings_controller import SettingsController
 from controllers.base_station_controller import BaseStationController
-from support.constants import CURRENT_UF_ID
+from support.constants import CURRENT_UF_ID, INVALID_UF
 from support.anatel import get_ufs_initials, get_counties, get_uf_code, get_uf_by_id
 from support.constants import CURRENT_COUNTY_ID
 from dialogs.alert_dialog_class import AlertDialogClass
@@ -56,8 +56,10 @@ class SettingsDialogClass(QDialog):
         self.combo_box_county: QComboBox
 
         counties = get_counties(uf)
-        for county in counties:
-            self.combo_box_county.addItem(county[0], county[1])
+
+        if counties != INVALID_UF:
+            for county in counties:
+                self.combo_box_county.addItem(county[0], county[1])
 
         self.combo_box_county.setCurrentIndex(0)
 

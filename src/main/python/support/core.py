@@ -56,7 +56,7 @@ def get_coordinate_in_circle(latitude: float, longitude: float, radius: float) -
     Metodo responsável por retornar uma nova coordenada dentro de um raio
     :param latitude: Latitude do ponto de referência
     :param longitude: Longitude do ponto de referência
-    :param radius: raio maximo em metros para sorteio do ponto
+    :param radius: raio maximo dados em metros para sorteio do ponto
     :rtype: object
     """
     radius = sqrt(random.random()) * radius

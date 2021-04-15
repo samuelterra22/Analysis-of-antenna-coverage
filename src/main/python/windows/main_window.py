@@ -72,6 +72,9 @@ class MainWindow(QMainWindow):
         self.init_simulated_annealing_components()
         self.init_output_components()
 
+        self.min_altitude = None
+        self.max_altitude = None
+
     def init_simulated_annealing_components(self) -> None:
         self.input_sa_temp_initial: QComboBox
         self.input_sa_num_max_iterations: QComboBox
@@ -456,28 +459,28 @@ class MainWindow(QMainWindow):
 
         return lat_bounds, long_bounds
 
-    @staticmethod
-    def simulates_propagation(base_station_selected: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> ndarray:
+    def simulates_propagation(self, base_station_selected: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> ndarray:
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
         altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
-        min_altitude = math.inf
-        max_altitude = - math.inf
-        for i, point_long in enumerate(longs_deg):
-            for j, point_lat in enumerate(lats_deg):
-                altitude_point_terrain = get_altitude(lat=point_lat, long=point_long)
+        if self.max_altitude is None and self.min_altitude is None:
+            self.min_altitude = math.inf
+            self.max_altitude = - math.inf
+            for i, point_long in enumerate(longs_deg):
+                for j, point_lat in enumerate(lats_deg):
+                    altitude_point_terrain = get_altitude(lat=point_lat, long=point_long)
 
-                if altitude_point_terrain < min_altitude:
-                    min_altitude = altitude_point_terrain
+                    if altitude_point_terrain < self.min_altitude:
+                        self.min_altitude = altitude_point_terrain
 
-                if altitude_point_terrain > max_altitude:
-                    max_altitude = altitude_point_terrain
+                    if altitude_point_terrain > self.max_altitude:
+                        self.max_altitude = altitude_point_terrain
 
-        print("min_altitude=", min_altitude)
-        print("max_altitude=", max_altitude)
+            print("self.min_altitude=", self.min_altitude)
+            print("self.max_altitude=", self.max_altitude)
 
         propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
         for i, point_long in enumerate(longs_deg):
@@ -488,8 +491,8 @@ class MainWindow(QMainWindow):
 
                 distance = calculates_distance_between_coordinates(mobile_base_location, erb_location)
 
-                tx_h = (float(base_station_selected.altura) + altitude_tx) - min_altitude
-                rx_h = (2 + altitude_rx) - min_altitude
+                tx_h = (float(base_station_selected.altura) + altitude_tx) - self.min_altitude
+                rx_h = (2 + altitude_rx) - self.min_altitude
 
                 # calculate the path loss using a propagation model
                 path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h, distance, 2)
@@ -592,11 +595,11 @@ class MainWindow(QMainWindow):
         #  Show simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
-        # problem = (base_station_selected, longs_deg, lats_deg)
+        problem = (base_station_selected, longs_deg, lats_deg)
 
         # Run simulated annealing
-        # def simulated_annealing(problem, M: int, P: int, L: int, T0: float, alpha: float):
-        # self.simulated_annealing(problem=problem, M=1, P=1, L=1, T0=100.0, alpha=1)
+        # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
+        self.simulated_annealing(problem=problem, M=6, P=5, L=240, T0=300.0, alpha=.85)
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
@@ -604,11 +607,11 @@ class MainWindow(QMainWindow):
         return self.objective_function(matrix_solution)
 
     @staticmethod
-    def disturb_solution(solution: BaseStation) -> tuple:
+    def disturb_solution(solution: BaseStation) -> BaseStation:
         latitude = solution.latitude
         longitude = solution.longitude
 
-        new_coordinates = get_coordinate_in_circle(latitude, longitude, 2)
+        new_coordinates = get_coordinate_in_circle(latitude, longitude, 60) # 60 metros
 
         solution.latitude = new_coordinates[0]
         solution.longitude = new_coordinates[1]
@@ -639,9 +642,6 @@ class MainWindow(QMainWindow):
 
         result = self.evaluate_solution(s, longs_deg, lats_deg)
 
-        print('result=', result)
-        exit(0)
-
         f_s = result
 
         T = T0
@@ -658,12 +658,13 @@ class MainWindow(QMainWindow):
             # Loop Interno – Realização de perturbação em uma iteração
             while True:
 
+                # Get a different position to ERB
                 initial_solution = self.disturb_solution(s)
 
                 # retorna a FO e suas matrizes
                 result = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
+
                 f_si = result
-                # matrix_FO = result[1]
 
                 # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
                 delta_fi = f_si - f_s
@@ -680,7 +681,6 @@ class MainWindow(QMainWindow):
 
                     if f_s > best_fs:
                         best_fs = f_s
-                        best_s_array = copy.deepcopy(s)
 
                     FOs.append(f_s)
 
@@ -689,7 +689,7 @@ class MainWindow(QMainWindow):
                 if (n_success >= L) or (i > P):
                     break
 
-            # Atualização da temperatura (Deicaimento geométrico)
+            # Atualização da temperatura (Decaimento geométrico)
             T = alpha * T
 
             # Atualização do contador de iterações
@@ -697,3 +697,9 @@ class MainWindow(QMainWindow):
 
             if (n_success == 0) or (j > M):
                 break
+
+            print('T=', T)
+            print('n_success=', n_success)
+            print('j=', j)
+
+        print('FOs=', str(FOs))

@@ -599,7 +599,7 @@ class MainWindow(QMainWindow):
 
         # Run simulated annealing
         # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
-        self.simulated_annealing(problem=problem, M=6, P=5, L=240, T0=300.0, alpha=.85)
+        self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
@@ -683,6 +683,7 @@ class MainWindow(QMainWindow):
                         best_fs = f_s
 
                     FOs.append(f_s)
+                    # FOs.append(f_s)
 
                 i = i + 1
 
@@ -701,5 +702,6 @@ class MainWindow(QMainWindow):
             print('T=', T)
             print('n_success=', n_success)
             print('j=', j)
+            print('best_fs=', best_fs)
 
         print('FOs=', str(FOs))

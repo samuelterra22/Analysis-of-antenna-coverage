@@ -58,7 +58,7 @@ pefile==2019.4.18
 pesq==0.0.2
 Pillow==8.2.0
 pluggy==0.13.1
-pre-commit==2.11.1
+pre-commit==2.12.1
 pycodestyle==2.7.0
 pycparser==2.20
 pydocstyle==6.0.0

@@ -13,6 +13,7 @@ import folium
 import numpy as np
 import matplotlib
 import matplotlib.cm
+import matplotlib.pyplot as plt
 
 from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
@@ -448,7 +449,9 @@ class MainWindow(QMainWindow):
         return (fo_alpha * coverage_percent) - ((10 - fo_alpha) * shadow_percent)  # pesos 7 pra 3
 
     @staticmethod
-    def __get_simulation_bounds(lat: float, long: float, dx: float, dy: float):
+    def __get_simulation_bounds(lat: float, long: float, dx: float, dy: float) \
+            -> Tuple[Tuple[float, float], Tuple[float, float]]:
+
         new_latitude1 = lat + (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude1 = long + (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(lat * pi / 180, 6))
 
@@ -600,10 +603,19 @@ class MainWindow(QMainWindow):
 
         # Run simulated annealing
         # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
-        best, _, _ = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
+        best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
         #  print best solution found
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, best)
+
+        if FOs:
+            # Plot the objective function line chart
+            print("\n... gerando gráfico do comportamento da FO.")
+            plt.plot(FOs)
+            plt.title("Comportamento do Simulated Annealing")
+            plt.ylabel('Valor da FO')
+            plt.xlabel('Solução candidata')
+            plt.show()
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
@@ -611,11 +623,17 @@ class MainWindow(QMainWindow):
         return self.objective_function(matrix_solution)
 
     @staticmethod
-    def disturb_solution(solution: BaseStation) -> BaseStation:
+    def disturb_solution(solution: BaseStation, disturbance_radius: float = 60) -> BaseStation:
+        """
+        Disturb a specific solution
+        :param solution: A base station solution
+        :param disturbance_radius: The ray of disturbance in meters
+        :return: Return the base station with a new position (lat long)
+        """
         latitude = solution.latitude
         longitude = solution.longitude
 
-        new_coordinates = get_coordinate_in_circle(latitude, longitude, 60)  # 60 metros
+        new_coordinates = get_coordinate_in_circle(latitude, longitude, disturbance_radius)
 
         solution.latitude = new_coordinates[0]
         solution.longitude = new_coordinates[1]
@@ -633,8 +651,8 @@ class MainWindow(QMainWindow):
         :param alpha: Factor de redução da temperatura.
         :return: Retorna um ponto (tupla de coordenadas) sendo a mais indicada.
         """
-        # Get parâmetros do problema
 
+        # Get problem parameters
         base_station_selected, longs_deg, lats_deg = problem
 
         FOs = []
@@ -652,7 +670,7 @@ class MainWindow(QMainWindow):
         T = T0
         j = 1
 
-        # Armazena a MELHOR solução encontrada
+        # Store the BEST solution found
         best_fs = f_s
         best_erb = s0
 
@@ -667,7 +685,7 @@ class MainWindow(QMainWindow):
                 # Get a different position to ERB
                 initial_solution = self.disturb_solution(s)
 
-                # retorna a FO e suas matrizes
+                # Get objective function value
                 result = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
 
                 f_si = result
@@ -690,7 +708,6 @@ class MainWindow(QMainWindow):
                         best_erb = copy.deepcopy(initial_solution)
 
                     FOs.append(f_s)
-                    # FOs.append(f_s)
 
                 i = i + 1
 
@@ -711,6 +728,7 @@ class MainWindow(QMainWindow):
             print('j=', j)
             print('best_fs=', best_fs)
 
+        FOs.append(best_fs)
         print('FOs=', str(FOs))
 
         return best_erb, best_fs, FOs

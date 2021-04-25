@@ -68,7 +68,6 @@ class MainWindow(QMainWindow):
 
         # init tab components
         self.init_transmitter_components()
-        self.init_antenna_components()
         self.init_receptor_components()
         self.init_model_components()
         self.init_simulated_annealing_components()
@@ -105,12 +104,6 @@ class MainWindow(QMainWindow):
         self.input_rx_height: QLineEdit
         self.input_rx_gain: QLineEdit
         self.input_rx_sensitivity: QLineEdit
-
-    def init_antenna_components(self) -> None:
-        self.combo_box_antenna_antenna_polarisation: QComboBox
-        self.combo_box_antenna_antenna_polarisation.addItems([])
-        self.combo_box_antenna_antenna_polarisation.currentIndexChanged.connect(
-            self.on_combo_box_antenna_antenna_polarisation_changed)
 
     def init_transmitter_components(self) -> None:
         # For select a ERB

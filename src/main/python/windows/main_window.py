@@ -569,6 +569,8 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
+        optimize_solution = True
+
         base_station_selected = self.get_bs_selected()
 
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
@@ -592,23 +594,24 @@ class MainWindow(QMainWindow):
         #  Show simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
-        problem = (base_station_selected, longs_deg, lats_deg)
+        if optimize_solution:
+            problem = (base_station_selected, longs_deg, lats_deg)
 
-        # Run simulated annealing
-        # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
-        best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
+            # Run simulated annealing
+            # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
+            best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
-        #  print best solution found
-        self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, best)
+            #  print best solution found
+            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, best)
 
-        if FOs:
-            # Plot the objective function line chart
-            print("\n... gerando gráfico do comportamento da FO.")
-            plt.plot(FOs)
-            plt.title("Comportamento do Simulated Annealing")
-            plt.ylabel('Valor da FO')
-            plt.xlabel('Solução candidata')
-            plt.show()
+            if FOs:
+                # Plot the objective function line chart
+                print("\n... gerando gráfico do comportamento da FO.")
+                plt.plot(FOs)
+                plt.title("Comportamento do Simulated Annealing")
+                plt.ylabel('Valor da FO')
+                plt.xlabel('Solução candidata')
+                plt.show()
 
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
         matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)

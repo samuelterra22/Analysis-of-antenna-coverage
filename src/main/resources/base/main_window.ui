@@ -104,12 +104,6 @@
              </property>
              <item>
               <widget class="QScrollArea" name="scroll_area_transmitter_anatel">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
                <property name="widgetResizable">
                 <bool>true</bool>
                </property>
@@ -122,13 +116,10 @@
                   <height>846</height>
                  </rect>
                 </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>2</number>
+                 </property>
                  <property name="leftMargin">
                   <number>5</number>
                  </property>
@@ -143,17 +134,8 @@
                  </property>
                  <item>
                   <widget class="QGroupBox" name="group_box_anatel_transmitter_details">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
                    <property name="title">
-                    <string>Detalhes do Transmissor (ERB Anatel)</string>
+                    <string>Detalhes do Transmissor (Anatel)</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout_5">
                     <item row="0" column="0">
@@ -826,17 +808,17 @@
                       </item>
                       <item>
                        <property name="text">
-                        <string>Conservative/City</string>
+                        <string>Conservador / Cidade</string>
                        </property>
                       </item>
                       <item>
                        <property name="text">
-                        <string>Optimistic/Unobstructed</string>
+                        <string>Otimista / Desobstruído</string>
                        </property>
                       </item>
                       <item>
                        <property name="text">
-                        <string>Average</string>
+                        <string>Misto</string>
                        </property>
                       </item>
                      </widget>
@@ -897,7 +879,7 @@
                  <item>
                   <widget class="QGroupBox" name="group_box_output_settings_2">
                    <property name="title">
-                    <string>Configurações do Simulated Annealing</string>
+                    <string>Configurações Simulated Annealing</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout">
                     <item row="0" column="0">
@@ -907,9 +889,6 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="input_sa_temp_initial"/>
-                    </item>
                     <item row="1" column="0">
                      <widget class="QLabel" name="label_sa_num_max_iterations">
                       <property name="text">
@@ -917,15 +896,8 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="0">
-                     <widget class="QLabel" name="label_sa_num_max_success_per_iteration">
-                      <property name="text">
-                       <string>N Max de Sucessos por Iteração</string>
-                      </property>
-                      <property name="wordWrap">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
+                    <item row="1" column="1">
+                     <widget class="QLineEdit" name="input_sa_num_max_iterations"/>
                     </item>
                     <item row="2" column="0">
                      <widget class="QLabel" name="label_sa_num_max_perturbation_per_iteration">
@@ -943,11 +915,18 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="1">
-                     <widget class="QLineEdit" name="input_sa_num_max_iterations"/>
-                    </item>
                     <item row="2" column="1">
                      <widget class="QLineEdit" name="input_sa_num_max_perturbation_per_iteration"/>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QLabel" name="label_sa_num_max_success_per_iteration">
+                      <property name="text">
+                       <string>N Max de Sucessos por Iteração</string>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
                     </item>
                     <item row="3" column="1">
                      <widget class="QLineEdit" name="input_sa_num_max_success_per_iteration"/>
@@ -961,6 +940,9 @@
                     </item>
                     <item row="4" column="1">
                      <widget class="QLineEdit" name="input_sa_alpha"/>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLineEdit" name="input_sa_temp_initial"/>
                     </item>
                    </layout>
                   </widget>

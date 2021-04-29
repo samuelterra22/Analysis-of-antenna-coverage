@@ -32,7 +32,7 @@ idna==2.10
 importlib-metadata==3.10.0
 importlib-resources==5.1.2
 isort==5.8.0
-itur==0.2.1
+itur==0.3.1
 jedi==0.17.2
 Jinja2==2.11.3
 joblib==1.0.1

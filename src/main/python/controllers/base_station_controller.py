@@ -42,7 +42,7 @@ class BaseStationController(BaseController):
         """
         pass
 
-    def get_by_id(self, id):
+    def get_by_id(self, id) -> BaseStation:
         """
         This method show details for a specific base station
         :param id:

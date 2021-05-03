@@ -44,6 +44,7 @@ class ConfirmSimulationDialogClass(QDialog):
         print('sensibilidade=', receptor['sensibilidade'])
 
         heuristic = data['heuristic']
+        print('solucao_inicial=', heuristic['solucao_inicial'])
         print('temperatura_inicial=', heuristic['temperatura_inicial'])
         print('numero_maximo_iteracoes=', heuristic['numero_maximo_iteracoes'])
         print('numero_maximo_pertubacoes_por_iteracao=', heuristic['numero_maximo_pertubacoes_por_iteracao'])
@@ -68,6 +69,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_longitude_value: QLabel
 
         # Meta-heuristic
+        self.label_solucao_inicial_value: QLabel
         self.label_temperatura_inicial_value: QLabel
         self.label_num_maximo_iteracoes_value: QLabel
         self.label_num_maximo_pertubacoes_iteracao_value: QLabel
@@ -96,6 +98,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_bs_altura_value.setText(receptor['altura'])
         self.label_bs_ganho_value.setText(receptor['ganho'])
         self.label_bs_sensibilidade_value.setText(receptor['sensibilidade'])
+        self.label_solucao_inicial_value.setText(heuristic['solucao_inicial'])
         self.label_temperatura_inicial_value.setText(heuristic['temperatura_inicial'])
         self.label_num_maximo_iteracoes_value.setText(heuristic['numero_maximo_iteracoes'])
         self.label_num_maximo_pertubacoes_iteracao_value.setText(heuristic['numero_maximo_pertubacoes_por_iteracao'])

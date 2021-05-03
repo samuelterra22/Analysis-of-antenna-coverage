@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>844</width>
+    <width>1098</width>
     <height>501</height>
    </rect>
   </property>
@@ -300,7 +300,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_modelo_propagacao">
            <property name="text">
-            <string>Modelo de Prop.:</string>
+            <string>Modelo de Propagação</string>
            </property>
           </widget>
          </item>
@@ -334,7 +334,7 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_radio_maximo">
            <property name="text">
-            <string>Radio max.:</string>
+            <string>Raio Máximo de Perturbação</string>
            </property>
           </widget>
          </item>
@@ -357,21 +357,21 @@
          <string>Meta-heurística</string>
         </property>
         <layout class="QFormLayout" name="formLayout_4">
-         <item row="0" column="0">
+         <item row="1" column="0">
           <widget class="QLabel" name="label_temperatura_inicial">
            <property name="text">
             <string>Temperatura Inicial:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="2" column="0">
           <widget class="QLabel" name="label_num_maximo_iteracoes">
            <property name="text">
             <string>Número Máximo de Iterações:</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
+         <item row="2" column="1">
           <widget class="QLabel" name="label_num_maximo_iteracoes_value">
            <property name="text">
             <string/>
@@ -381,14 +381,14 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_num_maximo_pertubacoes_iteracao">
            <property name="text">
             <string>Número Máximo de Perturbações por Iteração:</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
+         <item row="3" column="1">
           <widget class="QLabel" name="label_num_maximo_pertubacoes_iteracao_value">
            <property name="text">
             <string/>
@@ -398,14 +398,14 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <widget class="QLabel" name="label_num_maximo_sucessos_iteracao">
            <property name="text">
             <string>Número Máximo de Sucessos por Iteração:</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="QLabel" name="label_num_maximo_sucessos_iteracao_value">
            <property name="text">
             <string/>
@@ -415,14 +415,14 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label_alpha">
            <property name="text">
             <string>Alpha:</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QLabel" name="label_alpha_value">
            <property name="text">
             <string/>
@@ -432,8 +432,25 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="1" column="1">
           <widget class="QLabel" name="label_temperatura_inicial_value">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_solucao_inicial">
+           <property name="text">
+            <string>Solução Inicial</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_solucao_inicial_value">
            <property name="text">
             <string/>
            </property>

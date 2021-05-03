@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
-from typing import Tuple, List
+from typing import Tuple, List, Dict, Union, Any
 
 from models.base_station import BaseStation
 from controllers.base_station_controller import BaseStationController
@@ -76,12 +76,55 @@ class MainWindow(QMainWindow):
         self.min_altitude = None
         self.max_altitude = None
 
+        self.set_default_values()
+
+    def set_default_values(self):
+        # Transmissor tab
+        self.combo_box_anatel_base_station: QComboBox
+        self.combo_box_anatel_base_station.setCurrentIndex(14)
+
+        # Receptor tab
+        self.input_rx_height: QLineEdit
+        self.input_rx_gain: QLineEdit
+        self.input_rx_sensitivity: QLineEdit
+
+        self.input_rx_height.setText("1")
+        self.input_rx_gain.setText("1")
+        self.input_rx_sensitivity.setText("-180")
+
+        # Propagation model tab
+        self.combo_box_propagation_model: QComboBox
+        self.combo_box_environment: QComboBox
+
+        self.combo_box_propagation_model.setCurrentIndex(1)
+        self.combo_box_environment.setCurrentIndex(1)
+
+        # Meta-heuristic tab
+        self.input_sa_temp_initial: QLineEdit
+        self.input_sa_num_max_iterations: QLineEdit
+        self.input_sa_num_max_perturbation_per_iteration: QLineEdit
+        self.input_sa_num_max_success_per_iteration: QLineEdit
+        self.input_sa_alpha: QLineEdit
+
+        self.input_sa_temp_initial.setText("200.0")
+        self.input_sa_num_max_iterations.setText("3")
+        self.input_sa_num_max_perturbation_per_iteration.setText("5")
+        self.input_sa_num_max_success_per_iteration.setText("140")
+        self.input_sa_alpha.setText("0.85")
+
+        # Output tab
+        self.combo_box_output_colour_scheme: QComboBox
+        self.input_output_radius: QLineEdit
+
+        self.combo_box_output_colour_scheme.setCurrentIndex(2)
+        self.input_output_radius.setText("60")
+
     def init_simulated_annealing_components(self) -> None:
-        self.input_sa_temp_initial: QComboBox
-        self.input_sa_num_max_iterations: QComboBox
-        self.input_sa_num_max_perturbation_per_iteration: QComboBox
-        self.input_sa_num_max_success_per_iteration: QComboBox
-        self.input_sa_alpha: QComboBox
+        self.input_sa_temp_initial: QLineEdit
+        self.input_sa_num_max_iterations: QLineEdit
+        self.input_sa_num_max_perturbation_per_iteration: QLineEdit
+        self.input_sa_num_max_success_per_iteration: QLineEdit
+        self.input_sa_alpha: QLineEdit
 
     def init_output_components(self) -> None:
         self.combo_box_output_colour_scheme: QComboBox
@@ -168,6 +211,8 @@ class MainWindow(QMainWindow):
         data = self.combo_box_anatel_base_station.itemData(index)
 
         erb = self.__base_station_controller.get_by_id(data)
+        print("Index: " + str(index))
+        print(erb.endereco)
         self.add_erb_map(erb)
         self.add_erb_in_details(erb)
 
@@ -238,26 +283,30 @@ class MainWindow(QMainWindow):
         """
         print("Calculate button!")
 
-        # if not self.required_fields_filed():
+        # Check if input fields is fillers
+        # if not self.required_fields_fillers():
         #     return
+
+        base_station_selected = self.get_bs_selected()
+        propagation_model_selected = self.get_propagation_model_selected()
 
         data = {
             "simulation": {
-                "propagation_model": "---",
+                "propagation_model": propagation_model_selected['text'],
                 "environment": "---",
                 "max_ray": "---"
             },
             "transmitter": {
-                "entidade": "---",
-                "uf_municipio": "---",
-                "endereco": "---",
-                "frequencia": "---",
-                "ganho": "---",
-                "elevacao": "---",
-                "polarizacao": "---",
-                "altura": "---",
-                "latitude": "---",
-                "longitude": "---",
+                "entidade": str(base_station_selected.entidade),
+                "uf_municipio": str(base_station_selected.uf),
+                "endereco": str(base_station_selected.endereco)[0:45] + "...",
+                "frequencia": str(base_station_selected.frequencia_inicial),
+                "ganho": str(base_station_selected.ganho_antena),
+                "elevacao": str(base_station_selected.elevacao),
+                "polarizacao": str(base_station_selected.polarizacao),
+                "altura": str(base_station_selected.altura),
+                "latitude": str(base_station_selected.latitude),
+                "longitude": str(base_station_selected.longitude),
             },
             "receptor": {
                 "altura": "---",
@@ -265,6 +314,7 @@ class MainWindow(QMainWindow):
                 "sensibilidade": "---",
             },
             "heuristic": {
+                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(base_station_selected.longitude) + ")",
                 "temperatura_inicial": "---",
                 "numero_maximo_iteracoes": "---",
                 "numero_maximo_pertubacoes_por_iteracao": "---",
@@ -369,7 +419,7 @@ class MainWindow(QMainWindow):
             control_scale=control_scale
         )
 
-    def required_fields_filed(self) -> bool:
+    def required_fields_fillers(self) -> bool:
         title = None
         message = None
 
@@ -422,6 +472,18 @@ class MainWindow(QMainWindow):
 
         base_station_selected: BaseStation
         return self.__base_station_controller.get_by_id(data)
+
+    def get_propagation_model_selected(self) -> Dict[str, Union[int, Any]]:
+        self.combo_box_propagation_model: QComboBox
+        index = self.combo_box_propagation_model.currentIndex()
+        data = self.combo_box_propagation_model.itemData(index)
+        text = self.combo_box_propagation_model.currentText()
+
+        return {
+            'index': index,
+            'data': data,
+            'text': text
+        }
 
     @staticmethod
     def objective_function(propagation_matrix: ndarray) -> float:
@@ -569,7 +631,7 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
-        optimize_solution = True
+        optimize_solution = False
 
         base_station_selected = self.get_bs_selected()
 
@@ -640,10 +702,10 @@ class MainWindow(QMainWindow):
             -> Tuple[BaseStation, float, List[float]]:
         """
         :param problem: Dados do problema principal
-        :param T0: Temperatura inicial.
         :param M: Número máximo de iterações.
         :param P: Número máximo de Perturbações por iteração.
         :param L: Número máximo de sucessos por iteração.
+        :param T0: Temperatura inicial.
         :param alpha: Factor de redução da temperatura.
         :return: Retorna um ponto (tupla de coordenadas) sendo a mais indicada.
         """

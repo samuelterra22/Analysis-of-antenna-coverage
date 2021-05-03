@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1098</width>
-    <height>501</height>
+    <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,7 +65,7 @@
          <item row="3" column="0">
           <widget class="QLabel" name="label_frequencia">
            <property name="text">
-            <string>Frequencia:</string>
+            <string>Frequência:</string>
            </property>
           </widget>
          </item>
@@ -124,14 +124,14 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="label_ganho">
            <property name="text">
             <string>Ganho:</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="QLabel" name="label_ganho_value">
            <property name="font">
             <font>
@@ -147,14 +147,14 @@
            </property>
           </widget>
          </item>
-         <item row="5" column="0">
+         <item row="6" column="0">
           <widget class="QLabel" name="label_elevacao">
            <property name="text">
             <string>Elevacao:</string>
            </property>
           </widget>
          </item>
-         <item row="5" column="1">
+         <item row="6" column="1">
           <widget class="QLabel" name="label_elevacao_value">
            <property name="font">
             <font>
@@ -170,21 +170,21 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="0">
+         <item row="7" column="0">
           <widget class="QLabel" name="label_polarizacao">
            <property name="text">
             <string>Polarizacao:</string>
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
+         <item row="8" column="0">
           <widget class="QLabel" name="label_altura">
            <property name="text">
             <string>Altura:</string>
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
+         <item row="7" column="1">
           <widget class="QLabel" name="label_polarizacao_value">
            <property name="font">
             <font>
@@ -200,7 +200,7 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
+         <item row="8" column="1">
           <widget class="QLabel" name="label_altura_value">
            <property name="font">
             <font>
@@ -216,21 +216,21 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
+         <item row="9" column="0">
           <widget class="QLabel" name="label_latitude">
            <property name="text">
             <string>Latitude:</string>
            </property>
           </widget>
          </item>
-         <item row="9" column="0">
+         <item row="10" column="0">
           <widget class="QLabel" name="label_longitude">
            <property name="text">
             <string>Longitude:</string>
            </property>
           </widget>
          </item>
-         <item row="8" column="1">
+         <item row="9" column="1">
           <widget class="QLabel" name="label_latitude_value">
            <property name="font">
             <font>
@@ -246,8 +246,31 @@
            </property>
           </widget>
          </item>
-         <item row="9" column="1">
+         <item row="10" column="1">
           <widget class="QLabel" name="label_longitude_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_potencia_transmissao">
+           <property name="text">
+            <string>Potência de transmissão:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QLabel" name="label_potencia_transmissao_value">
            <property name="font">
             <font>
              <weight>75</weight>
@@ -285,84 +308,6 @@
           <widget class="QPushButton" name="btn_cancelar_simulacao">
            <property name="text">
             <string>CANCELAR</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QGroupBox" name="group_box_receptor">
-        <property name="title">
-         <string>Detalhes Receptor</string>
-        </property>
-        <layout class="QFormLayout" name="formLayout_3">
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_bs_ganho">
-           <property name="text">
-            <string>Ganho:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="label_bs_ganho_value">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_bs_sensibilidade">
-           <property name="text">
-            <string>Sensibilidade:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLabel" name="label_bs_sensibilidade_value">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_bs_altura">
-           <property name="text">
-            <string>Altura:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="label_bs_altura_value">
-           <property name="font">
-            <font>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -447,7 +392,85 @@
         </layout>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="1" column="1" rowspan="2">
+       <widget class="QGroupBox" name="group_box_receptor">
+        <property name="title">
+         <string>Detalhes Receptor</string>
+        </property>
+        <layout class="QFormLayout" name="formLayout_3">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_bs_ganho">
+           <property name="text">
+            <string>Ganho:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="label_bs_ganho_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_bs_sensibilidade">
+           <property name="text">
+            <string>Sensibilidade:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLabel" name="label_bs_sensibilidade_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_bs_altura">
+           <property name="text">
+            <string>Altura:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_bs_altura_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0" rowspan="2">
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
          <string>Meta-heurística</string>

@@ -289,8 +289,9 @@ class MainWindow(QMainWindow):
             "transmitter": {
                 "entidade": str(base_station_selected.entidade),
                 "uf_municipio": str(base_station_selected.uf),
-                "endereco": str(base_station_selected.endereco)[0:45] + "...",
+                "endereco": str(base_station_selected.endereco)[0:35] + "...",
                 "frequencia": str(base_station_selected.frequencia_inicial),
+                "potencia_transmissao": str(base_station_selected.potencia_transmissao) + "W",
                 "ganho": str(base_station_selected.ganho_antena) + "dBi",
                 "elevacao": str(base_station_selected.elevacao),
                 "polarizacao": str(base_station_selected.polarizacao),

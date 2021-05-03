@@ -32,6 +32,7 @@ class ConfirmSimulationDialogClass(QDialog):
         print('endereco=', transmitter['endereco'])
         print('frequencia=', transmitter['frequencia'])
         print('ganho=', transmitter['ganho'])
+        print('potencia_transmissao=', transmitter['potencia_transmissao'])
         print('elevacao=', transmitter['elevacao'])
         print('polarizacao=', transmitter['polarizacao'])
         print('altura=', transmitter['altura'])
@@ -62,6 +63,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_endereco_value: QLabel
         self.label_frequencia_value: QLabel
         self.label_ganho_value: QLabel
+        self.label_potencia_transmissao_value: QLabel
         self.label_elevacao_value: QLabel
         self.label_polarizacao_value: QLabel
         self.label_altura_value: QLabel
@@ -90,6 +92,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_endereco_value.setText(transmitter['endereco'])
         self.label_frequencia_value.setText(transmitter['frequencia'])
         self.label_ganho_value.setText(transmitter['ganho'])
+        self.label_potencia_transmissao_value.setText(transmitter['potencia_transmissao'])
         self.label_elevacao_value.setText(transmitter['elevacao'])
         self.label_polarizacao_value.setText(transmitter['polarizacao'])
         self.label_altura_value.setText(transmitter['altura'])

@@ -41,6 +41,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_entidade_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -72,6 +78,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="label_uf_municipio_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -82,6 +94,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QLabel" name="label_endereco_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -92,6 +110,12 @@
          </item>
          <item row="3" column="1">
           <widget class="QLabel" name="label_frequencia_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -109,6 +133,12 @@
          </item>
          <item row="4" column="1">
           <widget class="QLabel" name="label_ganho_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -126,6 +156,12 @@
          </item>
          <item row="5" column="1">
           <widget class="QLabel" name="label_elevacao_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -150,6 +186,12 @@
          </item>
          <item row="6" column="1">
           <widget class="QLabel" name="label_polarizacao_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -160,6 +202,12 @@
          </item>
          <item row="7" column="1">
           <widget class="QLabel" name="label_altura_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -184,6 +232,12 @@
          </item>
          <item row="8" column="1">
           <widget class="QLabel" name="label_latitude_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -194,6 +248,12 @@
          </item>
          <item row="9" column="1">
           <widget class="QLabel" name="label_longitude_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -246,6 +306,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="label_bs_ganho_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -263,6 +329,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QLabel" name="label_bs_sensibilidade_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -280,6 +352,12 @@
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_bs_altura_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -300,12 +378,18 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_modelo_propagacao">
            <property name="text">
-            <string>Modelo de Propagação</string>
+            <string>Modelo de Propagação:</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_modelo_propagacao_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -323,6 +407,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="label_ambiente_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -334,12 +424,18 @@
          <item row="2" column="0">
           <widget class="QLabel" name="label_radio_maximo">
            <property name="text">
-            <string>Raio Máximo de Perturbação</string>
+            <string>Raio Máximo de Perturbação:</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="QLabel" name="label_radio_maximo_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -373,6 +469,12 @@
          </item>
          <item row="2" column="1">
           <widget class="QLabel" name="label_num_maximo_iteracoes_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -390,6 +492,12 @@
          </item>
          <item row="3" column="1">
           <widget class="QLabel" name="label_num_maximo_pertubacoes_iteracao_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -407,6 +515,12 @@
          </item>
          <item row="4" column="1">
           <widget class="QLabel" name="label_num_maximo_sucessos_iteracao_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -424,6 +538,12 @@
          </item>
          <item row="5" column="1">
           <widget class="QLabel" name="label_alpha_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -434,6 +554,12 @@
          </item>
          <item row="1" column="1">
           <widget class="QLabel" name="label_temperatura_inicial_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -445,12 +571,18 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_solucao_inicial">
            <property name="text">
-            <string>Solução Inicial</string>
+            <string>Solução Inicial:</string>
            </property>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QLabel" name="label_solucao_inicial_value">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>

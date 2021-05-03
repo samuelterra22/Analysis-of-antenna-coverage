@@ -193,16 +193,6 @@ class MainWindow(QMainWindow):
             print(self.combo_box_propagation_model.itemText(count))
         print("Current index", index, "selection changed ", text)
 
-    @pyqtSlot(name="on_combo_box_antenna_antenna_polarisation_changed")
-    def on_combo_box_antenna_antenna_polarisation_changed(self) -> None:
-        print("Items in the list 'combo_box_antenna_antenna_polarisation' are :")
-        index = self.combo_box_antenna_antenna_polarisation.currentIndex()
-        text = self.combo_box_antenna_antenna_polarisation.currentText()
-
-        for count in range(self.combo_box_antenna_antenna_polarisation.count()):
-            print(self.combo_box_antenna_antenna_polarisation.itemText(count))
-        print("Current index", index, "selection changed ", text)
-
     @pyqtSlot(name="on_combo_box_anatel_base_station_changed")
     def on_combo_box_anatel_base_station_changed(self) -> None:
         print("Items in the list 'combo_box_anatel_base_station' are :")
@@ -284,8 +274,8 @@ class MainWindow(QMainWindow):
         print("Calculate button!")
 
         # Check if input fields is fillers
-        # if not self.required_fields_fillers():
-        #     return
+        if not self.required_fields_fillers():
+            return
 
         base_station_selected = self.get_bs_selected()
         propagation_model_selected = self.get_propagation_model_selected()
@@ -293,33 +283,33 @@ class MainWindow(QMainWindow):
         data = {
             "simulation": {
                 "propagation_model": propagation_model_selected['text'],
-                "environment": "---",
-                "max_ray": "---"
+                "environment": str(self.combo_box_environment.currentText()),
+                "max_ray": str(self.input_output_radius.text()) + "m"
             },
             "transmitter": {
                 "entidade": str(base_station_selected.entidade),
                 "uf_municipio": str(base_station_selected.uf),
                 "endereco": str(base_station_selected.endereco)[0:45] + "...",
                 "frequencia": str(base_station_selected.frequencia_inicial),
-                "ganho": str(base_station_selected.ganho_antena),
+                "ganho": str(base_station_selected.ganho_antena) + "dBi",
                 "elevacao": str(base_station_selected.elevacao),
                 "polarizacao": str(base_station_selected.polarizacao),
-                "altura": str(base_station_selected.altura),
+                "altura": str(base_station_selected.altura) + "m",
                 "latitude": str(base_station_selected.latitude),
                 "longitude": str(base_station_selected.longitude),
             },
             "receptor": {
-                "altura": "---",
-                "ganho": "---",
-                "sensibilidade": "---",
+                "altura": str(self.input_rx_height.text()) + "m",
+                "ganho": str(self.input_rx_gain.text()) + "dBi",
+                "sensibilidade": str(self.input_rx_sensitivity.text()) + "dBm",
             },
             "heuristic": {
                 "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(base_station_selected.longitude) + ")",
-                "temperatura_inicial": "---",
-                "numero_maximo_iteracoes": "---",
-                "numero_maximo_pertubacoes_por_iteracao": "---",
-                "numero_maximo_sucessos_por_iteracao": "---",
-                "alpha": "---",
+                "temperatura_inicial": self.input_sa_temp_initial.text(),
+                "numero_maximo_iteracoes": self.input_sa_num_max_iterations.text(),
+                "numero_maximo_pertubacoes_por_iteracao": self.input_sa_num_max_perturbation_per_iteration.text(),
+                "numero_maximo_sucessos_por_iteracao": self.input_sa_num_max_success_per_iteration.text(),
+                "alpha": self.input_sa_alpha.text(),
             },
         }
 
@@ -426,10 +416,6 @@ class MainWindow(QMainWindow):
         if self.combo_box_anatel_base_station.currentIndex() == 0:
             title = "Selecione uma ERB"
             message = "ERB não selecionada! Selecione uma ERB para continuar..."
-
-        if self.combo_box_antenna_antenna_polarisation.currentIndex() == 0:
-            title = "Selecione uma polarização"
-            message = "Polarização não selecionada! Selecione uma polarização para continuar..."
 
         if self.combo_box_propagation_model.currentIndex() == 0:
             title = "Selecione um modelo de propagação"

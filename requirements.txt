@@ -91,7 +91,7 @@ rope==0.18.0
 scipy==1.5.4
 shiboken2==5.15.2
 sip==6.0.3
-six==1.15.0
+six==1.16.0
 snowballstemmer==2.1.0
 SoundFile==0.10.3.post1
 SQLAlchemy==1.4.4

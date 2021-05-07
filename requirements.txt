@@ -25,7 +25,7 @@ folium==0.12.1
 future==0.18.2
 geojson==2.5.0
 geojsoncontour==0.4.0
-greenlet==1.0.0
+greenlet==1.1.0
 haversine==2.3.0
 identify==2.2.2
 idna==2.10

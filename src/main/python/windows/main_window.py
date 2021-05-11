@@ -78,6 +78,13 @@ class MainWindow(QMainWindow):
 
         self.set_default_values()
 
+        self.sub_area_bounds = [
+            (-21.252142, -44.984765),
+            (-21.252142, -45.013754),
+            (-21.238862, -45.013754),
+            (-21.238862, -44.984765),
+        ]
+
     def set_default_values(self):
         # Transmissor tab
         self.combo_box_anatel_base_station: QComboBox
@@ -305,7 +312,8 @@ class MainWindow(QMainWindow):
                 "sensibilidade": str(self.input_rx_sensitivity.text()) + "dBm",
             },
             "heuristic": {
-                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(base_station_selected.longitude) + ")",
+                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(
+                    base_station_selected.longitude) + ")",
                 "temperatura_inicial": self.input_sa_temp_initial.text(),
                 "numero_maximo_iteracoes": self.input_sa_num_max_iterations.text(),
                 "numero_maximo_pertubacoes_por_iteracao": self.input_sa_num_max_perturbation_per_iteration.text(),
@@ -500,12 +508,31 @@ class MainWindow(QMainWindow):
         new_latitude2 = lat - (round(dy / r_earth, 6)) * (round(180 / pi, 6))
         new_longitude2 = long - (round(dx / r_earth, 6)) * (round(180 / pi, 6)) / cos(round(lat * pi / 180, 6))
 
-        lat_bounds = (new_latitude1, new_latitude2)
-        long_bounds = (new_longitude1, new_longitude2)
+        lat_bounds = (round(new_latitude1, 6), round(new_latitude2, 6))
+        long_bounds = (round(new_longitude1, 6), round(new_longitude2, 6))
 
         return lat_bounds, long_bounds
 
-    def simulates_propagation(self, base_station_selected: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> ndarray:
+    def FindPoint(self, x1, y1, x2, y2, x, y):
+        # print(x1, y1, x2, y2, x, y)
+
+        if (x > x1 and x < x2 and y > y1 and y < y2):
+            return True
+        else:
+            return False
+
+    def is_point_inside_sub_area(self, point: Tuple) -> bool:
+        # point = Feature(geometry=Point(point))
+        # polygon = Polygon([self.sub_area_bounds])
+        # return boolean_point_in_polygon(point, polygon)
+        return self.FindPoint(-21.250078, -45.004024, -21.241697, -44.995849, round(point[0], 6), round(point[1], 6))
+
+    @staticmethod
+    def percentage(percent: float, whole: float) -> float:
+        return (percent * whole) / 100.0
+
+    def simulates_propagation(self, base_station_selected: BaseStation, longs_deg: ndarray,
+                              lats_deg: ndarray) -> ndarray:
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
@@ -545,19 +572,21 @@ class MainWindow(QMainWindow):
 
                 received_power = transmitted_power - path_loss
 
-                propagation_matrix[i][j] = received_power
+                if self.is_point_inside_sub_area(mobile_base_location):
+                    propagation_matrix[i][j] = received_power - self.percentage(10, abs(received_power))
+                else:
+                    propagation_matrix[i][j] = received_power
 
                 # print(received_power)
                 # if received_power >= MIN_SENSITIVITY:
                 #     propagation_matrix[i][j] = received_power
                 # else:
-                #     propagation_matrix[i][j] = 0
+                #     propagation_matrix[i][j] = 0 # bm_min_sensitivity or bm_max_sensitivity
 
         return propagation_matrix
 
     def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, longs_deg: ndarray,
                                 base_station_selected: BaseStation) -> None:
-        # Print matrix result in map
 
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
@@ -618,7 +647,7 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
-        optimize_solution = False
+        optimize_solution = True
 
         base_station_selected = self.get_bs_selected()
 
@@ -632,6 +661,9 @@ class MainWindow(QMainWindow):
         n_lats, n_longs = (500, 500)
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
+
+        lats_deg = [round(la, 6) for la in lats_deg]
+        longs_deg = [round(lo, 6) for lo in longs_deg]
 
         # Get matrix result for matrix coordinates
         propagation_matrix = self.simulates_propagation(base_station_selected, longs_deg, lats_deg)
@@ -777,3 +809,10 @@ class MainWindow(QMainWindow):
         print('FOs=', str(FOs))
 
         return best_erb, best_fs, FOs
+
+# -45.013754,-21.252142,-44.984765,-21.238862
+
+# (-21.252142, -45.013754),
+# (-21.252142, -44.984765),
+# (-21.238862, -45.013754),
+# (-21.238862, -44.984765),

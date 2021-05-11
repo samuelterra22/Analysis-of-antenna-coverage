@@ -271,7 +271,7 @@
                     <item row="12" column="0">
                      <widget class="QLabel" name="label_anatel_initial_frenquency">
                       <property name="text">
-                       <string>Freq. Final (MHz)</string>
+                       <string>Frequência Final (MHz)</string>
                       </property>
                      </widget>
                     </item>
@@ -294,7 +294,7 @@
                     <item row="14" column="0">
                      <widget class="QLabel" name="label_anatel_final_frenquency">
                       <property name="text">
-                       <string>Freq. Inicial (MHz)</string>
+                       <string>Frequência Inicial (MHz)</string>
                       </property>
                      </widget>
                     </item>
@@ -386,7 +386,7 @@
                     <item row="22" column="0">
                      <widget class="QLabel" name="label_anatel_angulo_half_pot">
                       <property name="text">
-                       <string>Angle 1/2 Pot.</string>
+                       <string>Anglo 1/2 Potência</string>
                       </property>
                      </widget>
                     </item>
@@ -540,7 +540,7 @@
                     <item row="36" column="0">
                      <widget class="QLabel" name="label_anatel_first_licensing">
                       <property name="text">
-                       <string>Data Primeiro Lic.</string>
+                       <string>Data Primeiro Licenciamento</string>
                       </property>
                      </widget>
                     </item>

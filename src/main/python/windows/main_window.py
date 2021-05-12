@@ -665,7 +665,7 @@ class MainWindow(QMainWindow):
         # longs_deg = [round(lo, 6) for lo in longs_deg]
 
         # Get matrix result for matrix coordinates
-        propagation_matrix = self.simulates_propagation(base_station_selected, longs_deg, lats_deg)
+        propagation_matrix = self.simulates_propagation(base_station_selected, lats_deg, longs_deg)
 
         # print(propagation_matrix)
         print('propagation_matrix.shape', propagation_matrix.shape)

@@ -531,8 +531,7 @@ class MainWindow(QMainWindow):
     def percentage(percent: float, whole: float) -> float:
         return (percent * whole) / 100.0
 
-    def simulates_propagation(self, base_station_selected: BaseStation, longs_deg: ndarray,
-                              lats_deg: ndarray) -> ndarray:
+    def simulates_propagation(self, base_station_selected: BaseStation, lats_deg: ndarray, longs_deg: ndarray) -> ndarray:
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
@@ -573,7 +572,7 @@ class MainWindow(QMainWindow):
                 received_power = transmitted_power - path_loss
 
                 if self.is_point_inside_sub_area(mobile_base_location):
-                    propagation_matrix[i][j] = received_power - self.percentage(10, abs(received_power))
+                    propagation_matrix[i][j] = received_power + self.percentage(10, abs(received_power))
                 else:
                     propagation_matrix[i][j] = received_power
 
@@ -662,8 +661,8 @@ class MainWindow(QMainWindow):
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
 
-        lats_deg = [round(la, 6) for la in lats_deg]
-        longs_deg = [round(lo, 6) for lo in longs_deg]
+        # lats_deg = [round(la, 6) for la in lats_deg]
+        # longs_deg = [round(lo, 6) for lo in longs_deg]
 
         # Get matrix result for matrix coordinates
         propagation_matrix = self.simulates_propagation(base_station_selected, longs_deg, lats_deg)
@@ -683,7 +682,10 @@ class MainWindow(QMainWindow):
             best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
             #  print best solution found
-            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, best)
+            matrix_solution = self.simulates_propagation(best, lats_deg, longs_deg)
+            self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
+
+            print("(best.latitude, best.longitude)=", (best.latitude, best.longitude))
 
             if FOs:
                 # Plot the objective function line chart
@@ -694,13 +696,15 @@ class MainWindow(QMainWindow):
                 plt.xlabel('Solução candidata')
                 plt.show()
 
+        print("End of simulation!")
+
     def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
-        matrix_solution = self.simulates_propagation(point, longs_deg, lats_deg)
+        matrix_solution = self.simulates_propagation(point, lats_deg, longs_deg)
 
         return self.objective_function(matrix_solution)
 
     @staticmethod
-    def disturb_solution(solution: BaseStation, disturbance_radius: float = 60) -> BaseStation:
+    def disturb_solution(solution: BaseStation, disturbance_radius: float = 460) -> BaseStation:
         """
         Disturb a specific solution
         :param solution: A base station solution
@@ -740,9 +744,9 @@ class MainWindow(QMainWindow):
         s0 = s
         print("Solução inicial: " + str((s0.latitude, s0.longitude)))
 
-        result = self.evaluate_solution(s, longs_deg, lats_deg)
+        result_fo = self.evaluate_solution(s, longs_deg, lats_deg)
 
-        f_s = result
+        f_s = result_fo
 
         T = T0
         j = 1
@@ -763,9 +767,9 @@ class MainWindow(QMainWindow):
                 initial_solution = self.disturb_solution(s)
 
                 # Get objective function value
-                result = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
+                result_fo = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
 
-                f_si = result
+                f_si = result_fo
 
                 # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
                 delta_fi = f_si - f_s
@@ -809,10 +813,3 @@ class MainWindow(QMainWindow):
         print('FOs=', str(FOs))
 
         return best_erb, best_fs, FOs
-
-# -45.013754,-21.252142,-44.984765,-21.238862
-
-# (-21.252142, -45.013754),
-# (-21.252142, -44.984765),
-# (-21.238862, -45.013754),
-# (-21.238862, -44.984765),

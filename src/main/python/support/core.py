@@ -88,4 +88,6 @@ def get_coordinate_in_circle(latitude: float, longitude: float, radius: float) -
 
     # ToDo: tratar os bounds aqui
 
-    return tuple([convert_to_degree(r_latitude), convert_to_degree(r_longitude)])
+    lat, long = convert_to_degree(r_latitude), convert_to_degree(r_longitude)
+
+    return tuple([lat, long])

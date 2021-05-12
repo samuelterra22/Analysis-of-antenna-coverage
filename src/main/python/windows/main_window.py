@@ -626,7 +626,7 @@ class MainWindow(QMainWindow):
         m = self.get_folium_map(location=erb_location)
 
         folium.raster_layers.ImageOverlay(
-            image=colored_data,
+            image=np.flip(colored_data, 1),
             bounds=[[lats_mesh_deg.min(), longs_mesh_deg.min()], [lats_mesh_deg.max(), longs_mesh_deg.max()]],
             mercator_project=True,
             opacity=0.6,

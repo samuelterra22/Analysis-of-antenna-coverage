@@ -30,7 +30,7 @@ haversine==2.3.0
 identify==2.2.2
 idna==2.10
 importlib-metadata==3.10.0
-importlib-resources==5.1.2
+importlib-resources==5.1.4
 isort==5.8.0
 itur==0.2.1
 jedi==0.17.2

@@ -95,7 +95,7 @@ class MainWindow(QMainWindow):
         self.input_rx_gain: QLineEdit
         self.input_rx_sensitivity: QLineEdit
 
-        self.input_rx_height.setText("1")
+        self.input_rx_height.setText("2")
         self.input_rx_gain.setText("1")
         self.input_rx_sensitivity.setText("-180")
 
@@ -553,16 +553,19 @@ class MainWindow(QMainWindow):
             print("self.max_altitude=", self.max_altitude)
 
         propagation_matrix = np.empty([len(longs_deg), len(lats_deg)])
+
+        height_rx = float(self.input_rx_height.text())
+
         for i, point_long in enumerate(longs_deg):
             for j, point_lat in enumerate(lats_deg):
                 mobile_base_location = (point_lat, point_long)
 
-                altitude_rx = get_altitude(lat=point_lat, long=point_long)
+                altitude_lat_long_rx = get_altitude(lat=point_lat, long=point_long)
 
                 distance = calculates_distance_between_coordinates(mobile_base_location, erb_location)
 
                 tx_h = (float(base_station_selected.altura) + altitude_tx) - self.min_altitude
-                rx_h = (2 + altitude_rx) - self.min_altitude
+                rx_h = (height_rx + altitude_lat_long_rx) - self.min_altitude
 
                 # calculate the path loss using a propagation model
                 path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h, distance, 2)
@@ -648,8 +651,6 @@ class MainWindow(QMainWindow):
 
         base_station_selected = self.get_bs_selected()
 
-        # base_station_selected.altura = 12000
-
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         # get simulation bounds
@@ -665,8 +666,8 @@ class MainWindow(QMainWindow):
         propagation_matrix = self.simulates_propagation(base_station_selected, lats_deg, longs_deg)
 
         # print(propagation_matrix)
-        print('propagation_matrix.shape', propagation_matrix.shape)
-        print('objective_function', self.objective_function(propagation_matrix))
+        print('propagation_matrix.shape=', propagation_matrix.shape)
+        print('objective_function=', self.objective_function(propagation_matrix))
 
         #  Show simulation map
         self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)

@@ -513,19 +513,16 @@ class MainWindow(QMainWindow):
 
         return lat_bounds, long_bounds
 
-    def FindPoint(self, x1, y1, x2, y2, x, y):
+    def find_point(self, x1, y1, x2, y2, x, y):
         # print(x1, y1, x2, y2, x, y)
 
-        if (x > x1 and x < x2 and y > y1 and y < y2):
-            return True
-        else:
-            return False
+        return x1 < x < x2 and y1 < y < y2
 
     def is_point_inside_sub_area(self, point: Tuple) -> bool:
         # point = Feature(geometry=Point(point))
         # polygon = Polygon([self.sub_area_bounds])
         # return boolean_point_in_polygon(point, polygon)
-        return self.FindPoint(-21.250078, -45.004024, -21.241697, -44.995849, round(point[0], 6), round(point[1], 6))
+        return self.find_point(-21.250078, -45.004024, -21.241697, -44.995849, round(point[0], 6), round(point[1], 6))
 
     @staticmethod
     def percentage(percent: float, whole: float) -> float:
@@ -538,6 +535,7 @@ class MainWindow(QMainWindow):
 
         altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
 
+        #  Get limit altitudes
         if self.max_altitude is None and self.min_altitude is None:
             self.min_altitude = math.inf
             self.max_altitude = - math.inf
@@ -577,10 +575,10 @@ class MainWindow(QMainWindow):
                     propagation_matrix[i][j] = received_power
 
                 # print(received_power)
-                # if received_power >= MIN_SENSITIVITY:
+                # if received_power >= bm_min_sensitivity:
                 #     propagation_matrix[i][j] = received_power
                 # else:
-                #     propagation_matrix[i][j] = 0 # bm_min_sensitivity or bm_max_sensitivity
+                #     propagation_matrix[i][j] = received_power - 100
 
         return propagation_matrix
 
@@ -646,9 +644,11 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
-        optimize_solution = True
+        optimize_solution = False
 
         base_station_selected = self.get_bs_selected()
+
+        # base_station_selected.altura = 12000
 
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
@@ -660,9 +660,6 @@ class MainWindow(QMainWindow):
         n_lats, n_longs = (500, 500)
         lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
         longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
-
-        # lats_deg = [round(la, 6) for la in lats_deg]
-        # longs_deg = [round(lo, 6) for lo in longs_deg]
 
         # Get matrix result for matrix coordinates
         propagation_matrix = self.simulates_propagation(base_station_selected, lats_deg, longs_deg)
@@ -686,6 +683,7 @@ class MainWindow(QMainWindow):
             self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
 
             print("(best.latitude, best.longitude)=", (best.latitude, best.longitude))
+            print("(best.altura)=", best.altura)
 
             if FOs:
                 # Plot the objective function line chart
@@ -721,6 +719,18 @@ class MainWindow(QMainWindow):
 
         return solution
 
+    def generates_heights(self, height: float) -> list:
+        percentage15 = self.percentage(15, height)
+        percentage30 = self.percentage(30, height)
+
+        return [
+            height - percentage30,
+            height - percentage15,
+            height,
+            height + percentage15,
+            height + percentage30,
+        ]
+
     def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float) \
             -> Tuple[BaseStation, float, List[float]]:
         """
@@ -741,6 +751,8 @@ class MainWindow(QMainWindow):
         # cria Soluções (posições) iniciais com pontos aleatórios para os APs
         s = base_station_selected
 
+        antenna_height = float(base_station_selected.altura)
+
         s0 = s
         print("Solução inicial: " + str((s0.latitude, s0.longitude)))
 
@@ -757,38 +769,44 @@ class MainWindow(QMainWindow):
 
         # Loop principal – Verifica se foram atendidas as condições de termino do algoritmo
         while True:
+            print("j=", j)
             i = 1
             n_success = 0
 
             # Loop Interno – Realização de perturbação em uma iteração
             while True:
+                print("i=", i)
 
                 # Get a different position to ERB
-                initial_solution = self.disturb_solution(s)
+                Si = self.disturb_solution(s)
 
-                # Get objective function value
-                result_fo = self.evaluate_solution(initial_solution, longs_deg, lats_deg)
+                for height in self.generates_heights(antenna_height):
+                    print("height=", height)
+                    Si.altura = height
 
-                f_si = result_fo
+                    # Get objective function value
+                    result_fo = self.evaluate_solution(Si, longs_deg, lats_deg)
 
-                # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
-                delta_fi = f_si - f_s
+                    f_si = result_fo
 
-                # Minimização: delta_fi >= 0
-                # Maximização: delta_fi <= 0
-                # Teste de aceitação de uma nova solução
-                if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
+                    # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
+                    delta_fi = f_si - f_s
 
-                    s = copy.deepcopy(initial_solution)
-                    f_s = f_si
+                    # Minimização: delta_fi >= 0
+                    # Maximização: delta_fi <= 0
+                    # Teste de aceitação de uma nova solução
+                    if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
 
-                    n_success = n_success + 1
+                        s = copy.deepcopy(Si)
+                        f_s = f_si
 
-                    if f_s > best_fs:
-                        best_fs = f_s
-                        best_erb = copy.deepcopy(initial_solution)
+                        n_success = n_success + 1
 
-                    FOs.append(f_s)
+                        if f_s > best_fs:
+                            best_fs = f_s
+                            best_erb = copy.deepcopy(Si)
+
+                        FOs.append(f_s)
 
                 i = i + 1
 

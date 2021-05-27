@@ -336,12 +336,7 @@ class MainWindow(QMainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            start = time.time()
             self.run_simulation()
-            end = time.time()
-
-            self.label_geral_info_1: QLabel
-            self.label_geral_info_1.setText("Simulação executada em %s segundos" % round(end - start, 2))
 
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(base_station.latitude), str(base_station.longitude))
@@ -493,8 +488,6 @@ class MainWindow(QMainWindow):
         fo_value = 0
         total_of_points = len(propagation_matrix) * len(propagation_matrix[0])
 
-        print(total_of_points)
-
         for line in propagation_matrix:
             for value in line:
                 if value >= MIN_SENSITIVITY:
@@ -545,6 +538,7 @@ class MainWindow(QMainWindow):
 
         #  Get limit altitudes
         if self.max_altitude is None and self.min_altitude is None:
+            print("Getting minimum and maximum altitudes...")
             self.min_altitude = math.inf
             self.max_altitude = - math.inf
             for i, point_long in enumerate(longs_deg):
@@ -655,6 +649,7 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
+        start = time.time()
         self.check_box_optimize_solution: QCheckBox
         optimize_solution = self.check_box_optimize_solution.isChecked()
 
@@ -674,9 +669,11 @@ class MainWindow(QMainWindow):
         # Get matrix result for matrix coordinates
         propagation_matrix = self.simulates_propagation(base_station_selected, lats_deg, longs_deg)
 
+        initial_fo = self.objective_function(propagation_matrix)
+
         # print(propagation_matrix)
         print('propagation_matrix.shape=', propagation_matrix.shape)
-        print('objective_function=', self.objective_function(propagation_matrix))
+        print('objective_function=', initial_fo)
 
         if optimize_solution:
             problem = (base_station_selected, longs_deg, lats_deg)
@@ -685,6 +682,8 @@ class MainWindow(QMainWindow):
             # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
             best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
+            print("End of Simulated Annealing")
+
             #  print best solution found
             print("obtaining propagation matrix of the best solution...")
             matrix_solution = self.simulates_propagation(best, lats_deg, longs_deg)
@@ -692,9 +691,17 @@ class MainWindow(QMainWindow):
             print("generating visualization of the solution...")
             self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
 
-            print("(best.latitude, best.longitude)=", (best.latitude, best.longitude))
+            print("(initial.latitude, initial.longitude)=", (round(base_station_selected.latitude, 2), round(base_station_selected.longitude, 2)))
+            print("(initial.altura)=", base_station_selected.altura)
+            print("(initial.potencia_transmissao)=", base_station_selected.potencia_transmissao)
+            print('(initial.fo)=', round(initial_fo, 2))
+            print()
+            print("(best.latitude, best.longitude)=", (round(best.latitude, 2), round(best.longitude, 2)))
             print("(best.altura)=", best.altura)
             print("(best.potencia_transmissao)=", best.potencia_transmissao)
+            print('(best.fo)=', round(self.objective_function(matrix_solution), 2))
+            print()
+            print("Distance of solutions=", calculates_distance_between_coordinates((base_station_selected.latitude, base_station_selected.longitude), (best.latitude, best.longitude)))
 
             if FOs:
                 # Plot the objective function line chart
@@ -707,6 +714,12 @@ class MainWindow(QMainWindow):
         else:
             #  Show simulation map
             self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
+
+        end = time.time()
+
+        self.label_geral_info_1: QLabel
+        self.label_geral_info_1.setText("Simulação executada em %s segundos" % round(end - start, 2))
+        print("Simulation run in %s seconds" % round(end - start, 2))
 
         print("End of simulation!")
 
@@ -808,25 +821,28 @@ class MainWindow(QMainWindow):
 
         # Loop principal – Verifica se foram atendidas as condições de termino do algoritmo
         while True:
-            print("j=", j)
+            print('T=', T)
+            print("j/M=", j, "/", M)
             i = 1
             n_success = 0
 
             # Loop Interno – Realização de perturbação em uma iteração
             while True:
-                print("i=", i)
+                print("i/P=", i, "/", P)
+                print("n_success/L=", n_success, "/", L)
 
                 # Get a different position to ERB
                 Si = self.disturb_solution(s)
 
                 # For all possible antenna heights
                 for height in possible_heights:
+                    print("-----------------------")
                     print("height=", height)
                     Si.altura = height
 
                     for power in possible_powers_received:
                         print("power received=", power)
-                        Si.potencia_transmissao = height
+                        Si.potencia_transmissao = power
 
                         # Get objective function value
                         result_fo = self.evaluate_solution(Si, longs_deg, lats_deg)
@@ -866,12 +882,11 @@ class MainWindow(QMainWindow):
             if (n_success == 0) or (j > M):
                 break
 
-            print('T=', T)
             print('n_success=', n_success)
-            print('j=', j)
             print('best_fs=', best_fs)
 
         FOs.append(best_fs)
+        print(len(FOs), " solutions covered")
         print('FOs=', str(FOs))
 
         return best_erb, best_fs, FOs

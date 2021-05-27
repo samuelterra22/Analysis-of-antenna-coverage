@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 from PyQt5 import uic, QtWebEngineWidgets
 from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel, QCheckBox
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
@@ -112,12 +112,18 @@ class MainWindow(QMainWindow):
         self.input_sa_num_max_perturbation_per_iteration: QLineEdit
         self.input_sa_num_max_success_per_iteration: QLineEdit
         self.input_sa_alpha: QLineEdit
+        self.check_box_optimize_solution: QCheckBox
+        self.check_box_optimize_height: QCheckBox
+        self.check_box_optimize_power: QCheckBox
 
         self.input_sa_temp_initial.setText("200.0")
         self.input_sa_num_max_iterations.setText("3")
         self.input_sa_num_max_perturbation_per_iteration.setText("5")
         self.input_sa_num_max_success_per_iteration.setText("140")
         self.input_sa_alpha.setText("0.85")
+        self.check_box_optimize_solution.setChecked(True)
+        self.check_box_optimize_height.setChecked(True)
+        self.check_box_optimize_power.setChecked(True)
 
         # Output tab
         self.combo_box_output_colour_scheme: QComboBox
@@ -312,13 +318,15 @@ class MainWindow(QMainWindow):
                 "sensibilidade": str(self.input_rx_sensitivity.text()) + "dBm",
             },
             "heuristic": {
-                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(
-                    base_station_selected.longitude) + ")",
+                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(base_station_selected.longitude) + ")",
                 "temperatura_inicial": self.input_sa_temp_initial.text(),
                 "numero_maximo_iteracoes": self.input_sa_num_max_iterations.text(),
                 "numero_maximo_pertubacoes_por_iteracao": self.input_sa_num_max_perturbation_per_iteration.text(),
                 "numero_maximo_sucessos_por_iteracao": self.input_sa_num_max_success_per_iteration.text(),
                 "alpha": self.input_sa_alpha.text(),
+                "optimize_solution": self.check_box_optimize_solution.isChecked(),
+                "optimize_height": self.check_box_optimize_height.isChecked(),
+                "optimize_power": self.check_box_optimize_power.isChecked(),
             },
         }
 
@@ -647,7 +655,8 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
-        optimize_solution = False
+        self.check_box_optimize_solution: QCheckBox
+        optimize_solution = self.check_box_optimize_solution.isChecked()
 
         base_station_selected = self.get_bs_selected()
 
@@ -669,9 +678,6 @@ class MainWindow(QMainWindow):
         print('propagation_matrix.shape=', propagation_matrix.shape)
         print('objective_function=', self.objective_function(propagation_matrix))
 
-        #  Show simulation map
-        self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
-
         if optimize_solution:
             problem = (base_station_selected, longs_deg, lats_deg)
 
@@ -680,20 +686,27 @@ class MainWindow(QMainWindow):
             best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
             #  print best solution found
+            print("obtaining propagation matrix of the best solution...")
             matrix_solution = self.simulates_propagation(best, lats_deg, longs_deg)
+
+            print("generating visualization of the solution...")
             self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
 
             print("(best.latitude, best.longitude)=", (best.latitude, best.longitude))
             print("(best.altura)=", best.altura)
+            print("(best.potencia_transmissao)=", best.potencia_transmissao)
 
             if FOs:
                 # Plot the objective function line chart
-                print("\n... gerando gráfico do comportamento da FO.")
+                print("generating graph of the behavior of the objective function...")
                 plt.plot(FOs)
                 plt.title("Comportamento do Simulated Annealing")
                 plt.ylabel('Valor da FO')
                 plt.xlabel('Solução candidata')
                 plt.show()
+        else:
+            #  Show simulation map
+            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
 
         print("End of simulation!")
 
@@ -721,16 +734,37 @@ class MainWindow(QMainWindow):
         return solution
 
     def generates_heights(self, height: float) -> list:
-        percentage15 = self.percentage(15, height)
-        percentage30 = self.percentage(30, height)
+        percentage_height_15 = self.percentage(15, height)
+        percentage_height_30 = self.percentage(30, height)
 
-        return [
-            height - percentage30,
-            height - percentage15,
-            height,
-            height + percentage15,
-            height + percentage30,
-        ]
+        self.check_box_optimize_height: QCheckBox
+
+        if self.check_box_optimize_height.isChecked():
+            return [
+                height - percentage_height_30,
+                height - percentage_height_15,
+                height,
+                height + percentage_height_15,
+                height + percentage_height_30,
+            ]
+        return [height]
+
+    def generates_received_powers(self, power: float) -> list:
+        percentage_power_15 = self.percentage(15, power)
+        percentage_power_30 = self.percentage(30, power)
+
+        self.check_box_optimize_power: QCheckBox
+
+        if self.check_box_optimize_power.isChecked():
+            return [
+                power - percentage_power_30,
+                power - percentage_power_15,
+                power,
+                power + percentage_power_15,
+                power + percentage_power_30,
+            ]
+
+        return [power]
 
     def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float) \
             -> Tuple[BaseStation, float, List[float]]:
@@ -753,6 +787,10 @@ class MainWindow(QMainWindow):
         s = base_station_selected
 
         antenna_height = float(base_station_selected.altura)
+        possible_heights = self.generates_heights(antenna_height)
+
+        antenna_power_received = float(base_station_selected.potencia_transmissao)
+        possible_powers_received = self.generates_received_powers(antenna_power_received)
 
         s0 = s
         print("Solução inicial: " + str((s0.latitude, s0.longitude)))
@@ -781,33 +819,38 @@ class MainWindow(QMainWindow):
                 # Get a different position to ERB
                 Si = self.disturb_solution(s)
 
-                for height in self.generates_heights(antenna_height):
+                # For all possible antenna heights
+                for height in possible_heights:
                     print("height=", height)
                     Si.altura = height
 
-                    # Get objective function value
-                    result_fo = self.evaluate_solution(Si, longs_deg, lats_deg)
+                    for power in possible_powers_received:
+                        print("power received=", power)
+                        Si.potencia_transmissao = height
 
-                    f_si = result_fo
+                        # Get objective function value
+                        result_fo = self.evaluate_solution(Si, longs_deg, lats_deg)
 
-                    # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
-                    delta_fi = f_si - f_s
+                        f_si = result_fo
 
-                    # Minimização: delta_fi >= 0
-                    # Maximização: delta_fi <= 0
-                    # Teste de aceitação de uma nova solução
-                    if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
+                        # Verificar se o retorno da função objetivo está correto. f(x) é a função objetivo
+                        delta_fi = f_si - f_s
 
-                        s = copy.deepcopy(Si)
-                        f_s = f_si
+                        # Minimização: delta_fi >= 0
+                        # Maximização: delta_fi <= 0
+                        # Teste de aceitação de uma nova solução
+                        if (delta_fi <= 0) or (exp(-delta_fi / T) > random.random()):
 
-                        n_success = n_success + 1
+                            s = copy.deepcopy(Si)
+                            f_s = f_si
 
-                        if f_s > best_fs:
-                            best_fs = f_s
-                            best_erb = copy.deepcopy(Si)
+                            n_success = n_success + 1
 
-                        FOs.append(f_s)
+                            if f_s > best_fs:
+                                best_fs = f_s
+                                best_erb = copy.deepcopy(Si)
+
+                            FOs.append(f_s)
 
                 i = i + 1
 

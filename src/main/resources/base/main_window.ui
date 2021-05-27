@@ -882,24 +882,24 @@
                     <string>Configurações Simulated Annealing</string>
                    </property>
                    <layout class="QFormLayout" name="formLayout">
-                    <item row="0" column="0">
+                    <item row="1" column="0">
                      <widget class="QLabel" name="label_sa_temp_initial">
                       <property name="text">
                        <string>Temperatura Inicial</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="0">
+                    <item row="2" column="0">
                      <widget class="QLabel" name="label_sa_num_max_iterations">
                       <property name="text">
                        <string>N Max. de Iterações</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="1">
+                    <item row="2" column="1">
                      <widget class="QLineEdit" name="input_sa_num_max_iterations"/>
                     </item>
-                    <item row="2" column="0">
+                    <item row="3" column="0">
                      <widget class="QLabel" name="label_sa_num_max_perturbation_per_iteration">
                       <property name="minimumSize">
                        <size>
@@ -915,10 +915,10 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="2" column="1">
+                    <item row="3" column="1">
                      <widget class="QLineEdit" name="input_sa_num_max_perturbation_per_iteration"/>
                     </item>
-                    <item row="3" column="0">
+                    <item row="4" column="0">
                      <widget class="QLabel" name="label_sa_num_max_success_per_iteration">
                       <property name="text">
                        <string>N Max de Sucessos por Iteração</string>
@@ -928,21 +928,42 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="3" column="1">
+                    <item row="4" column="1">
                      <widget class="QLineEdit" name="input_sa_num_max_success_per_iteration"/>
                     </item>
-                    <item row="4" column="0">
+                    <item row="5" column="0">
                      <widget class="QLabel" name="label_sa_alpha">
                       <property name="text">
                        <string>Alpha</string>
                       </property>
                      </widget>
                     </item>
-                    <item row="4" column="1">
+                    <item row="5" column="1">
                      <widget class="QLineEdit" name="input_sa_alpha"/>
                     </item>
-                    <item row="0" column="1">
+                    <item row="1" column="1">
                      <widget class="QLineEdit" name="input_sa_temp_initial"/>
+                    </item>
+                    <item row="6" column="0">
+                     <widget class="QCheckBox" name="check_box_optimize_height">
+                      <property name="text">
+                       <string>Otimizar Altura</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="7" column="0">
+                     <widget class="QCheckBox" name="check_box_optimize_power">
+                      <property name="text">
+                       <string>Otimizar Potência</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QCheckBox" name="check_box_optimize_solution">
+                      <property name="text">
+                       <string>Otimizar Solução</string>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </widget>

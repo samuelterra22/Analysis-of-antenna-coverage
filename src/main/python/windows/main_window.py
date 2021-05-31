@@ -25,6 +25,7 @@ from typing import Tuple, List, Dict, Union, Any
 
 from models.base_station import BaseStation
 from controllers.base_station_controller import BaseStationController
+from controllers.simulation_controller import SimulationController
 from dialogs.alert_dialog_class import AlertDialogClass
 from dialogs.about_dialog_class import AboutDialogClass
 from dialogs.anatel_dialog_class import AnatelDialogClass
@@ -55,6 +56,7 @@ class MainWindow(QMainWindow):
 
         # Init controllers
         self.__base_station_controller = BaseStationController()
+        self.__simulation_controller = SimulationController()
 
         # Init main map
         self.__init_rf_map()
@@ -318,7 +320,8 @@ class MainWindow(QMainWindow):
                 "sensibilidade": str(self.input_rx_sensitivity.text()) + "dBm",
             },
             "heuristic": {
-                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(base_station_selected.longitude) + ")",
+                "solucao_inicial": "(" + str(base_station_selected.latitude) + ", " + str(
+                    base_station_selected.longitude) + ")",
                 "temperatura_inicial": self.input_sa_temp_initial.text(),
                 "numero_maximo_iteracoes": self.input_sa_num_max_iterations.text(),
                 "numero_maximo_pertubacoes_por_iteracao": self.input_sa_num_max_perturbation_per_iteration.text(),
@@ -529,7 +532,8 @@ class MainWindow(QMainWindow):
     def percentage(percent: float, whole: float) -> float:
         return (percent * whole) / 100.0
 
-    def simulates_propagation(self, base_station_selected: BaseStation, lats_deg: ndarray, longs_deg: ndarray) -> ndarray:
+    def simulates_propagation(self, base_station_selected: BaseStation, lats_deg: ndarray,
+                              longs_deg: ndarray) -> ndarray:
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
@@ -649,11 +653,16 @@ class MainWindow(QMainWindow):
         self.web_view.setHtml(data.getvalue().decode())
 
     def run_simulation(self) -> None:
+        # ToDo: remove
+        save_simulations = True
+
         start = time.time()
+        end = None
         self.check_box_optimize_solution: QCheckBox
         optimize_solution = self.check_box_optimize_solution.isChecked()
 
         base_station_selected = self.get_bs_selected()
+        initial_solution = copy.deepcopy(base_station_selected)
 
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
@@ -682,40 +691,68 @@ class MainWindow(QMainWindow):
             # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
             best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
 
+            end = time.time()
             print("End of Simulated Annealing")
 
             #  print best solution found
             print("obtaining propagation matrix of the best solution...")
             matrix_solution = self.simulates_propagation(best, lats_deg, longs_deg)
+            best_fo = round(self.objective_function(matrix_solution), 2)
 
             print("generating visualization of the solution...")
             self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
 
-            print("(initial.latitude, initial.longitude)=", (round(base_station_selected.latitude, 2), round(base_station_selected.longitude, 2)))
-            print("(initial.altura)=", base_station_selected.altura)
-            print("(initial.potencia_transmissao)=", base_station_selected.potencia_transmissao)
+            print("(initial.latitude, initial.longitude)=",
+                  (round(initial_solution.latitude, 6), round(initial_solution.longitude, 6)))
+            print("(initial.altura)=", initial_solution.altura)
+            print("(initial.potencia_transmissao)=", initial_solution.potencia_transmissao)
             print('(initial.fo)=', round(initial_fo, 2))
             print()
-            print("(best.latitude, best.longitude)=", (round(best.latitude, 2), round(best.longitude, 2)))
+            print("(best.latitude, best.longitude)=", (round(best.latitude, 6), round(best.longitude, 6)))
             print("(best.altura)=", best.altura)
             print("(best.potencia_transmissao)=", best.potencia_transmissao)
-            print('(best.fo)=', round(self.objective_function(matrix_solution), 2))
+            print('(best.fo)=', best_fo)
             print()
-            print("Distance of solutions=", calculates_distance_between_coordinates((base_station_selected.latitude, base_station_selected.longitude), (best.latitude, best.longitude)))
+            distance_of_solutions = calculates_distance_between_coordinates(
+                (initial_solution.latitude, initial_solution.longitude), (best.latitude, best.longitude))
+            print("Distance of solutions=", round(distance_of_solutions, 2))
 
-            if FOs:
-                # Plot the objective function line chart
-                print("generating graph of the behavior of the objective function...")
-                plt.plot(FOs)
-                plt.title("Comportamento do Simulated Annealing")
-                plt.ylabel('Valor da FO')
-                plt.xlabel('Solução candidata')
-                plt.show()
+            # Plot the objective function line chart
+            print("generating graph of the behavior of the objective function...")
+            FOs_plot = [item['of'] for item in FOs]
+            plt.plot(FOs_plot)
+            plt.title("Comportamento do Simulated Annealing")
+            plt.ylabel('Valor da FO')
+            plt.xlabel('Solução candidata')
+            plt.show()
+
+            if save_simulations:
+                data = {
+                    "initial_latitude": str(initial_solution.latitude),
+                    "initial_longitude": str(initial_solution.longitude),
+                    "initial_height": str(initial_solution.altura),
+                    "initial_power_transmission": str(initial_solution.potencia_transmissao),
+                    "initial_objective_function": str(initial_fo),
+                    "number_of_solutions": len(FOs)-1,
+                    "execution_seconds": str(end - start),
+                    "started_at": str(start),
+                    "ended_at": str(end),
+                    "distance_of_solutions": str(distance_of_solutions),
+                    "best_latitude": str(best.latitude),
+                    "best_longitude": str(best.longitude),
+                    "best_height": str(best.altura),
+                    "best_power_transmission": str(best.potencia_transmissao),
+                    "best_objective_function": str(best_fo),
+                    "solutions": FOs
+                }
+                self.__simulation_controller.store(data)
+
         else:
             #  Show simulation map
-            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, base_station_selected)
+            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, initial_solution)
 
-        end = time.time()
+        if end is None:
+            end = time.time()
 
         self.label_geral_info_1: QLabel
         self.label_geral_info_1.setText("Simulação executada em %s segundos" % round(end - start, 2))
@@ -780,7 +817,7 @@ class MainWindow(QMainWindow):
         return [power]
 
     def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float) \
-            -> Tuple[BaseStation, float, List[float]]:
+            -> Tuple[Union[BaseStation, Any], float, List[Dict[str, float]]]:
         """
         :param problem: Dados do problema principal
         :param M: Número máximo de iterações.
@@ -794,6 +831,7 @@ class MainWindow(QMainWindow):
         # Get problem parameters
         base_station_selected, longs_deg, lats_deg = problem
 
+        # List of results
         FOs = []
 
         # cria Soluções (posições) iniciais com pontos aleatórios para os APs
@@ -866,7 +904,11 @@ class MainWindow(QMainWindow):
                                 best_fs = f_s
                                 best_erb = copy.deepcopy(Si)
 
-                            FOs.append(f_s)
+                            FOs.append({
+                                "lat": Si.latitude,
+                                "lng": Si.longitude,
+                                "of": f_s
+                            })
 
                 i = i + 1
 
@@ -885,8 +927,13 @@ class MainWindow(QMainWindow):
             print('n_success=', n_success)
             print('best_fs=', best_fs)
 
-        FOs.append(best_fs)
         print(len(FOs), " solutions covered")
         print('FOs=', str(FOs))
+
+        FOs.append({
+            "lat": best_erb.latitude,
+            "lng": best_erb.longitude,
+            "of": best_fs
+        })
 
         return best_erb, best_fs, FOs

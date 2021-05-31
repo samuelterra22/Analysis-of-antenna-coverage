@@ -10,15 +10,11 @@ class Simulation(BaseModel):
     This class is the simulation model for storage data in database
     """
     number_of_solutions: str = CharField()
-    execution_seconds: str = CharField()
     distance_of_solutions: str = CharField()
     solutions: str = TextField()
-
-    best_latitude: str = CharField()
-    best_longitude: str = CharField()
-    best_height: str = CharField()
-    best_power_transmission: str = CharField()
-    best_objective_function: str = CharField()
+    started_at: datetime = CharField()
+    ended_at: datetime = CharField()
+    execution_seconds: str = CharField()
 
     initial_latitude: str = CharField()
     initial_longitude: str = CharField()
@@ -26,8 +22,11 @@ class Simulation(BaseModel):
     initial_power_transmission: str = CharField()
     initial_objective_function: str = CharField()
 
-    started_at: datetime = DateTimeField()
-    ended_at: datetime = DateTimeField()
+    best_latitude: str = CharField()
+    best_longitude: str = CharField()
+    best_height: str = CharField()
+    best_power_transmission: str = CharField()
+    best_objective_function: str = CharField()
 
     created_at: datetime = DateTimeField(default=datetime.datetime.now)
 

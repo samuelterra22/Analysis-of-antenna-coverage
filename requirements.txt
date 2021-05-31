@@ -29,7 +29,7 @@ greenlet==1.0.0
 haversine==2.3.0
 identify==2.2.2
 idna==2.10
-importlib-metadata==3.10.0
+importlib-metadata==4.3.1
 importlib-resources==5.1.2
 isort==5.8.0
 itur==0.2.1

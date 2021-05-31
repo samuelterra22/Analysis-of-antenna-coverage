@@ -772,6 +772,11 @@
                       </item>
                       <item>
                        <property name="text">
+                        <string>HATA Path Loss</string>
+                       </property>
+                      </item>
+                      <item>
+                       <property name="text">
                         <string>Friis model</string>
                        </property>
                       </item>

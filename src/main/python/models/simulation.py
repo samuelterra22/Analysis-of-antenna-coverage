@@ -9,6 +9,7 @@ class Simulation(BaseModel):
     """
     This class is the simulation model for storage data in database
     """
+    propagation_model: str = CharField()
     number_of_solutions: str = CharField()
     distance_of_solutions: str = CharField()
     solutions: str = TextField()

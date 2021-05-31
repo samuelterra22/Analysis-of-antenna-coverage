@@ -32,8 +32,9 @@ from dialogs.anatel_dialog_class import AnatelDialogClass
 from dialogs.settings_dialog_class import SettingsDialogClass
 from dialogs.help_dialog_class import HelpDialogClass
 from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
-from support.propagation_models import cost231_path_loss
-from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, bm_min_sensitivity, bm_max_sensitivity
+from support.propagation_models import cost231_path_loss, log_distance_path_loss, log_distance_ref_d0, hata_path_loss
+from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, bm_min_sensitivity, bm_max_sensitivity, SUBURBAN, \
+    COST231_HATA_MODEL, FRISS_MODEL, TWO_RAYS_GROUND_REFLECTION_MODEL, LOG_DISTANCE_MODEL, ONE_SLOPE_MODEL, HATA_MODEL
 from support.core import calculates_distance_between_coordinates, get_altitude, get_coordinate_in_circle
 from support.physical_constants import r_earth
 
@@ -339,7 +340,8 @@ class MainWindow(QMainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            self.run_simulation()
+            for i in range(50):
+                self.run_simulation()
 
     def add_erb_map(self, base_station: BaseStation) -> None:
         erb_location = (str(base_station.latitude), str(base_station.longitude))
@@ -532,6 +534,25 @@ class MainWindow(QMainWindow):
     def percentage(percent: float, whole: float) -> float:
         return (percent * whole) / 100.0
 
+    def calculates_path_loss(self, frequency: float, tx_h: float, rx_h: float, distance: float, mode: int,
+                             pt: float = 0.0):
+        self.combo_box_propagation_model: QComboBox
+        pm = self.combo_box_propagation_model.currentIndex()
+
+        if pm == COST231_HATA_MODEL:
+            return cost231_path_loss(f=frequency, tx_h=tx_h, rx_h=rx_h, d=distance, mode=mode)
+        elif pm == HATA_MODEL:
+            return hata_path_loss(f=frequency, h_B=tx_h, h_M=rx_h, d=distance, mode=mode)
+        elif pm == FRISS_MODEL:
+            pass
+        elif pm == TWO_RAYS_GROUND_REFLECTION_MODEL:
+            pass
+        elif pm == LOG_DISTANCE_MODEL:
+            ref_d0 = log_distance_ref_d0(gamma=2, pt=pt)
+            return log_distance_path_loss(d=distance, gamma=2, d0=1, pr_d0=ref_d0, pt=pt)
+        elif pm == ONE_SLOPE_MODEL:
+            pass
+
     def simulates_propagation(self, base_station_selected: BaseStation) -> Tuple[
         ndarray, Union[ndarray, Tuple[ndarray, Optional[float]]], Union[ndarray, Tuple[ndarray, Optional[float]]]]:
 
@@ -583,7 +604,9 @@ class MainWindow(QMainWindow):
                 rx_h = (height_rx + altitude_lat_long_rx) - self.min_altitude
 
                 # calculate the path loss using a propagation model
-                path_loss = cost231_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h, distance, 2)
+                path_loss = self.calculates_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h,
+                                                      distance, SUBURBAN,
+                                                      float(base_station_selected.potencia_transmissao))
 
                 received_power = transmitted_power - path_loss
 
@@ -636,7 +659,9 @@ class MainWindow(QMainWindow):
         print(propagation_matrix.max())
 
         # dados normatizados
-        normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
+        # normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
+        normed_data = (propagation_matrix - propagation_matrix.min()) / (propagation_matrix.max() - propagation_matrix.min())
+
         colored_data = color_map(normed_data)
 
         m = self.get_folium_map(location=erb_location)
@@ -674,6 +699,9 @@ class MainWindow(QMainWindow):
         base_station_selected = self.get_bs_selected()
         initial_solution = copy.deepcopy(base_station_selected)
 
+        # Get propagation model text of select
+        propagation_model = self.combo_box_propagation_model.currentText()
+
         # Get matrix result for matrix coordinates
         propagation_matrix, _, _ = self.simulates_propagation(base_station_selected)
 
@@ -699,6 +727,8 @@ class MainWindow(QMainWindow):
 
             print("generating visualization of the solution...")
             self.print_simulation_result(best)
+
+            print('(propagation_model)=', propagation_model)
 
             print("(initial.latitude, initial.longitude)=",
                   (round(initial_solution.latitude, 6), round(initial_solution.longitude, 6)))
@@ -735,6 +765,7 @@ class MainWindow(QMainWindow):
                     "execution_seconds": str(end - start),
                     "started_at": str(start),
                     "ended_at": str(end),
+                    "propagation_model": str(propagation_model),
                     "distance_of_solutions": str(distance_of_solutions),
                     "best_latitude": str(best.latitude),
                     "best_longitude": str(best.longitude),

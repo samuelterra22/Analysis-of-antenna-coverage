@@ -1,9 +1,21 @@
-
-
 import math
 from math import log10
 from numba import jit
 from scipy.constants import speed_of_light
+
+
+@jit(nopython=True)
+def log_distance_ref_d0(gamma: float = 2, pt: float = -17):
+    """
+    Modelo logaritmo de perda baseado em resultados experimentais. Independe da frequência do sinal transmitido
+    e do ganho das antenas transmissora e receptora.
+    Livro Comunicações em Fio - Pricipios e Práticas - Rappaport (páginas 91-92).
+
+    :param pt:      Potência transmitida.
+    :param gamma:   Expoente de perda de caminho.
+    :return:        Retorna um float representando a perda do sinal entre a distância d0 e d.
+    """
+    return (10 * gamma * log10(1)) - pt
 
 
 @jit(nopython=True)
@@ -97,7 +109,7 @@ def five_par_log_model(pt_dbm: float, x: float):
 def cost231_path_loss(f: float, tx_h: float, rx_h: float, d: float, mode) -> float:
     """
     COST231 extension to HATA model
-    http://morse.colorado.edu/~tlen5510/text/classwebch3.html
+    https://morse.colorado.edu/~tlen5510/text/classwebch3.html
     :param f:       Carrier Frequency (1500 to 2000MHz)
     :param tx_h:    Base station height 30 to 200m
     :param rx_h:    Mobile station height 1 to 10m

@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox, QLineEdit, QLabel, QCheckBox
 from PyQt5 import QtCore, QtWidgets
 from folium import Map
 from numpy.core.multiarray import ndarray
-from typing import Tuple, List, Dict, Union, Any
+from typing import Tuple, List, Dict, Union, Any, Optional
 
 from models.base_station import BaseStation
 from controllers.base_station_controller import BaseStationController
@@ -532,8 +532,17 @@ class MainWindow(QMainWindow):
     def percentage(percent: float, whole: float) -> float:
         return (percent * whole) / 100.0
 
-    def simulates_propagation(self, base_station_selected: BaseStation, lats_deg: ndarray,
-                              longs_deg: ndarray) -> ndarray:
+    def simulates_propagation(self, base_station_selected: BaseStation) -> Tuple[
+        ndarray, Union[ndarray, Tuple[ndarray, Optional[float]]], Union[ndarray, Tuple[ndarray, Optional[float]]]]:
+
+        dy, dx = 6, 6  # 3km
+        lat_bounds, long_bounds = self.__get_simulation_bounds(base_station_selected.latitude,
+                                                               base_station_selected.longitude, dx, dy)
+        # get coordinates list
+        n_lats, n_longs = (500, 500)
+        lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
+        longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
+
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
         transmitted_power = float(base_station_selected.potencia_transmissao)
@@ -589,10 +598,11 @@ class MainWindow(QMainWindow):
                 # else:
                 #     propagation_matrix[i][j] = received_power - 100
 
-        return propagation_matrix
+        return propagation_matrix, lats_deg, longs_deg
 
-    def print_simulation_result(self, propagation_matrix: ndarray, lats_deg: ndarray, longs_deg: ndarray,
-                                base_station_selected: BaseStation) -> None:
+    def print_simulation_result(self, base_station_selected: BaseStation) -> None:
+
+        propagation_matrix, lats_deg, longs_deg = self.simulates_propagation(base_station_selected)
 
         erb_location = (base_station_selected.latitude, base_station_selected.longitude)
 
@@ -664,19 +674,8 @@ class MainWindow(QMainWindow):
         base_station_selected = self.get_bs_selected()
         initial_solution = copy.deepcopy(base_station_selected)
 
-        erb_location = (base_station_selected.latitude, base_station_selected.longitude)
-
-        # get simulation bounds
-        dy, dx = 6, 6  # 3km
-        lat_bounds, long_bounds = self.__get_simulation_bounds(erb_location[0], erb_location[1], dx, dy)
-
-        # get coordinates list
-        n_lats, n_longs = (500, 500)
-        lats_deg = np.linspace((lat_bounds[0]), (lat_bounds[1]), n_lats)
-        longs_deg = np.linspace((long_bounds[0]), (long_bounds[1]), n_longs)
-
         # Get matrix result for matrix coordinates
-        propagation_matrix = self.simulates_propagation(base_station_selected, lats_deg, longs_deg)
+        propagation_matrix, _, _ = self.simulates_propagation(base_station_selected)
 
         initial_fo = self.objective_function(propagation_matrix)
 
@@ -685,22 +684,21 @@ class MainWindow(QMainWindow):
         print('objective_function=', initial_fo)
 
         if optimize_solution:
-            problem = (base_station_selected, longs_deg, lats_deg)
-
             # Run simulated annealing
-            # self.simulated_annealing(problem=problem, M=600, P=5, L=240, T0=300.0, alpha=.85)
-            best, _, FOs = self.simulated_annealing(problem=problem, M=3, P=5, L=140, T0=200.0, alpha=.85)
+            # self.simulated_annealing(base_station=base_station_selected, M=600, P=5, L=240, T0=300.0, alpha=.85)
+            best, _, FOs = self.simulated_annealing(base_station=base_station_selected, M=3, P=5, L=140, T0=200.0,
+                                                    alpha=.85)
 
             end = time.time()
             print("End of Simulated Annealing")
 
             #  print best solution found
             print("obtaining propagation matrix of the best solution...")
-            matrix_solution = self.simulates_propagation(best, lats_deg, longs_deg)
+            matrix_solution, _, _ = self.simulates_propagation(best)
             best_fo = round(self.objective_function(matrix_solution), 2)
 
             print("generating visualization of the solution...")
-            self.print_simulation_result(matrix_solution, lats_deg, longs_deg, best)
+            self.print_simulation_result(best)
 
             print("(initial.latitude, initial.longitude)=",
                   (round(initial_solution.latitude, 6), round(initial_solution.longitude, 6)))
@@ -733,7 +731,7 @@ class MainWindow(QMainWindow):
                     "initial_height": str(initial_solution.altura),
                     "initial_power_transmission": str(initial_solution.potencia_transmissao),
                     "initial_objective_function": str(initial_fo),
-                    "number_of_solutions": len(FOs)-1,
+                    "number_of_solutions": len(FOs) - 1,
                     "execution_seconds": str(end - start),
                     "started_at": str(start),
                     "ended_at": str(end),
@@ -749,7 +747,7 @@ class MainWindow(QMainWindow):
 
         else:
             #  Show simulation map
-            self.print_simulation_result(propagation_matrix, lats_deg, longs_deg, initial_solution)
+            self.print_simulation_result(initial_solution)
 
         if end is None:
             end = time.time()
@@ -760,8 +758,8 @@ class MainWindow(QMainWindow):
 
         print("End of simulation!")
 
-    def evaluate_solution(self, point: BaseStation, longs_deg: ndarray, lats_deg: ndarray) -> float:
-        matrix_solution = self.simulates_propagation(point, lats_deg, longs_deg)
+    def evaluate_solution(self, point: BaseStation) -> float:
+        matrix_solution, _, _ = self.simulates_propagation(point)
 
         return self.objective_function(matrix_solution)
 
@@ -816,10 +814,10 @@ class MainWindow(QMainWindow):
 
         return [power]
 
-    def simulated_annealing(self, problem, M: int, P: int, L: int, T0: float, alpha: float) \
+    def simulated_annealing(self, base_station, M: int, P: int, L: int, T0: float, alpha: float) \
             -> Tuple[Union[BaseStation, Any], float, List[Dict[str, float]]]:
         """
-        :param problem: Dados do problema principal
+        :param base_station: Dados do problema principal
         :param M: Número máximo de iterações.
         :param P: Número máximo de Perturbações por iteração.
         :param L: Número máximo de sucessos por iteração.
@@ -829,24 +827,23 @@ class MainWindow(QMainWindow):
         """
 
         # Get problem parameters
-        base_station_selected, longs_deg, lats_deg = problem
 
         # List of results
         FOs = []
 
         # cria Soluções (posições) iniciais com pontos aleatórios para os APs
-        s = base_station_selected
+        s = base_station
 
-        antenna_height = float(base_station_selected.altura)
+        antenna_height = float(base_station.altura)
         possible_heights = self.generates_heights(antenna_height)
 
-        antenna_power_received = float(base_station_selected.potencia_transmissao)
+        antenna_power_received = float(base_station.potencia_transmissao)
         possible_powers_received = self.generates_received_powers(antenna_power_received)
 
         s0 = s
         print("Solução inicial: " + str((s0.latitude, s0.longitude)))
 
-        result_fo = self.evaluate_solution(s, longs_deg, lats_deg)
+        result_fo = self.evaluate_solution(s)
 
         f_s = result_fo
 
@@ -883,7 +880,7 @@ class MainWindow(QMainWindow):
                         Si.potencia_transmissao = power
 
                         # Get objective function value
-                        result_fo = self.evaluate_solution(Si, longs_deg, lats_deg)
+                        result_fo = self.evaluate_solution(Si)
 
                         f_si = result_fo
 
@@ -907,6 +904,8 @@ class MainWindow(QMainWindow):
                             FOs.append({
                                 "lat": Si.latitude,
                                 "lng": Si.longitude,
+                                "height": Si.altura,
+                                "power": Si.potencia_transmissao,
                                 "of": f_s
                             })
 
@@ -933,6 +932,8 @@ class MainWindow(QMainWindow):
         FOs.append({
             "lat": best_erb.latitude,
             "lng": best_erb.longitude,
+            "height": best_erb.altura,
+            "power": best_erb.potencia_transmissao,
             "of": best_fs
         })
 

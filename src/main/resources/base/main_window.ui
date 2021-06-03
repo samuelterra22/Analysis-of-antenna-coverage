@@ -970,6 +970,13 @@
                       </property>
                      </widget>
                     </item>
+                    <item row="8" column="0">
+                     <widget class="QCheckBox" name="check_box_save_simulations">
+                      <property name="text">
+                       <string>Salvar dados</string>
+                      </property>
+                     </widget>
+                    </item>
                    </layout>
                   </widget>
                  </item>

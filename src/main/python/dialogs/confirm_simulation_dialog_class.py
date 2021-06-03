@@ -54,10 +54,12 @@ class ConfirmSimulationDialogClass(QDialog):
         print('optimize_solution=', heuristic['optimize_solution'])
         print('optimize_height=', heuristic['optimize_height'])
         print('optimize_power=', heuristic['optimize_power'])
+        print('save_simulations=', heuristic['save_simulations'])
 
         heuristic['optimize_solution'] = "Sim" if heuristic['optimize_solution'] else "Não"
         heuristic['optimize_height'] = "Sim" if heuristic['optimize_height'] else "Não"
         heuristic['optimize_power'] = "Sim" if heuristic['optimize_power'] else "Não"
+        heuristic['save_simulations'] = "Sim" if heuristic['save_simulations'] else "Não"
 
         # Simulation details
         self.label_modelo_propagacao_value: QLabel
@@ -117,6 +119,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_optimize_solution_value.setText(heuristic['optimize_solution'])
         self.label_optimize_height_value.setText(heuristic['optimize_height'])
         self.label_optimize_power_value.setText(heuristic['optimize_power'])
+        self.label_save_simulation_value.setText(heuristic['save_simulations'])
 
         # Confirm button
         self.btn_confirmar_simulacao.clicked.disconnect()

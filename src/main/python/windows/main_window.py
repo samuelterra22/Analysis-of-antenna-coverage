@@ -118,6 +118,7 @@ class MainWindow(QMainWindow):
         self.check_box_optimize_solution: QCheckBox
         self.check_box_optimize_height: QCheckBox
         self.check_box_optimize_power: QCheckBox
+        self.check_box_save_simulations: QCheckBox
 
         self.input_sa_temp_initial.setText("200.0")
         self.input_sa_num_max_iterations.setText("3")
@@ -127,6 +128,7 @@ class MainWindow(QMainWindow):
         self.check_box_optimize_solution.setChecked(True)
         self.check_box_optimize_height.setChecked(True)
         self.check_box_optimize_power.setChecked(True)
+        self.check_box_save_simulations.setChecked(True)
 
         # Output tab
         self.combo_box_output_colour_scheme: QComboBox
@@ -331,6 +333,7 @@ class MainWindow(QMainWindow):
                 "optimize_solution": self.check_box_optimize_solution.isChecked(),
                 "optimize_height": self.check_box_optimize_height.isChecked(),
                 "optimize_power": self.check_box_optimize_power.isChecked(),
+                "save_simulations": self.check_box_save_simulations.isChecked(),
             },
         }
 
@@ -689,7 +692,8 @@ class MainWindow(QMainWindow):
 
     def run_simulation(self) -> None:
         # ToDo: remove
-        save_simulations = True
+        self.check_box_save_simulations: QCheckBox
+        save_simulations = self.check_box_save_simulations.isChecked()
 
         start = time.time()
         end = None
@@ -816,9 +820,12 @@ class MainWindow(QMainWindow):
         percentage_height_15 = self.percentage(15, height)
         percentage_height_30 = self.percentage(30, height)
 
+        self.combo_box_propagation_model: QComboBox
         self.check_box_optimize_height: QCheckBox
 
-        if self.check_box_optimize_height.isChecked():
+        pm = self.combo_box_propagation_model.currentIndex()
+
+        if self.check_box_optimize_height.isChecked() and (pm == COST231_HATA_MODEL or pm == HATA_MODEL):
             return [
                 height - percentage_height_30,
                 height - percentage_height_15,
@@ -832,9 +839,12 @@ class MainWindow(QMainWindow):
         percentage_power_15 = self.percentage(15, power)
         percentage_power_30 = self.percentage(30, power)
 
+        self.combo_box_propagation_model: QComboBox
         self.check_box_optimize_power: QCheckBox
 
-        if self.check_box_optimize_power.isChecked():
+        pm = self.combo_box_propagation_model.currentIndex()
+
+        if self.check_box_optimize_power.isChecked() and (pm == COST231_HATA_MODEL or pm == HATA_MODEL):
             return [
                 power - percentage_power_30,
                 power - percentage_power_15,

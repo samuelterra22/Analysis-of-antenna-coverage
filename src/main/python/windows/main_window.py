@@ -32,8 +32,9 @@ from dialogs.anatel_dialog_class import AnatelDialogClass
 from dialogs.settings_dialog_class import SettingsDialogClass
 from dialogs.help_dialog_class import HelpDialogClass
 from dialogs.confirm_simulation_dialog_class import ConfirmSimulationDialogClass
-from support.propagation_models import cost231_path_loss, log_distance_path_loss, log_distance_ref_d0, hata_path_loss
-from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, bm_min_sensitivity, bm_max_sensitivity, SUBURBAN, \
+from support.propagation_models import cost231_path_loss, log_distance_path_loss, log_distance_ref_d0, hata_path_loss, \
+    two_rays_ground_reflection_path_loss
+from support.constants import UFLA_LAT_LONG_POSITION, MIN_SENSITIVITY, SUBURBAN, \
     COST231_HATA_MODEL, FRISS_MODEL, TWO_RAYS_GROUND_REFLECTION_MODEL, LOG_DISTANCE_MODEL, ONE_SLOPE_MODEL, HATA_MODEL
 from support.core import calculates_distance_between_coordinates, get_altitude, get_coordinate_in_circle
 from support.physical_constants import r_earth
@@ -538,7 +539,7 @@ class MainWindow(QMainWindow):
         return (percent * whole) / 100.0
 
     def calculates_path_loss(self, frequency: float, tx_h: float, rx_h: float, distance: float, mode: int,
-                             pt: float = 0.0):
+                             pt: float = 0.0, g_t: float = 0.0, g_r: float = 0.0):
         self.combo_box_propagation_model: QComboBox
         pm = self.combo_box_propagation_model.currentIndex()
 
@@ -546,13 +547,13 @@ class MainWindow(QMainWindow):
             return cost231_path_loss(f=frequency, tx_h=tx_h, rx_h=rx_h, d=distance, mode=mode)
         elif pm == HATA_MODEL:
             return hata_path_loss(f=frequency, h_B=tx_h, h_M=rx_h, d=distance, mode=mode)
-        elif pm == FRISS_MODEL:
-            pass
         elif pm == TWO_RAYS_GROUND_REFLECTION_MODEL:
-            pass
+            return two_rays_ground_reflection_path_loss(d=distance, g_t=g_t, g_r=g_r, h_t=tx_h, h_r=rx_h)
         elif pm == LOG_DISTANCE_MODEL:
             ref_d0 = log_distance_ref_d0(gamma=2, pt=pt)
             return log_distance_path_loss(d=distance, gamma=2, d0=1, pr_d0=ref_d0, pt=pt)
+        elif pm == FRISS_MODEL:
+            pass
         elif pm == ONE_SLOPE_MODEL:
             pass
 
@@ -572,6 +573,8 @@ class MainWindow(QMainWindow):
         transmitted_power = float(base_station_selected.potencia_transmissao)
 
         altitude_tx = get_altitude(lat=erb_location[0], long=erb_location[1])
+
+        rx_gain = float(self.input_rx_gain.text())
 
         #  Get limit altitudes
         if self.max_altitude is None and self.min_altitude is None:
@@ -607,9 +610,14 @@ class MainWindow(QMainWindow):
                 rx_h = (height_rx + altitude_lat_long_rx) - self.min_altitude
 
                 # calculate the path loss using a propagation model
-                path_loss = self.calculates_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h,
-                                                      distance, SUBURBAN,
-                                                      float(base_station_selected.potencia_transmissao))
+                # path_loss = self.calculates_path_loss(float(base_station_selected.frequencia_inicial), tx_h, rx_h,
+                #                                       distance, SUBURBAN,
+                #                                       float(base_station_selected.potencia_transmissao))
+
+                path_loss = self.calculates_path_loss(frequency=float(base_station_selected.frequencia_inicial),
+                                                      tx_h=tx_h, rx_h=rx_h, distance=distance, mode=SUBURBAN,
+                                                      pt=float(base_station_selected.potencia_transmissao),
+                                                      g_t=float(base_station_selected.ganho_antena), g_r=rx_gain)
 
                 received_power = transmitted_power - path_loss
 
@@ -663,7 +671,8 @@ class MainWindow(QMainWindow):
 
         # dados normatizados
         # normed_data = (propagation_matrix - bm_min_sensitivity) / (bm_max_sensitivity - bm_min_sensitivity)
-        normed_data = (propagation_matrix - propagation_matrix.min()) / (propagation_matrix.max() - propagation_matrix.min())
+        normed_data = (propagation_matrix - propagation_matrix.min()) / (
+                propagation_matrix.max() - propagation_matrix.min())
 
         colored_data = color_map(normed_data)
 
@@ -759,6 +768,7 @@ class MainWindow(QMainWindow):
             plt.show()
 
             if save_simulations:
+                print("Saving simulation in database...")
                 data = {
                     "initial_latitude": str(initial_solution.latitude),
                     "initial_longitude": str(initial_solution.longitude),
@@ -779,7 +789,7 @@ class MainWindow(QMainWindow):
                     "solutions": FOs
                 }
                 self.__simulation_controller.store(data)
-
+                print("Done!")
         else:
             #  Show simulation map
             self.print_simulation_result(initial_solution)
@@ -825,7 +835,9 @@ class MainWindow(QMainWindow):
 
         pm = self.combo_box_propagation_model.currentIndex()
 
-        if self.check_box_optimize_height.isChecked() and (pm == COST231_HATA_MODEL or pm == HATA_MODEL):
+        pm_that_accept_height = pm == COST231_HATA_MODEL or pm == HATA_MODEL or pm == TWO_RAYS_GROUND_REFLECTION_MODEL
+
+        if self.check_box_optimize_height.isChecked() and pm_that_accept_height:
             return [
                 height - percentage_height_30,
                 height - percentage_height_15,
@@ -842,9 +854,7 @@ class MainWindow(QMainWindow):
         self.combo_box_propagation_model: QComboBox
         self.check_box_optimize_power: QCheckBox
 
-        pm = self.combo_box_propagation_model.currentIndex()
-
-        if self.check_box_optimize_power.isChecked() and (pm == COST231_HATA_MODEL or pm == HATA_MODEL):
+        if self.check_box_optimize_power.isChecked():
             return [
                 power - percentage_power_30,
                 power - percentage_power_15,
@@ -875,9 +885,11 @@ class MainWindow(QMainWindow):
 
         antenna_height = float(base_station.altura)
         possible_heights = self.generates_heights(antenna_height)
+        print("possible_heights=", str(possible_heights))
 
         antenna_power_received = float(base_station.potencia_transmissao)
         possible_powers_received = self.generates_received_powers(antenna_power_received)
+        print("possible_powers_received=", str(possible_powers_received))
 
         s0 = s
         print("Solução inicial: " + str((s0.latitude, s0.longitude)))

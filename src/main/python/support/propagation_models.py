@@ -244,3 +244,12 @@ def sui_path_loss(f: float, d: float, terdicpr: float) -> float:
     """
     # https://core.ac.uk/download/pdf/84396454.pdf
     pass
+
+
+@jit(nopython=True)
+def two_rays_ground_reflection_path_loss(d: float, g_t: float, g_r: float, h_t: float, h_r: float) -> float:
+    """
+    Todo
+    :return:
+    """
+    return 40 * log10(d) - (10 * log10(g_t) - 10 * log10(g_r) + 20 * log10(h_t) + 20 * log10(h_r))

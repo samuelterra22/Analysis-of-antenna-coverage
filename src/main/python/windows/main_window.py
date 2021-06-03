@@ -340,7 +340,7 @@ class MainWindow(QMainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            for i in range(50):
+            for i in range(11):
                 self.run_simulation()
 
     def add_erb_map(self, base_station: BaseStation) -> None:
@@ -857,12 +857,10 @@ class MainWindow(QMainWindow):
         :return: Retorna um ponto (tupla de coordenadas) sendo a mais indicada.
         """
 
-        # Get problem parameters
-
-        # List of results
+        # List of solutions found
         FOs = []
 
-        # cria Soluções (posições) iniciais com pontos aleatórios para os APs
+        # Initial solution
         s = base_station
 
         antenna_height = float(base_station.altura)

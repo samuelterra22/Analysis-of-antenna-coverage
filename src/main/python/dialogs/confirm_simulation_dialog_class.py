@@ -55,6 +55,7 @@ class ConfirmSimulationDialogClass(QDialog):
         print('optimize_height=', heuristic['optimize_height'])
         print('optimize_power=', heuristic['optimize_power'])
         print('save_simulations=', heuristic['save_simulations'])
+        print('number_of_simulations=', heuristic['number_of_simulations'])
 
         heuristic['optimize_solution'] = "Sim" if heuristic['optimize_solution'] else "Não"
         heuristic['optimize_height'] = "Sim" if heuristic['optimize_height'] else "Não"
@@ -120,6 +121,7 @@ class ConfirmSimulationDialogClass(QDialog):
         self.label_optimize_height_value.setText(heuristic['optimize_height'])
         self.label_optimize_power_value.setText(heuristic['optimize_power'])
         self.label_save_simulation_value.setText(heuristic['save_simulations'])
+        self.label_number_of_simulations_value.setText(heuristic['number_of_simulations'])
 
         # Confirm button
         self.btn_confirmar_simulacao.clicked.disconnect()

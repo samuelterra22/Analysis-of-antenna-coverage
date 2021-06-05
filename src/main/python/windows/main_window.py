@@ -116,6 +116,7 @@ class MainWindow(QMainWindow):
         self.input_sa_num_max_perturbation_per_iteration: QLineEdit
         self.input_sa_num_max_success_per_iteration: QLineEdit
         self.input_sa_alpha: QLineEdit
+        self.input_number_of_simulations: QLineEdit
         self.check_box_optimize_solution: QCheckBox
         self.check_box_optimize_height: QCheckBox
         self.check_box_optimize_power: QCheckBox
@@ -126,6 +127,7 @@ class MainWindow(QMainWindow):
         self.input_sa_num_max_perturbation_per_iteration.setText("5")
         self.input_sa_num_max_success_per_iteration.setText("140")
         self.input_sa_alpha.setText("0.85")
+        self.input_number_of_simulations.setText("1")
         self.check_box_optimize_solution.setChecked(True)
         self.check_box_optimize_height.setChecked(True)
         self.check_box_optimize_power.setChecked(True)
@@ -144,6 +146,7 @@ class MainWindow(QMainWindow):
         self.input_sa_num_max_perturbation_per_iteration: QLineEdit
         self.input_sa_num_max_success_per_iteration: QLineEdit
         self.input_sa_alpha: QLineEdit
+        self.input_number_of_simulations: QLineEdit
 
     def init_output_components(self) -> None:
         self.combo_box_output_colour_scheme: QComboBox
@@ -335,6 +338,7 @@ class MainWindow(QMainWindow):
                 "optimize_height": self.check_box_optimize_height.isChecked(),
                 "optimize_power": self.check_box_optimize_power.isChecked(),
                 "save_simulations": self.check_box_save_simulations.isChecked(),
+                "number_of_simulations": self.input_number_of_simulations.text(),
             },
         }
 
@@ -344,7 +348,10 @@ class MainWindow(QMainWindow):
         confirm_simulation_dialog.setFixedSize(confirm_simulation_dialog.size())
 
         if confirm_simulation_dialog.exec_() == QtWidgets.QDialog.Accepted:
-            for i in range(11):
+            total_simulations = 50
+            # total_simulations = self.input_number_of_simulations.text()
+            for i in range(total_simulations):
+                print("i/range=", i, "/", total_simulations)
                 self.run_simulation()
 
     def add_erb_map(self, base_station: BaseStation) -> None:

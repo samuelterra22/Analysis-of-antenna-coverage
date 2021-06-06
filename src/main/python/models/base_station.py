@@ -44,6 +44,7 @@ class BaseStation(BaseModel):
     longitude_dms: str = CharField()
     cod_debito_tfi: str = CharField()
     data_primeiro_licenciamento: str = CharField()
+    color: str = CharField(default='blue')
 
     created_at: datetime = DateTimeField(default=datetime.datetime.now)
 

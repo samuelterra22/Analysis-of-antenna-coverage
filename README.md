@@ -8,6 +8,8 @@
 
 ### Configuração para desenvolvimento:
 
+:exclamation: Atenção, só é possível executar o fbs utilizando a versão 3.6 do python. :exclamation:
+
 -  Dependências Linux
 ```shell script
 sudo apt update

@@ -2,13 +2,13 @@
 
 ![Release Multi Platform](https://github.com/samuelterra22/Analysis-of-antenna-coverage/workflows/Release%20Multi%20Platform/badge.svg)
 
-### Preview of software:
+### Visualização do software:
 
 ![](screenshots/main_screen.png)
 
-### Setup for development
+### Configuração para desenvolvimento:
 
--  Linux dependencies
+-  Dependências Linux
 ```shell script
 sudo apt update
 sudo apt install -y \
@@ -23,7 +23,7 @@ sudo apt install -y \
                  g++ 
 ```
 
-- Create environment and install python dependencies
+- Crie um ambiente e instale dependências Python
 
 ```shell script
 pip3 install virtualenv
@@ -32,22 +32,24 @@ source venv/bin/activate
 pip install -r requirements.txt
 ``` 
 
-- USING IN IDE
+- Usando a IDE PyCharm
 
-The command fbs run is great to quickly run your app. Many people however prefer working in an IDE such as PyCharm. It especially simplifies debugging.
+O comando ``fbs run`` via terminal é ótimo para executar seu aplicativo rapidamente. 
+Muitas pessoas, entretanto, preferem trabalhar em um IDE como o PyCharm. Isso simplifica especialmente a depuração.
 
-To run a fbs app from other environments (such as an IDE, or the command line), you simply
+Para executar um aplicativo fbs de outros ambientes (como um IDE ou a linha de comando), você simplesmente.
 
-- need the virtual environment to be active,
-- have src/main/python on your PYTHONPATH and
-- run src/main/python/main.py.
+- precisa que o ambiente virtual esteja ativo,
+- ter ``src/main/python`` em seu ``PYTHONPATH`` e
+- executar o arquivo ``src/main/python/main.py``.
 
-So for example on Mac and Linux, you can also run your app from the command line via
+Por exemplo, no Mac e Linux, você também pode executar seu aplicativo a partir da linha de comando via (assumindo que o ambiente virtual está ativo).:
 
+```shell
 PYTHONPATH=src/main/python python src/main/python/main.py
-(assuming the virtual environment is active).
+```
 
-Here are screenshots of how PyCharm can be configured for this:
+Aqui estão as capturas de tela de como o PyCharm pode ser configurado para isso:
 
 ![](images/pycharm-config-1.png)
 
@@ -55,10 +57,10 @@ Here are screenshots of how PyCharm can be configured for this:
 
 ![](images/pycharm-config-3.png)
 
-See more in: [https://build-system.fman.io/manual/](https://build-system.fman.io/manual/)
+Veja mais em: [https://build-system.fman.io/manual/](https://build-system.fman.io/manual/)
 
 
-### For deploy
+### Comandos para deploy
 
 ```shell
 fbs freeze

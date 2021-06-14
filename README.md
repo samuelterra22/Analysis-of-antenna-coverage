@@ -32,7 +32,13 @@ pip3 install virtualenv
 virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
-``` 
+```
+
+- Configure o arquivo de variáveis de ambiente
+
+```shell
+cp .env.example .env
+```
 
 - Usando a IDE PyCharm
 

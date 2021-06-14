@@ -13,8 +13,8 @@
 from scipy.io import wavfile
 from pesq import pesq
 
-rate, ref = wavfile.read("./speech.wav")
-rate, deg = wavfile.read("./speech_bab_0dB.wav")
+rate, ref = wavfile.read("speech.wav")
+rate, deg = wavfile.read("speech_bab_0dB.wav")
 
 print(pesq(rate, ref, deg, 'wb'))
 print(pesq(rate, ref, deg, 'nb'))

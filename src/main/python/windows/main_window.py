@@ -973,7 +973,7 @@ class MainWindow(QMainWindow):
                     Si.altura = height
 
                     for power in possible_powers_received:
-                        print("power received=", power)
+                        print("transmission power=", power)
                         Si.potencia_transmissao = power
 
                         # Get objective function value

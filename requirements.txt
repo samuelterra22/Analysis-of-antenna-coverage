@@ -31,7 +31,7 @@ identify==2.2.2
 idna==2.10
 importlib-metadata==3.10.0
 importlib-resources==5.1.2
-isort==5.8.0
+isort==5.9.1
 itur==0.2.1
 jedi==0.17.2
 Jinja2==2.11.3

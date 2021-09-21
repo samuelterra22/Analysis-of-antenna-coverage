@@ -56,7 +56,7 @@ pd==0.0.1
 peewee==3.14.4
 pefile==2021.5.24
 pesq==0.0.3
-Pillow==8.3.1
+Pillow==8.3.2
 pluggy==1.0.0.dev0
 pre-commit==2.13.0
 pycodestyle==2.7.0

@@ -85,7 +85,7 @@ python-jsonrpc-server==0.4.0
 python-language-server==0.36.2
 python-srtm @ git+git://github.com/samuelterra22/python-srtm@d45e44dd81aebf6de8d0791e9088d1ac0ddf153a
 pytz==2021.1
-PyYAML==5.4.1
+PyYAML==6.0
 regex==2021.7.6
 requests==2.25.1
 rope==0.19.0

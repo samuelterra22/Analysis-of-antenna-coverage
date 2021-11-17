@@ -94,7 +94,7 @@ Shapely==1.8a1
 shiboken2==5.15.2
 sip==6.1.1
 six==1.16.0
-snowballstemmer==2.1.0
+snowballstemmer==2.2.0
 SoundFile==0.10.3.post1
 SQLAlchemy==1.4.20
 toml==0.10.2

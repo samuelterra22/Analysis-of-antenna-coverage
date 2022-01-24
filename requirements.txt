@@ -43,7 +43,7 @@ macholib==1.14
 Mako==1.1.4
 MarkupSafe==2.0.1
 matplotlib==3.3.4
-mccabe==0.6.1
+mccabe==0.7.0
 mypy-extensions==0.4.3
 nodeenv==1.6.0
 numba==0.53.1

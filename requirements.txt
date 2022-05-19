@@ -7,7 +7,7 @@ attrs==21.2.0
 autopep8==1.5.7
 branca==0.4.2
 bresenham==0.2.1
-certifi==2021.5.30
+certifi==2022.5.18
 cffi==1.14.6
 cfgv==3.3.0
 chardet==4.0.0

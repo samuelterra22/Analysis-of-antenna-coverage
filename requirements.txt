@@ -47,7 +47,7 @@ mccabe==0.6.1
 mypy-extensions==0.4.3
 nodeenv==1.6.0
 numba==0.53.1
-numpy==1.19.5
+numpy==1.23.3
 packaging==21.0
 pandas==1.1.5
 parso==0.8.2

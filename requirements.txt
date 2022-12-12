@@ -96,7 +96,7 @@ sip==6.1.1
 six==1.16.0
 snowballstemmer==2.1.0
 SoundFile==0.10.3.post1
-SQLAlchemy==1.4.20
+SQLAlchemy==1.4.45
 toml==0.10.2
 turfpy==0.0.6
 typed-ast==1.4.3

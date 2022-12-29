@@ -106,7 +106,7 @@ urllib3==1.26.6
 virtualenv==20.4.7
 wrapt==1.12.1
 xarray==0.16.2
-XlsxWriter==1.4.4
+XlsxWriter==3.0.4
 xmltodict==0.12.0
 yapf==0.31.0
 zipp==3.5.0

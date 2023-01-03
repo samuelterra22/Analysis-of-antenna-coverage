@@ -61,7 +61,7 @@ pluggy==1.0.0.dev0
 pre-commit==2.13.0
 pycodestyle==2.7.0
 pycparser==2.20
-pydocstyle==6.1.1
+pydocstyle==6.2.0
 pyerfa==1.7.2
 pyflakes==2.3.1
 PyInstaller==3.4
